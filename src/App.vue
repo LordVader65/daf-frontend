@@ -1,11 +1,22 @@
 <script setup></script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div id="app">
+    <router-view />
+    <AccessibilityMenu />
+  </div>
 </template>
+
+<script setup lang="js">
+import AccessibilityMenu from './components/AccessibilityMenu.vue'
+</script>
+
+<style>
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+</style>
 
 <style scoped></style>
