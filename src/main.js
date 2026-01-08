@@ -9,6 +9,6 @@ import $ from 'jquery'
 window.$ = window.jQuery = $
 
 import './assets/css/body.css'
-import './assets/css/accesibility.css'
+import './assets/css/accessibility.css'
 
 createApp(App).use(router).mount('#app')

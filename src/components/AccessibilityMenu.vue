@@ -1,29 +1,25 @@
 <template>
-  <section class="accesibility-menu">
-    <button 
-      class="ic-hi-con" 
-      aria-label="Activar alto contraste" 
-      :aria-pressed="isHighContrast"
-      @click="toggleHighContrast"
-    >
-      <img src="/images/accesibility/high-contrast-icon.svg" alt="Alto Contraste">
-    </button>
+  <section class="accessibility-menu">
+      <button
+        class="ic-hi-con" 
+        aria-label="Activar alto contraste" 
+        :aria-pressed="isHighContrast"
+        @click="toggleHighContrast">
+        <img src="/images/accessibility/high-contrast-icon.svg" alt="Alto Contraste">
+      </button>
 
-    <button 
-      class="ic-si-inc" 
-      aria-label="Aumentar tamaño del texto"
-      @click="increaseTextSize"
-    >
-      <img src="/images/accesibility/size-increase-icon.svg" alt="Escalar texto">
-    </button>
-
-    <button 
-      class="ic-si-dec" 
-      aria-label="Disminuir tamaño del texto"
-      @click="decreaseTextSize"
-    >
-      <img src="/images/accesibility/size-decrease-icon.svg" alt="Disminuir texto">
-    </button>
+      <button
+        class="ic-si-inc" 
+        aria-label="Aumentar tamaño del texto"
+        @click="increaseTextSize">
+        <img src="/images/accessibility/size-increase-icon.svg" alt="Escalar texto">
+      </button>
+      <button
+        class="ic-si-dec" 
+        aria-label="Disminuir tamaño del texto"
+        @click="decreaseTextSize">
+        <img src="/images/accessibility/size-decrease-icon.svg" alt="Disminuir texto">
+      </button>
   </section>
 </template>
 

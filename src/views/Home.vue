@@ -1,13 +1,11 @@
 <template>
   <div class="home-page">
     <Header />
-    
-    <a href="#nosotros" class="skip-link">Volver al inicio</a>
 
     <main class="flex-grow">
       <section id="nosotros" class="container mx-auto px-4 py-5">
         <div class="row g-4">
-          <div class="col-md-6">
+          <div class="col-md-6 p-3">
             <article>
               <h2 class="text-2xl font-weight-bold mb-4 text-primary-custom">NOSOTROS</h2>
               <p class="mb-4 text-justify">
@@ -39,8 +37,8 @@
         </div>
       </section>
 
-      <section id="productos" class="bg-white py-5">
-        <div class="container text-center">
+      <section id="productos" class="bg-white p-5">
+        <div class="container text-center p-5">
           <h4 class="mb-4 text-primary-custom">Algunos de nuestros arreglos florales</h4>
           <h2 class="text-2xl font-weight-bold mb-5 text-primary-custom">NUESTROS PRODUCTOS DESTACADOS</h2>
 
@@ -78,6 +76,7 @@
 <script setup>
 import { ref } from 'vue'
 import Header from '../components/Header.vue'
+import AccessibilityMenu from '../components/AccessibilityMenu.vue'
 import Footer from '../components/Footer.vue'
 
 const featuredProducts = ref([

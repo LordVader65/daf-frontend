@@ -21,12 +21,10 @@ body {
 
 a:focus,
 button:focus {
-    outline: 3px solid #896629;
-    outline-offset: 3px;
+    border: #2d2d2d 2px solid !important;
 }
 .high-contrast a:focus, .high-contrast button:focus {
-    outline: 3px solid #944000;
-    outline-offset: 3px;
+    border: #FFFFFF 5px solid !important;
 }
 
 /* Header */

@@ -2,8 +2,6 @@
   <div class="products-page">
     <Header />
     
-    <a href="#productos" class="skip-link">Volver al inicio</a>
-
     <main class="flex-grow">
       <div id="productos" class="text-center mt-5 text-orange-custom">
         <h1 class="display-4 font-weight-bold">Nuestros Productos</h1>
