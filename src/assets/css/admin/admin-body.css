@@ -1,0 +1,36 @@
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: #FFFFFF;
+  background-size: cover;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.login-panel {
+  width: 40%;
+  background-color: rgba(255, 214, 153, 0.85);
+  padding: 40px;
+  border-radius: 10px;
+    @media (max-width: 760px) {
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+
+input {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 8px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ffb84d;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
