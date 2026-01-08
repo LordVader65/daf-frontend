@@ -172,7 +172,11 @@ body {
     border: 2px solid #fff !important;
 }
 
-.high-contrast .admin-access-bar {
-    background-color: #000 !important;
-    border-bottom: 2px solid #ffff00 !important;
+.high-contrast .login-container {
+    background-color: black;
+}
+
+.high-contrast .login-panel {
+    background-color: rgba(0, 0, 0, 0.85);
+    border: #fff 2px solid;
 }
