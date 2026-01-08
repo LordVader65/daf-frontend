@@ -12,8 +12,9 @@
         <div class="filter-section p-4 rounded">
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label font-weight-semibold text-orange-custom">Buscar</label>
+              <label class="form-label font-weight-semibold">Buscar</label>
               <input 
+                placeholder="Producto"
                 v-model="filters.query" 
                 type="text" 
                 class="form-control rounded-3"
@@ -21,8 +22,9 @@
               />
             </div>
             <div class="col-md-3">
-              <label class="form-label font-weight-semibold text-orange-custom">Precio min.</label>
+              <label class="form-label font-weight-semibold">Precio min.</label>
               <input 
+                placeholder="0.00"
                 v-model.number="filters.minPrice" 
                 type="number" 
                 min="0" 
@@ -31,9 +33,10 @@
               />
             </div>
             <div class="col-md-3">
-              <label class="form-label font-weight-semibold text-orange-custom">Precio max.</label>
+              <label class="form-label font-weight-semibold">Precio max.</label>
               <input 
-                v-model.number="filters.maxPrice" 
+                v-model.number="filters.maxPrice"
+                placeholder="0.00" 
                 type="number" 
                 min="0" 
                 class="form-control rounded-3"
@@ -151,8 +154,9 @@ onMounted(async () => {
 }
 
 .filter-section {
-  background-color: rgba(251, 191, 36, 0.2);
+  background-color: #9a3412;
   border: 1px solid rgba(251, 191, 36, 0.4);
+  color: #FFFFFF;
 }
 
 .loading-box {
