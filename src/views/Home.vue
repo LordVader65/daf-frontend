@@ -1,7 +1,5 @@
 <template>
   <div class="home-page">
-    <Header />
-
     <main class="flex-grow">
       <section id="nosotros" class="container mx-auto px-4 py-5">
         <div class="row g-4">
@@ -18,7 +16,9 @@
                 En DAF creemos que cada arreglo cuenta una historia, y queremos ser parte de la tuya.
               </p>
               <div class="d-flex gap-3">
-                <router-link to="/contact" class="btn btn-custom-dark">Contáctanos</router-link>
+                <router-link to="/contact" class="btn btn-custom-dark">
+                  Contáctanos
+                </router-link>
               </div>
             </article>
           </div>
@@ -39,22 +39,39 @@
 
       <section id="productos" class="bg-white p-5">
         <div class="container text-center p-5">
-          <h4 class="mb-4 text-primary-custom">Algunos de nuestros arreglos florales</h4>
-          <h2 class="text-2xl font-weight-bold mb-5 text-primary-custom">NUESTROS PRODUCTOS DESTACADOS</h2>
+          <h4 class="mb-4 text-primary-custom">
+            Algunos de nuestros arreglos florales
+          </h4>
+          <h2 class="text-2xl font-weight-bold mb-5 text-primary-custom">
+            NUESTROS PRODUCTOS DESTACADOS
+          </h2>
 
           <div class="row g-4">
-            <div class="col-md-4" v-for="product in featuredProducts" :key="product.id">
+            <div
+              class="col-md-4"
+              v-for="product in featuredProducts"
+              :key="product.id"
+            >
               <article class="card h-100 shadow-sm">
                 <div class="card-body d-flex flex-column">
-                  <h3 class="card-title font-weight-semibold mb-3">{{ product.name }}</h3>
+                  <h3 class="card-title font-weight-semibold mb-3">
+                    {{ product.name }}
+                  </h3>
                   <img 
                     :src="product.image" 
                     :alt="product.name" 
                     class="img-fluid rounded mb-3"
                     style="width: 192px; height: 192px; object-fit: cover; margin: 0 auto;"
                   >
-                  <p class="card-text small mb-3">{{ product.description }}</p>
-                  <router-link to="/details" class="btn btn-custom-dark mt-auto">Ver Más</router-link>
+                  <p class="card-text small mb-3">
+                    {{ product.description }}
+                  </p>
+                  <router-link
+                    to="/details"
+                    class="btn btn-custom-dark mt-auto"
+                  >
+                    Ver Más
+                  </router-link>
                 </div>
               </article>
             </div>
@@ -68,35 +85,33 @@
         </div>
       </section>
     </main>
-
-    <Footer />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import Header from '../components/Header.vue'
-import AccessibilityMenu from '../components/AccessibilityMenu.vue'
-import Footer from '../components/Footer.vue'
 
 const featuredProducts = ref([
   {
     id: 1,
     name: 'Arreglos simples',
     image: '/images/details/arreglos_simples.jpeg',
-    description: 'Diseños frescos y delicados, ideales para regalar o decorar espacios con un toque natural y armonioso.'
+    description:
+      'Diseños frescos y delicados, ideales para regalar o decorar espacios con un toque natural y armonioso.'
   },
   {
     id: 2,
     name: 'Corona de flores',
     image: '/images/details/corona_flores.jpg',
-    description: 'Corona artesanal elaborada con flores naturales, símbolo de amor y respeto para homenajes o celebraciones solemnes.'
+    description:
+      'Corona artesanal elaborada con flores naturales, símbolo de amor y respeto para homenajes o celebraciones solemnes.'
   },
   {
     id: 3,
     name: 'Pedestales florales',
     image: '/images/details/pedestal_flores.jpg',
-    description: 'Un elegante pedestal decorativo con flores frescas, perfecto para eventos, recepciones y ceremonias especiales.'
+    description:
+      'Un elegante pedestal decorativo con flores frescas, perfecto para eventos, recepciones y ceremonias especiales.'
   }
 ])
 </script>

@@ -1,7 +1,5 @@
 <template>
   <div class="products-page">
-    <Header />
-    
     <main class="flex-grow">
       <div id="productos" class="text-center mt-5 text-orange-custom">
         <h1 class="display-4 font-weight-bold">Nuestros Productos</h1>
@@ -72,23 +70,23 @@
               <div class="card-body d-flex flex-column">
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">{{ product.description }}</p>
-                <p class="h5 text-orange-custom mt-auto">${{ product.price }}</p>
-                <button class="btn btn-custom-orange mt-3">Agregar al carrito</button>
+                <p class="h5 text-orange-custom mt-auto">
+                  ${{ product.price }}
+                </p>
+                <button class="btn btn-custom-orange mt-3">
+                  Agregar al carrito
+                </button>
               </div>
             </div>
           </div>
         </div>
       </section>
     </main>
-
-    <Footer />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import Header from '../components/Header.vue'
-import Footer from '../components/Footer.vue'
 
 const loading = ref(true)
 const products = ref([])
@@ -100,25 +98,25 @@ const filters = ref({
 
 const filteredProducts = computed(() => {
   return products.value.filter(product => {
-    const matchesQuery = !filters.value.query || 
+    const matchesQuery =
+      !filters.value.query ||
       product.name.toLowerCase().includes(filters.value.query.toLowerCase())
-    
-    const matchesMinPrice = !filters.value.minPrice || 
+
+    const matchesMinPrice =
+      !filters.value.minPrice ||
       product.price >= filters.value.minPrice
-    
-    const matchesMaxPrice = !filters.value.maxPrice || 
+
+    const matchesMaxPrice =
+      !filters.value.maxPrice ||
       product.price <= filters.value.maxPrice
-    
+
     return matchesQuery && matchesMinPrice && matchesMaxPrice
   })
 })
 
-const applyFilters = () => {
-  // Filters are automatically applied through computed property
-}
+const applyFilters = () => {}
 
-onMounted(async () => {
-  // Simulate loading products
+onMounted(() => {
   setTimeout(() => {
     products.value = [
       {

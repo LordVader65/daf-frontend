@@ -1,11 +1,11 @@
-<script setup></script>
 <script setup lang="js">
+import Header from './components/Header.vue'
 import AccessibilityMenu from './components/AccessibilityMenu.vue'
 </script>
 
-
 <template>
   <div id="app">
+    <Header />
     <AccessibilityMenu />
     <router-view />
   </div>
@@ -18,5 +18,3 @@ import AccessibilityMenu from './components/AccessibilityMenu.vue'
   flex-direction: column;
 }
 </style>
-
-<style scoped></style>

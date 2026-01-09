@@ -176,3 +176,23 @@ body {
     background-color: #000 !important;
     border-bottom: 2px solid #ffff00 !important;
 }
+
+.high-contrast select,
+.high-contrast textarea {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #ffff00 !important;
+}
+
+.high-contrast select:focus,
+.high-contrast textarea:focus,
+.high-contrast select:focus-visible,
+.high-contrast textarea:focus-visible {
+    outline: none !important;
+    border-color: #ffff00 !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.6) !important;
+}
+
+.high-contrast .contact-page {
+    background-color: #000000 !important;
+}
