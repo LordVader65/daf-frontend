@@ -2,9 +2,11 @@
     --text-size: 1em;
 }
 
-.high-contrast {
-    color: #FFFFFF;
-    background-color: #000000;
+/* ===============================
+   BASE
+   =============================== */
+body {
+    font-size: var(--text-size);
 }
 
 .high-contrast,
@@ -13,47 +15,9 @@
     color: #fff !important;
 }
 
-.high-contrast a {
-    color: #FFFFFF;
-}
-
-body {
-    font-size: var(--text-size);
-}
-
-.accessibility-menu {
-    position: fixed;
-    background-color: #000000;
-    width: 200px;
-    height: 500px;
-    top: 20%;
-    left: -100px;
-    scale: 0.5;
-
-    border-radius: 25px;
-
-    display: flex;
-    justify-content: space-around;
-    align-items: end;
-
-    padding-right: 20px;
-
-    flex-direction: column;
-}
-
-.accessibility-menu button {
-    padding: 5px;
-    background: transparent;
-    border: none;
-}
-
-.accessibility-menu button:hover {
-    cursor: pointer;
-    background-color: #333333;
-    scale: 1.1;
-    transition: scale 100ms ease;
-}
-
+/* ===============================
+   TEXTO
+   =============================== */
 .high-contrast p,
 .high-contrast h1,
 .high-contrast h2,
@@ -66,41 +30,52 @@ body {
     color: #fff !important;
 }
 
+.high-contrast label {
+    color: #ffff00 !important;
+}
+
+/* ===============================
+   HEADER / FOOTER / NAV
+   =============================== */
 .high-contrast header,
 .high-contrast footer {
     background-color: #000 !important;
     color: #fff !important;
 }
 
-.high-contrast nav a {
+.high-contrast header nav a {
     color: #ffff00 !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0.3rem 0.6rem;
+}
+
+/* Hover / focus / activo */
+.high-contrast header nav a:hover,
+.high-contrast header nav a:focus-visible,
+.high-contrast header nav a.router-link-active {
+    border: 2px solid #ffff00 !important;
+    background-color: #000 !important;
     text-decoration: underline;
 }
 
-.high-contrast a,
+/* ===============================
+   LINKS Y BOTONES (GENÉRICO)
+   =============================== */
+.high-contrast a {
+    color: #ffff00 !important;
+    background-color: transparent !important;
+}
+
 .high-contrast button {
     background-color: #000 !important;
     color: #ffff00 !important;
     border: 2px solid #ffff00 !important;
 }
 
-.high-contrast article {
-    background-color: #000 !important;
-    border: 2px solid #fff !important;
-}
-
-.high-contrast img {
-    filter: none !important;
-}
-
-.high-contrast #popupExito,
-.high-contrast #popupError,
-.high-contrast #modalCargando div {
-    background-color: #000 !important;
-    color: #fff !important;
-    border: 2px solid #fff !important;
-}
-
+/* ===============================
+   FORMULARIOS
+   =============================== */
 .high-contrast form {
     background-color: #000 !important;
     border: 2px solid #fff !important;
@@ -111,15 +86,42 @@ body {
 .high-contrast textarea {
     background-color: #000 !important;
     color: #fff !important;
-    border: 2px solid #fff !important;
+    border: 2px solid #ffff00 !important;
 }
 
-.high-contrast .card {
+.high-contrast input::placeholder {
+    color: #ccc !important;
+}
+
+.high-contrast input:focus,
+.high-contrast select:focus,
+.high-contrast textarea:focus,
+.high-contrast select:focus-visible,
+.high-contrast textarea:focus-visible {
+    outline: none !important;
+    border-color: #ffff00 !important;
+    box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.6) !important;
+}
+
+/* ===============================
+   SECCIONES / CONTENEDORES
+   =============================== */
+.high-contrast section {
+    background-color: transparent !important;
+}
+
+.high-contrast section > div,
+.high-contrast article,
+.high-contrast .card,
+.high-contrast .loading-box {
     background-color: #000 !important;
     color: #fff !important;
     border: 2px solid #fff !important;
 }
 
+/* ===============================
+   TARJETAS
+   =============================== */
 .high-contrast .card p,
 .high-contrast .card span,
 .high-contrast .card h1,
@@ -130,46 +132,38 @@ body {
     color: #fff !important;
 }
 
+/* ===============================
+   INPUT CANTIDAD
+   =============================== */
 .high-contrast .qty-input {
     background-color: #000 !important;
     color: #fff !important;
     border: 2px solid #ffff00 !important;
 }
 
-.high-contrast section {
-    background-color: transparent !important;
+/* ===============================
+   IMÁGENES
+   =============================== */
+.high-contrast img {
+    filter: none !important;
 }
 
-.high-contrast section > div {
-    background-color: #000 !important;
-    border: 2px solid #fff !important;
-}
-
-.high-contrast label {
-    color: #ffff00 !important;
-}
-
-.high-contrast input {
-    background-color: #000 !important;
-    color: #fff !important;
-    border: 2px solid #ffff00 !important;
-}
-
-.high-contrast input::placeholder {
-    color: #ccc !important;
-}
-
-.high-contrast input:focus {
-    outline: 3px solid #ffff00 !important;
-    outline-offset: 2px;
-
-    outline: none;
-}
-
-.high-contrast .loading-box {
+/* ===============================
+   POPUPS / MODALES
+   =============================== */
+.high-contrast #popupExito,
+.high-contrast #popupError,
+.high-contrast #modalCargando div {
     background-color: #000 !important;
     color: #fff !important;
     border: 2px solid #fff !important;
+}
+
+/* ===============================
+   PÁGINAS ESPECÍFICAS
+   =============================== */
+.high-contrast .contact-page {
+    background-color: #000 !important;
 }
 
 .high-contrast .admin-access-bar {
@@ -177,22 +171,34 @@ body {
     border-bottom: 2px solid #ffff00 !important;
 }
 
-.high-contrast select,
-.high-contrast textarea {
-    background-color: #000 !important;
-    color: #fff !important;
-    border: 2px solid #ffff00 !important;
+/* ===============================
+   MENÚ ACCESIBILIDAD
+   =============================== */
+.accessibility-menu {
+    position: fixed;
+    background-color: #000;
+    width: 200px;
+    height: 500px;
+    top: 20%;
+    left: -100px;
+    scale: 0.5;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+    padding-right: 20px;
+    flex-direction: column;
 }
 
-.high-contrast select:focus,
-.high-contrast textarea:focus,
-.high-contrast select:focus-visible,
-.high-contrast textarea:focus-visible {
-    outline: none !important;
-    border-color: #ffff00 !important;
-    box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.6) !important;
+.accessibility-menu button {
+    padding: 5px;
+    background: transparent;
+    border: none;
 }
 
-.high-contrast .contact-page {
-    background-color: #000000 !important;
+.accessibility-menu button:hover {
+    cursor: pointer;
+    background-color: #333;
+    scale: 1.1;
+    transition: scale 100ms ease;
 }

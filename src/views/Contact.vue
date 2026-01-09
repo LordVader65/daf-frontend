@@ -27,7 +27,20 @@
         <label>Mensaje</label>
         <textarea v-model="form.mensaje" rows="4"></textarea>
 
-        <button type="submit">Enviar</button>
+        <!-- Acciones -->
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn-cancel"
+            @click="cancelar"
+          >
+            Cancelar
+          </button>
+
+          <button type="submit">
+            Enviar
+          </button>
+        </div>
       </form>
     </main>
   </div>
@@ -35,6 +48,9 @@
 
 <script setup>
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const form = reactive({
   nombre: '',
@@ -51,6 +67,10 @@ const enviarFormulario = () => {
 
   alert('Mensaje enviado correctamente')
   Object.keys(form).forEach(k => (form[k] = ''))
+}
+
+const cancelar = () => {
+  router.push('/') // menú principal
 }
 </script>
 
@@ -109,7 +129,7 @@ textarea {
   color: #000000;
 }
 
-/* Foco accesible (teclado) */
+/* Foco accesible */
 input:focus,
 select:focus,
 textarea:focus {
@@ -118,10 +138,16 @@ textarea:focus {
   box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.25);
 }
 
-/* Botón */
-button {
+/* Acciones */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Botón Enviar */
+button[type="submit"] {
   width: 100%;
-  background-color: #c2410c; /* color oficial */
+  background-color: #c2410c;
   color: #ffffff;
   font-weight: 700;
   padding: 0.9rem;
@@ -131,11 +157,29 @@ button {
   transition: background-color 0.25s ease;
 }
 
-button:hover {
+button[type="submit"]:hover {
   background-color: #9a3412;
 }
 
-/* Foco del botón */
+/* Botón Cancelar */
+.btn-cancel {
+  width: 100%;
+  background-color: transparent;
+  color: #c2410c;
+  font-weight: 700;
+  padding: 0.9rem;
+  border-radius: 0.6rem;
+  border: 2px solid #c2410c;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #c2410c;
+  color: #ffffff;
+}
+
+/* Foco botones */
 button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.35);
