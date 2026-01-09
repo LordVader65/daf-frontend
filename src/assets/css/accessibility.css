@@ -180,3 +180,27 @@ body {
     background-color: rgba(0, 0, 0, 0.85);
     border: #fff 2px solid;
 }
+
+.high-contrast header nav a {
+    border: none !important;
+    background: transparent !important;
+    color: #ffff00 !important;
+    padding: 0.3rem 0.6rem;
+}
+
+.high-contrast header nav a:hover,
+.high-contrast header nav a:focus-visible {
+    border: 2px solid #ffff00 !important;
+    background-color: #000 !important;
+    text-decoration: underline;
+}
+
+.high-contrast header nav a.router-link-active {
+    border: 2px solid #ffff00 !important;
+    background-color: #000 !important;
+    text-decoration: underline;
+}
+
+.high-contrast a {
+    border: none !important;
+}
