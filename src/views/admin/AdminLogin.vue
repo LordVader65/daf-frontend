@@ -70,26 +70,7 @@ const cancel = () => {
 }
 
 .btn-login {
-    /* Assuming admin-button had some styles, but we want to ensure it looks primary */
-    /* We will leave the default admin-button styles for this if they exist, 
-       but the user asked simply to add the cancel button. 
-       However, since I am replacing the CSS import with a style block OR adding to it, 
-       I must be careful.
-       
-       The file had <style scoped src="..." />. 
-       Vue allows multiple style blocks. 
-       I will ADD a new style block and KEEP the src import if possible.
-       BUT the tool `replace_file_content` replaces a chunk.
-       I need to make sure I don't delete the src import if I want to keep other styles.
-       
-       Wait, `replace_file_content` replaces lines. 
-       The target content covers the WHOLE file in my thinking above? 
-       No, I should just replace the necessary parts or the whole file. 
-       Replacing the whole file is safer to ensure structure.
-       
-       I will include the src import in the new content correctly.
-    */
-    background-color: #c2410c; /* Matching the orange theme seen in Products */
+    background-color: #c2410c; /* Matching the orange theme */
     color: white;
 }
 

@@ -263,11 +263,11 @@ onMounted(() => {
 }
 
 .btn-cart {
-  background-color: #c2410c;
+  background-color: #8f3e00; /* Merging User Preference: Darker Orange/Brown */
   color: white;
 }
 
 .btn-cart:hover {
-  background-color: #9a3412;
+  background-color: #4d2100; /* Merging User Preference Hover */
 }
 </style>
