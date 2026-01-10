@@ -29,6 +29,7 @@ body {
     top: 20%;
     left: -100px;
     scale: 0.5;
+    z-index: 1000;
 
     border-radius: 25px;
 
@@ -54,16 +55,8 @@ body {
     transition: scale 100ms ease;
 }
 
-.high-contrast p,
-.high-contrast h1,
-.high-contrast h2,
-.high-contrast h3,
-.high-contrast h4,
-.high-contrast h5,
-.high-contrast h6,
-.high-contrast span,
-.high-contrast strong {
-    color: #fff !important;
+.accessibility-menu button:focus {
+    border: #ffff00 2px solid !important;
 }
 
 .high-contrast header,
@@ -81,12 +74,23 @@ body {
 .high-contrast button {
     background-color: #000 !important;
     color: #ffff00 !important;
-    border: 2px solid #ffff00 !important;
 }
+
+.high-contrast a:focus,
+.high-contrast button:focus {
+    color: #ffff00 !important;
+    border: #ffff00 2px solid !important;
+}
+
+.high-contrast a:hover,
+.high-contrast button:hover {
+    color: #ffff00 !important;
+    border: #ffff00 2px solid !important;
+}
+
 
 .high-contrast article {
     background-color: #000 !important;
-    border: 2px solid #fff !important;
 }
 
 .high-contrast img {
@@ -111,23 +115,13 @@ body {
 .high-contrast textarea {
     background-color: #000 !important;
     color: #fff !important;
-    border: 2px solid #fff !important;
+    border: none;
 }
 
 .high-contrast .card {
     background-color: #000 !important;
     color: #fff !important;
     border: 2px solid #fff !important;
-}
-
-.high-contrast .card p,
-.high-contrast .card span,
-.high-contrast .card h1,
-.high-contrast .card h2,
-.high-contrast .card h3,
-.high-contrast .card h4,
-.high-contrast .card h5 {
-    color: #fff !important;
 }
 
 .high-contrast .qty-input {
@@ -142,28 +136,22 @@ body {
 
 .high-contrast section > div {
     background-color: #000 !important;
-    border: 2px solid #fff !important;
 }
 
 .high-contrast label {
     color: #ffff00 !important;
 }
 
-.high-contrast input {
-    background-color: #000 !important;
-    color: #fff !important;
-    border: 2px solid #ffff00 !important;
-}
-
 .high-contrast input::placeholder {
-    color: #ccc !important;
+    color: #ccc;
 }
 
 .high-contrast input:focus {
-    outline: 3px solid #ffff00 !important;
-    outline-offset: 2px;
+    border: 2px solid #ffff00;
+}
 
-    outline: none;
+.high-contrast input:hover {
+    border: 2px solid #ffff00;
 }
 
 .high-contrast .loading-box {
@@ -178,29 +166,59 @@ body {
 
 .high-contrast .login-panel {
     background-color: rgba(0, 0, 0, 0.85);
-    border: #fff 2px solid;
 }
 
-.high-contrast header nav a {
-    border: none !important;
-    background: transparent !important;
-    color: #ffff00 !important;
-    padding: 0.3rem 0.6rem;
+.high-contrast .dashboard-card:focus {
+    border: #FFF 2px solid;
+    background-color: white;
 }
 
-.high-contrast header nav a:hover,
-.high-contrast header nav a:focus-visible {
+.high-contrast .dashboard-card:hover {
+    border: #FFF 2px solid;
+    background-color: white !important;
+    color: #000 !important;
+}
+
+.high-contrast .dashboard-card {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #ffff00;
+}
+
+.high-contrast .admin-input {
+    border: none;
+    background-color: #000;
+    color: #fff;
+}
+
+.high-contrast .admin-input:focus {
+    border: 2px solid #ffff00;
+}
+
+.high-contrast .admin-input:hover {
+    border: 2px solid #ffff00;
+}
+
+.high-contrast .admin-button {
+    background-color: #000;
+    color: #ffff00;
+}
+
+.high-contrast .admin-button:focus {
     border: 2px solid #ffff00 !important;
-    background-color: #000 !important;
-    text-decoration: underline;
 }
 
-.high-contrast header nav a.router-link-active {
+.high-contrast .admin-button:hover {
     border: 2px solid #ffff00 !important;
-    background-color: #000 !important;
-    text-decoration: underline;
 }
 
-.high-contrast a {
-    border: none !important;
+.high-contrast p,
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast h4,
+.high-contrast h5,
+.high-contrast span,
+.high-contrast strong {
+    color: #fff !important;
 }

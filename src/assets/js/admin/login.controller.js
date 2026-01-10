@@ -9,8 +9,15 @@ export function useLogin() {
   const userStore = useUserStore()
 
   const login = async () => {
-    await userStore.login(user.value, password.value)
-    router.push('/admin/dashboard')
+    try {
+        await userStore.login(user.value, password.value)
+        router.push('/admin/dashboard')
+    } catch (error) {
+        alert('Credenciales inválidas')
+
+        user.value = ''
+        password.value = ''
+    }
   }
 
   return {

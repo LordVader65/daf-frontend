@@ -26,6 +26,11 @@ const routes = [
     path: '/admin',
     name: 'Admin',
     component: AdminLogin
+  },
+  {
+    path: '/admin/dashboard',
+    name: 'AdminDashboard',
+    component: AdminDashboard
   }
 ]
 
