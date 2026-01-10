@@ -1,8 +1,6 @@
 <script setup>
     import { ref, onMounted } from 'vue'
     import axios from 'axios'
-    import Header from '@/components/Header.vue'
-    import Footer from '@/components/Footer.vue'
     import DashboardButton from '@/components/DashboardButton.vue'
     import { obtainToken } from '../../utils/obtain-token.js'
 
@@ -45,12 +43,12 @@
         const token = obtainToken()
 
         const { data } = await axios.get(
-            import.meta.env.VITE_BACKEND + 'pos/access',
-            {
-                headers: {
-                Authorization: `Bearer ${token}`
-                }
+        import.meta.env.VITE_BACKEND + 'pos/access',
+        {
+            headers: {
+            Authorization: `Bearer ${token}`
             }
+        }
         )
 
         enabledModules.value = Object.entries(data.access)

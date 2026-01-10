@@ -10,7 +10,7 @@
         <div class="filter-section p-4 rounded">
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label font-weight-semibold text-white">Buscar</label>
+              <label class="form-label font-weight-semibold">Buscar</label>
               <input
                 placeholder="Producto"
                 v-model="filters.query"
@@ -20,7 +20,7 @@
             </div>
 
             <div class="col-md-3">
-              <label class="form-label font-weight-semibold text-white">Precio min.</label>
+              <label class="form-label font-weight-semibold">Precio min.</label>
               <input
                 placeholder="0.00"
                 v-model.number="filters.minPrice"
@@ -31,7 +31,7 @@
             </div>
 
             <div class="col-md-3">
-              <label class="form-label font-weight-semibold text-white">Precio max.</label>
+              <label class="form-label font-weight-semibold">Precio max.</label>
               <input
                 placeholder="0.00"
                 v-model.number="filters.maxPrice"
@@ -53,29 +53,32 @@
       </div>
 
       <section v-else class="container my-5">
-        <div class="row g-4">
+        <div class="products-grid">
           <div
             v-for="product in filteredProducts"
             :key="product.id"
-            class="col-md-4"
+            class="product-card"
           >
-            <div class="card h-100 shadow-sm">
-              <img
-                :src="product.image"
-                :alt="product.name"
-                class="card-img-top"
-                style="height: 250px; object-fit: cover;"
-              />
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">{{ product.name }}</h5>
-                <p class="card-text">{{ product.description }}</p>
-                <p class="h5 text-orange-custom mt-auto">
-                  ${{ product.price }}
-                </p>
-                <button class="btn btn-custom-dark mt-3">
-                  Agregar al carrito
-                </button>
-              </div>
+            <img
+              :src="product.image"
+              :alt="product.name"
+              class="product-image"
+            />
+            <div class="product-info">
+              <h5 class="product-title">{{ product.name }}</h5>
+              <p class="product-description">{{ product.description }}</p>
+              <p class="product-price">
+                ${{ product.price }}
+              </p>
+            </div>
+            
+            <div class="product-actions">
+              <button class="btn-detail" @click="navigateToDetail(product.id)">
+                Detalle
+              </button>
+              <button class="btn-cart">
+                Agregar al carrito
+              </button>
             </div>
           </div>
         </div>
@@ -86,7 +89,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const loading = ref(true)
 const products = ref([])
 const filters = ref({
@@ -112,6 +117,10 @@ const filteredProducts = computed(() => {
     return matchesQuery && matchesMinPrice && matchesMaxPrice
   })
 })
+
+const navigateToDetail = (id) => {
+  router.push(`/products/${id}`)
+}
 
 onMounted(() => {
   setTimeout(() => {
@@ -159,23 +168,106 @@ onMounted(() => {
   color: #9a3412;
 }
 
-.btn-custom-dark {
-  background-color: #8f3e00;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  text-decoration: none;
-  transition: background-color 0.3s;
-}
-
-.btn-custom-dark:hover {
-  background-color: #4d2100;
-  color: white;
-}
-
 .products-page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+/* New Grid Layout */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
+/* Product Card */
+.product-card {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+.product-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.product-info {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.product-description {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.product-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #c2410c;
+  margin-top: auto;
+  margin-bottom: 1rem;
+}
+
+/* Action Buttons Container */
+.product-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.btn-detail, .btn-cart {
+  flex: 1;
+  padding: 0.75rem 0.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.9rem;
+}
+
+.btn-detail {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.btn-detail:hover {
+  background-color: #e5e7eb;
+}
+
+.btn-cart {
+  background-color: #8f3e00; /* Merging User Preference: Darker Orange/Brown */
+  color: white;
+}
+
+.btn-cart:hover {
+  background-color: #4d2100; /* Merging User Preference Hover */
 }
 </style>

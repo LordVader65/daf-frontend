@@ -104,6 +104,7 @@
 
 <script setup>
 import { ref } from 'vue'
+
 const featuredProducts = ref([
   {
     id: 1,

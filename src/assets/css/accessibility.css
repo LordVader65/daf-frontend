@@ -107,6 +107,7 @@ body {
 
 .high-contrast form {
     background-color: #000 !important;
+    border: 2px solid #fff !important;
 }
 
 .high-contrast input,
@@ -114,6 +115,7 @@ body {
 .high-contrast textarea {
     background-color: #000 !important;
     color: #fff !important;
+    border: none;
 }
 
 .high-contrast .card {
@@ -132,7 +134,7 @@ body {
     background-color: transparent !important;
 }
 
-.high-contrast section > div {
+.high-contrast section>div {
     background-color: #000 !important;
 }
 
@@ -145,12 +147,12 @@ body {
 }
 
 .high-contrast input:focus,
-                select:focus {
+select:focus {
     border: 2px solid #ffff00 !important;
 }
 
 .high-contrast input:hover,
-                select:hover {
+select:hover {
     border: 2px solid #ffff00;
 }
 
