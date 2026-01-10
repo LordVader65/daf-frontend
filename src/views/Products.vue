@@ -10,7 +10,7 @@
         <div class="filter-section p-4 rounded">
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label font-weight-semibold">Buscar</label>
+              <label class="form-label font-weight-semibold text-white">Buscar</label>
               <input
                 placeholder="Producto"
                 v-model="filters.query"
@@ -20,7 +20,7 @@
             </div>
 
             <div class="col-md-3">
-              <label class="form-label font-weight-semibold">Precio min.</label>
+              <label class="form-label font-weight-semibold text-white">Precio min.</label>
               <input
                 placeholder="0.00"
                 v-model.number="filters.minPrice"
@@ -31,7 +31,7 @@
             </div>
 
             <div class="col-md-3">
-              <label class="form-label font-weight-semibold">Precio max.</label>
+              <label class="form-label font-weight-semibold text-white">Precio max.</label>
               <input
                 placeholder="0.00"
                 v-model.number="filters.maxPrice"
@@ -72,7 +72,7 @@
                 <p class="h5 text-orange-custom mt-auto">
                   ${{ product.price }}
                 </p>
-                <button class="btn btn-custom-orange mt-3">
+                <button class="btn btn-custom-dark mt-3">
                   Agregar al carrito
                 </button>
               </div>
@@ -159,15 +159,18 @@ onMounted(() => {
   color: #9a3412;
 }
 
-.btn-custom-orange {
-  background-color: #c2410c;
+.btn-custom-dark {
+  background-color: #8f3e00;
   color: white;
-  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  text-decoration: none;
   transition: background-color 0.3s;
 }
 
-.btn-custom-orange:hover {
-  background-color: #9a3412;
+.btn-custom-dark:hover {
+  background-color: #4d2100;
+  color: white;
 }
 
 .products-page {

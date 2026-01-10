@@ -1,8 +1,6 @@
 <script setup>
 import { useLogin } from '../../assets/js/admin/login.controller'
 
-import Header from '../../components/Header.vue'
-import Footer from '../../components/Footer.vue'
 import { Icon } from "@iconify/vue";
 
 const { user, password, login } = useLogin()
@@ -15,7 +13,6 @@ const goBack = () => {
 </script>
 
 <template>
-    <Header />
     <div class="login-container">
         <div class="login-panel">
             <h2>Ingreso de Usuarios</h2>
@@ -38,7 +35,6 @@ const goBack = () => {
             </div>
         </div>
     </div>
-    <Footer />
 </template>
 
 <style scoped src="src/assets/css/admin/admin-body.css" />
