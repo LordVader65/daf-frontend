@@ -5,6 +5,7 @@ import Contacto from '../views/Contacto.vue'
 
 // RUTAS ADMIN
 import AdminLogin from '../views/admin/AdminLogin.vue'
+import AdminDashboard from '@/views/admin/AdminDashboard.vue'
 
 const routes = [
   {
