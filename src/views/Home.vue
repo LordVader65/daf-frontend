@@ -46,11 +46,7 @@
               style="max-width: 320px;"
             />
 
-<<<<<<< HEAD
-            <a href="#productos" class="btn btn-custom-orange">
-=======
             <a href="#productos" class="btn btn-custom-dark">
->>>>>>> 05c91180713e35fab725d2bc32f6c2da45f0cede
               Ver Productos Destacados
             </a>
           </div>
@@ -108,12 +104,7 @@
 
 <script setup>
 import { ref } from 'vue'
-<<<<<<< HEAD
-import Header from '../components/Header.vue'
-import Footer from '../components/Footer.vue'
 
-=======
->>>>>>> 05c91180713e35fab725d2bc32f6c2da45f0cede
 const featuredProducts = ref([
   {
     id: 1,
@@ -158,23 +149,6 @@ const featuredProducts = ref([
   color: white;
 }
 
-<<<<<<< HEAD
-.btn-custom-orange {
-  background-color: #c2410c;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  text-decoration: none;
-  transition: background-color 0.3s;
-}
-
-.btn-custom-orange:hover {
-  background-color: #9a3412;
-  color: white;
-}
-
-=======
->>>>>>> 05c91180713e35fab725d2bc32f6c2da45f0cede
 .home-page {
   display: flex;
   flex-direction: column;
