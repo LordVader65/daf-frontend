@@ -5,6 +5,8 @@ import Products from '../views/Products.vue'
 
 // RUTAS ADMIN
 import AdminLogin from '../views/admin/AdminLogin.vue'
+import AdminDashboard from '../views/admin/AdminDashboard.vue'
+
 const routes = [
   {
     path: '/',
@@ -20,6 +22,11 @@ const routes = [
     path: '/admin',
     name: 'Admin',
     component: AdminLogin
+  },
+  {
+    path: '/admin/dashboard',
+    name: 'AdminDashboard',
+    component: AdminDashboard
   }
 ]
 

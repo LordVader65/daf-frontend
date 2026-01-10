@@ -14,23 +14,43 @@
   background-color: rgba(255, 214, 153, 0.85);
   padding: 40px;
   border-radius: 10px;
+  padding: 50px;
     @media (max-width: 760px) {
         width: 100% !important;
         height: 100% !important;
-    }
+    };
 }
 
-input {
-  width: 100%;
-  margin-bottom: 20px;
-  padding: 8px;
-}
-
-button {
+.admin-input {
   width: 100%;
   padding: 10px;
-  background-color: #ffb84d;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.admin-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #944000;
+  color: white;
   border: none;
-  font-weight: bold;
+  border-radius: 5px;
+  font-size: 1em;
   cursor: pointer;
+}
+
+.admin-button:hover {
+  background-color: #723a10;
+}
+
+.dashboard-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-content {
+  flex: 1;
 }

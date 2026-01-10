@@ -12,6 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@iconify/vue": "^5.0.0",
     "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
     "jquery": "^3.7.1",

@@ -37,14 +37,14 @@
         </div>
       </section>
 
-      <section id="productos" class="bg-white p-5">
-        <div class="container text-center p-5">
+      <section id="productos" class="bg-white py-5">
+        <div class="container text-center">
           <h4 class="mb-4 text-primary-custom">Algunos de nuestros arreglos florales</h4>
           <h2 class="text-2xl font-weight-bold mb-5 text-primary-custom">NUESTROS PRODUCTOS DESTACADOS</h2>
 
           <div class="row g-4">
             <div class="col-md-4" v-for="product in featuredProducts" :key="product.id">
-              <article class="card h-100 shadow-sm">
+              <article class="card h-100 shadow-sm mx-auto">
                 <div class="card-body d-flex flex-column">
                   <h3 class="card-title font-weight-semibold mb-3">{{ product.name }}</h3>
                   <img 
@@ -76,7 +76,6 @@
 <script setup>
 import { ref } from 'vue'
 import Header from '../components/Header.vue'
-import AccessibilityMenu from '../components/AccessibilityMenu.vue'
 import Footer from '../components/Footer.vue'
 
 const featuredProducts = ref([

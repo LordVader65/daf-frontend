@@ -14,7 +14,7 @@ export const useUserStore = defineStore('user', {
       this.token = data.token
       this.role = data.role
 
-      sessionStorage.setItem(
+      localStorage.setItem(
         'user',
         JSON.stringify({
           token: data.token,
