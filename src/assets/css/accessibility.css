@@ -168,7 +168,6 @@ body {
     background-color: rgba(0, 0, 0, 0.85);
 }
 
-
 .high-contrast .dashboard-card:focus {
     border: #FFF 2px solid;
     background-color: white;

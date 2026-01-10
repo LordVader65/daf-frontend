@@ -1,7 +1,5 @@
 <template>
   <div class="products-page">
-    <Header />
-    
     <main class="flex-grow">
       <div id="productos" class="text-center mt-5 text-orange-custom">
         <h1 class="display-4 font-weight-bold">Nuestros Productos</h1>
@@ -13,34 +11,33 @@
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label font-weight-semibold">Buscar</label>
-              <input 
+              <input
                 placeholder="Producto"
-                v-model="filters.query" 
-                type="text" 
+                v-model="filters.query"
+                type="text"
                 class="form-control rounded-3"
-                @input="applyFilters"
               />
             </div>
+
             <div class="col-md-3">
               <label class="form-label font-weight-semibold">Precio min.</label>
-              <input 
+              <input
                 placeholder="0.00"
-                v-model.number="filters.minPrice" 
-                type="number" 
-                min="0" 
+                v-model.number="filters.minPrice"
+                type="number"
+                min="0"
                 class="form-control rounded-3"
-                @input="applyFilters"
               />
             </div>
+
             <div class="col-md-3">
               <label class="form-label font-weight-semibold">Precio max.</label>
-              <input 
+              <input
+                placeholder="0.00"
                 v-model.number="filters.maxPrice"
-                placeholder="0.00" 
-                type="number" 
-                min="0" 
+                type="number"
+                min="0"
                 class="form-control rounded-3"
-                @input="applyFilters"
               />
             </div>
           </div>
@@ -57,38 +54,38 @@
 
       <section v-else class="container my-5">
         <div class="row g-4">
-          <div 
-            v-for="product in filteredProducts" 
+          <div
+            v-for="product in filteredProducts"
             :key="product.id"
             class="col-md-4"
           >
             <div class="card h-100 shadow-sm">
-              <img 
-                :src="product.image" 
+              <img
+                :src="product.image"
                 :alt="product.name"
                 class="card-img-top"
                 style="height: 250px; object-fit: cover;"
-              >
+              />
               <div class="card-body d-flex flex-column">
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">{{ product.description }}</p>
-                <p class="h5 text-orange-custom mt-auto">${{ product.price }}</p>
-                <button class="btn btn-custom-orange mt-3">Agregar al carrito</button>
+                <p class="h5 text-orange-custom mt-auto">
+                  ${{ product.price }}
+                </p>
+                <button class="btn btn-custom-orange mt-3">
+                  Agregar al carrito
+                </button>
               </div>
             </div>
           </div>
         </div>
       </section>
     </main>
-
-    <Footer />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import Header from '../components/Header.vue'
-import Footer from '../components/Footer.vue'
 
 const loading = ref(true)
 const products = ref([])
@@ -100,25 +97,23 @@ const filters = ref({
 
 const filteredProducts = computed(() => {
   return products.value.filter(product => {
-    const matchesQuery = !filters.value.query || 
+    const matchesQuery =
+      !filters.value.query ||
       product.name.toLowerCase().includes(filters.value.query.toLowerCase())
-    
-    const matchesMinPrice = !filters.value.minPrice || 
+
+    const matchesMinPrice =
+      !filters.value.minPrice ||
       product.price >= filters.value.minPrice
-    
-    const matchesMaxPrice = !filters.value.maxPrice || 
+
+    const matchesMaxPrice =
+      !filters.value.maxPrice ||
       product.price <= filters.value.maxPrice
-    
+
     return matchesQuery && matchesMinPrice && matchesMaxPrice
   })
 })
 
-const applyFilters = () => {
-  // Filters are automatically applied through computed property
-}
-
-onMounted(async () => {
-  // Simulate loading products
+onMounted(() => {
   setTimeout(() => {
     products.value = [
       {
@@ -156,11 +151,11 @@ onMounted(async () => {
 .filter-section {
   background-color: #9a3412;
   border: 1px solid rgba(251, 191, 36, 0.4);
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .loading-box {
-  background-color: #FDCB80;
+  background-color: #fdcb80;
   color: #9a3412;
 }
 
