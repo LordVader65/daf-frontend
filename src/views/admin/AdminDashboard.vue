@@ -45,12 +45,12 @@
         const token = obtainToken()
 
         const { data } = await axios.get(
-        import.meta.env.VITE_BACKEND + 'pos/access',
-        {
-            headers: {
-            Authorization: `Bearer ${token}`
+            import.meta.env.VITE_BACKEND + 'pos/access',
+            {
+                headers: {
+                Authorization: `Bearer ${token}`
+                }
             }
-        }
         )
 
         enabledModules.value = Object.entries(data.access)
@@ -70,7 +70,6 @@
 
 <template>
   <div class="dashboard-layout">
-    <Header />
 
     <main class="dashboard-content container py-4">
       <h2 class="text-center mb-4 text-primary-custom">
@@ -98,7 +97,5 @@
         </div>
       </div>
     </main>
-
-    <Footer />
   </div>
 </template>

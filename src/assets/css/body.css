@@ -91,10 +91,20 @@ header nav a.cart-btn:hover {
 }
 
 /* Footer */
+
+.contacto {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
 footer {
+    bottom: 0;
     background-color: #944000;
     color: white;
     padding: 32px 0;
+
+    flex: 1;
 }
 
 footer .footer-container {

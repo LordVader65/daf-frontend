@@ -107,7 +107,6 @@ body {
 
 .high-contrast form {
     background-color: #000 !important;
-    border: 2px solid #fff !important;
 }
 
 .high-contrast input,
@@ -115,7 +114,6 @@ body {
 .high-contrast textarea {
     background-color: #000 !important;
     color: #fff !important;
-    border: none;
 }
 
 .high-contrast .card {
@@ -146,11 +144,13 @@ body {
     color: #ccc;
 }
 
-.high-contrast input:focus {
-    border: 2px solid #ffff00;
+.high-contrast input:focus,
+                select:focus {
+    border: 2px solid #ffff00 !important;
 }
 
-.high-contrast input:hover {
+.high-contrast input:hover,
+                select:hover {
     border: 2px solid #ffff00;
 }
 
@@ -221,4 +221,20 @@ body {
 .high-contrast span,
 .high-contrast strong {
     color: #fff !important;
+}
+
+
+.high-contrast .data-table thead th {
+    background-color: #FFF;
+    border: #FFF 2px solid;
+    color: #000;
+}
+
+.high-contrast .data-table td {
+    background-color: #000;
+}
+
+.high-contrast .data-table .badge {
+    background-color: white;
+    color: black !important;
 }
