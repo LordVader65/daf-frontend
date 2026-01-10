@@ -1,0 +1,224 @@
+:root {
+    --text-size: 1em;
+}
+
+.high-contrast {
+    color: #FFFFFF;
+    background-color: #000000;
+}
+
+.high-contrast,
+.high-contrast body {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+.high-contrast a {
+    color: #FFFFFF;
+}
+
+body {
+    font-size: var(--text-size);
+}
+
+.accessibility-menu {
+    position: fixed;
+    background-color: #000000;
+    width: 200px;
+    height: 500px;
+    top: 20%;
+    left: -100px;
+    scale: 0.5;
+    z-index: 1000;
+
+    border-radius: 25px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+
+    padding-right: 20px;
+
+    flex-direction: column;
+}
+
+.accessibility-menu button {
+    padding: 5px;
+    background: transparent;
+    border: none;
+}
+
+.accessibility-menu button:hover {
+    cursor: pointer;
+    background-color: #333333;
+    scale: 1.1;
+    transition: scale 100ms ease;
+}
+
+.accessibility-menu button:focus {
+    border: #ffff00 2px solid !important;
+}
+
+.high-contrast header,
+.high-contrast footer {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+.high-contrast nav a {
+    color: #ffff00 !important;
+    text-decoration: underline;
+}
+
+.high-contrast a,
+.high-contrast button {
+    background-color: #000 !important;
+    color: #ffff00 !important;
+}
+
+.high-contrast a:focus,
+.high-contrast button:focus {
+    color: #ffff00 !important;
+    border: #ffff00 2px solid !important;
+}
+
+.high-contrast a:hover,
+.high-contrast button:hover {
+    color: #ffff00 !important;
+    border: #ffff00 2px solid !important;
+}
+
+
+.high-contrast article {
+    background-color: #000 !important;
+}
+
+.high-contrast img {
+    filter: none !important;
+}
+
+.high-contrast #popupExito,
+.high-contrast #popupError,
+.high-contrast #modalCargando div {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast form {
+    background-color: #000 !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: none;
+}
+
+.high-contrast .card {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast .qty-input {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #ffff00 !important;
+}
+
+.high-contrast section {
+    background-color: transparent !important;
+}
+
+.high-contrast section > div {
+    background-color: #000 !important;
+}
+
+.high-contrast label {
+    color: #ffff00 !important;
+}
+
+.high-contrast input::placeholder {
+    color: #ccc;
+}
+
+.high-contrast input:focus {
+    border: 2px solid #ffff00;
+}
+
+.high-contrast input:hover {
+    border: 2px solid #ffff00;
+}
+
+.high-contrast .loading-box {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast .login-container {
+    background-color: black;
+}
+
+.high-contrast .login-panel {
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.high-contrast .dashboard-card:focus {
+    border: #FFF 2px solid;
+    background-color: white;
+}
+
+.high-contrast .dashboard-card:hover {
+    border: #FFF 2px solid;
+    background-color: white !important;
+    color: #000 !important;
+}
+
+.high-contrast .dashboard-card {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #ffff00;
+}
+
+.high-contrast .admin-input {
+    border: none;
+    background-color: #000;
+    color: #fff;
+}
+
+.high-contrast .admin-input:focus {
+    border: 2px solid #ffff00;
+}
+
+.high-contrast .admin-input:hover {
+    border: 2px solid #ffff00;
+}
+
+.high-contrast .admin-button {
+    background-color: #000;
+    color: #ffff00;
+}
+
+.high-contrast .admin-button:focus {
+    border: 2px solid #ffff00 !important;
+}
+
+.high-contrast .admin-button:hover {
+    border: 2px solid #ffff00 !important;
+}
+
+.high-contrast p,
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast h4,
+.high-contrast h5,
+.high-contrast span,
+.high-contrast strong {
+    color: #fff !important;
+}
