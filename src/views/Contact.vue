@@ -2,21 +2,38 @@
   <div class="contact-page">
     <main class="contact-wrapper">
       <form
-        @submit.prevent="enviarFormulario"
         class="contact-card"
+        @submit.prevent="enviarFormulario"
+        aria-label="Formulario de contacto"
       >
         <h1 class="contact-title">
-          Contáctanos <span>🌷</span>
+          Contáctanos <span aria-hidden="true">🌷</span>
         </h1>
 
-        <label>Nombre completo</label>
-        <input v-model="form.nombre" />
+        <label for="nombre">Nombre completo</label>
+        <input
+          id="nombre"
+          v-model.trim="form.nombre"
+          type="text"
+          required
+          autocomplete="name"
+        />
 
-        <label>Correo electrónico</label>
-        <input type="email" v-model="form.email" />
+        <label for="email">Correo electrónico</label>
+        <input
+          id="email"
+          v-model.trim="form.email"
+          type="email"
+          required
+          autocomplete="email"
+        />
 
-        <label>Motivo de la consulta</label>
-        <select v-model="form.motivo">
+        <label for="motivo">Motivo de la consulta</label>
+        <select
+          id="motivo"
+          v-model="form.motivo"
+          required
+        >
           <option value="">Seleccione una opción</option>
           <option>Consulta sobre productos</option>
           <option>Personalización de arreglos</option>
@@ -24,8 +41,13 @@
           <option>Estado de un pedido</option>
         </select>
 
-        <label>Mensaje</label>
-        <textarea v-model="form.mensaje" rows="4"></textarea>
+        <label for="mensaje">Mensaje</label>
+        <textarea
+          id="mensaje"
+          v-model.trim="form.mensaje"
+          rows="4"
+          required
+        ></textarea>
 
         <!-- Acciones -->
         <div class="form-actions">
@@ -60,17 +82,20 @@ const form = reactive({
 })
 
 const enviarFormulario = () => {
-  if (!form.nombre || !form.email || !form.motivo || !form.mensaje) {
+  if (Object.values(form).some(v => !v)) {
     alert('Complete todos los campos')
     return
   }
 
   alert('Mensaje enviado correctamente')
-  Object.keys(form).forEach(k => (form[k] = ''))
+
+  Object.keys(form).forEach(key => {
+    form[key] = ''
+  })
 }
 
 const cancelar = () => {
-  router.push('/') // menú principal
+  router.push('/')
 }
 </script>
 
@@ -88,7 +113,7 @@ const cancelar = () => {
   padding: 4rem 1rem;
 }
 
-/* Tarjeta del formulario */
+/* Tarjeta */
 .contact-card {
   background: #ffffff;
   padding: 2.5rem;
@@ -115,7 +140,7 @@ label {
   color: #000;
 }
 
-/* Inputs generales */
+/* Inputs */
 input,
 select,
 textarea {
@@ -125,11 +150,11 @@ textarea {
   padding: 0.75rem;
   margin-bottom: 1.25rem;
   font-size: 0.95rem;
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #fff;
+  color: #000;
 }
 
-/* Foco accesible */
+/* Focus accesible */
 input:focus,
 select:focus,
 textarea:focus {
@@ -144,11 +169,11 @@ textarea:focus {
   gap: 1rem;
 }
 
-/* Botón Enviar */
+/* Enviar */
 button[type="submit"] {
   width: 100%;
   background-color: #c2410c;
-  color: #ffffff;
+  color: #fff;
   font-weight: 700;
   padding: 0.9rem;
   border-radius: 0.6rem;
@@ -161,7 +186,7 @@ button[type="submit"]:hover {
   background-color: #9a3412;
 }
 
-/* Botón Cancelar */
+/* Cancelar */
 .btn-cancel {
   width: 100%;
   background-color: transparent;
@@ -176,10 +201,10 @@ button[type="submit"]:hover {
 
 .btn-cancel:hover {
   background-color: #c2410c;
-  color: #ffffff;
+  color: #fff;
 }
 
-/* Foco botones */
+/* Focus botones */
 button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(194, 65, 12, 0.35);

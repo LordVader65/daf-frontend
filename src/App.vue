@@ -1,5 +1,6 @@
 <script setup lang="js">
 import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 import AccessibilityMenu from './components/AccessibilityMenu.vue'
 </script>
 
@@ -8,6 +9,7 @@ import AccessibilityMenu from './components/AccessibilityMenu.vue'
     <Header />
     <AccessibilityMenu />
     <router-view />
+    <Footer />
   </div>
 </template>
 

@@ -1,42 +1,62 @@
+<script setup>
+import { ref } from 'vue'
+import { Icon } from '@iconify/vue'
+
+const isMenuOpen = ref(false)
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
+</script>
+
 <template>
-  <header class="main-header">
-    <div class="logo-area">
-      <img src="/images/logo.jpeg" alt="DAF Logo" />
-      <h1>Decoraciones de Arreglos Florales</h1>
-    </div>
+  <div>
+    <header>
+      <div class="logo-area">
+        <img src="/images/logo.jpeg" alt="DAF Logo" />
+        <h1>Decoraciones de Arreglos Florales</h1>
+      </div>
 
-    <nav aria-label="Navegación principal" class="main-nav">
-      <router-link to="/">Home</router-link>
-      <router-link to="/products">Productos</router-link>
-      <router-link to="/contact">Contáctanos</router-link>
-
-      <router-link class="cart-btn" to="/carrito" aria-label="Carrito">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
+      <button
+        class="menu-toggle"
+        @click="toggleMenu"
+        aria-label="Abrir menú"
+      >
+        <Icon
+          :icon="isMenuOpen ? 'mingcute:close-line' : 'mingcute:menu-line'"
           width="32"
           height="32"
-          viewBox="0 0 24 24"
+        />
+      </button>
+
+      <nav
+        :class="{ open: isMenuOpen }"
+        aria-label="Navegación principal"
+      >
+        <router-link to="/" @click="isMenuOpen = false">Home</router-link>
+        <router-link to="/products" @click="isMenuOpen = false">Productos</router-link>
+        <router-link to="/contact" @click="isMenuOpen = false">Contáctanos</router-link>
+
+        <router-link
+          class="cart-btn"
+          to="/carrito"
+          @click="isMenuOpen = false"
+          aria-label="Carrito"
         >
-          <path
-            fill="currentColor"
-            d="M7.5 6.5C7.5 8.981 9.519 11 12 11s4.5-2.019 4.5-4.5S14.481 2 12 2S7.5 4.019 7.5 6.5M20 21h1v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1z"
-          />
-        </svg>
-      </router-link>
-    </nav>
-  </header>
+          <Icon icon="mingcute:user-1-line" width="32" height="32" />
+        </router-link>
+      </nav>
+    </header>
+  </div>
 </template>
 
 <style scoped>
-/* ===============================
-   HEADER NORMAL
-   =============================== */
-.main-header {
+header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1.5rem;
-  background-color: #8f3e00; /* color base correcto */
+  background-color: #8f3e00;
   color: #ffffff;
 }
 
@@ -59,37 +79,49 @@
 }
 
 /* Navegación */
-.main-nav {
+nav {
   display: flex;
   align-items: center;
   gap: 1.25rem;
 }
 
-.main-nav a {
+nav a {
   color: #ffffff;
   text-decoration: none;
   font-weight: 600;
-  padding: 0.3rem 0.6rem;
-  border-radius: 0.3rem;
 }
 
-/* Hover normal */
-.main-nav a:hover {
-  text-decoration: underline;
+/* Botón menú */
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
 }
 
-/* Link activo */
-.main-nav a.router-link-active {
-  text-decoration: underline;
-}
+/* Responsive */
+@media (max-width: 768px) {
+  header {
+    flex-wrap: wrap;
+  }
 
-/* Icono carrito */
-.cart-btn {
-  display: flex;
-  align-items: center;
-}
+  .menu-toggle {
+    display: block;
+  }
 
-.cart-btn svg {
-  color: #ffffff;
+  nav {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  nav.open {
+    display: flex;
+  }
 }
 </style>

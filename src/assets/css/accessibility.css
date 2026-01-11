@@ -16,20 +16,54 @@ body {
 }
 
 /* ===============================
-   TEXTO
+   LINKS
    =============================== */
-.high-contrast p,
-.high-contrast h1,
-.high-contrast h2,
-.high-contrast h3,
-.high-contrast h4,
-.high-contrast h5,
-.high-contrast h6,
-.high-contrast span,
-.high-contrast strong {
-    color: #fff !important;
+.high-contrast a {
+    color: #ffff00 !important;
+    background-color: transparent !important;
 }
 
+/* ===============================
+   MENÚ ACCESIBILIDAD
+   =============================== */
+.accessibility-menu {
+    position: fixed;
+    background-color: #000000;
+    width: 200px;
+    height: 500px;
+    top: 20%;
+    left: -100px;
+    scale: 0.5;
+    z-index: 1000;
+    border-radius: 25px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+    padding-right: 20px;
+    flex-direction: column;
+}
+
+.accessibility-menu button {
+    padding: 5px;
+    background: transparent;
+    border: none;
+}
+
+.accessibility-menu button:hover {
+    cursor: pointer;
+    background-color: #333333;
+    scale: 1.1;
+    transition: scale 100ms ease;
+}
+
+.accessibility-menu button:focus {
+    border: #ffff00 2px solid !important;
+}
+
+/* ===============================
+   LABELS
+   =============================== */
 .high-contrast label {
     color: #ffff00 !important;
 }
@@ -50,7 +84,6 @@ body {
     padding: 0.3rem 0.6rem;
 }
 
-/* Hover / focus / activo */
 .high-contrast header nav a:hover,
 .high-contrast header nav a:focus-visible,
 .high-contrast header nav a.router-link-active {
@@ -60,17 +93,30 @@ body {
 }
 
 /* ===============================
-   LINKS Y BOTONES (GENÉRICO)
+   BOTONES Y LINKS
    =============================== */
-.high-contrast a {
-    color: #ffff00 !important;
-    background-color: transparent !important;
-}
-
 .high-contrast button {
     background-color: #000 !important;
     color: #ffff00 !important;
-    border: 2px solid #ffff00 !important;
+}
+
+.high-contrast a:focus,
+.high-contrast button:focus,
+.high-contrast a:hover,
+.high-contrast button:hover {
+    border: #ffff00 2px solid !important;
+}
+
+/* ===============================
+   CONTENIDO
+   =============================== */
+.high-contrast article,
+.high-contrast section > div,
+.high-contrast .card,
+.high-contrast .loading-box {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
 }
 
 /* ===============================
@@ -86,7 +132,7 @@ body {
 .high-contrast textarea {
     background-color: #000 !important;
     color: #fff !important;
-    border: 2px solid #ffff00 !important;
+    border: none;
 }
 
 .high-contrast input::placeholder {
@@ -95,41 +141,10 @@ body {
 
 .high-contrast input:focus,
 .high-contrast select:focus,
-.high-contrast textarea:focus,
-.high-contrast select:focus-visible,
-.high-contrast textarea:focus-visible {
+.high-contrast textarea:focus {
     outline: none !important;
-    border-color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
     box-shadow: 0 0 0 3px rgba(255, 255, 0, 0.6) !important;
-}
-
-/* ===============================
-   SECCIONES / CONTENEDORES
-   =============================== */
-.high-contrast section {
-    background-color: transparent !important;
-}
-
-.high-contrast section > div,
-.high-contrast article,
-.high-contrast .card,
-.high-contrast .loading-box {
-    background-color: #000 !important;
-    color: #fff !important;
-    border: 2px solid #fff !important;
-}
-
-/* ===============================
-   TARJETAS
-   =============================== */
-.high-contrast .card p,
-.high-contrast .card span,
-.high-contrast .card h1,
-.high-contrast .card h2,
-.high-contrast .card h3,
-.high-contrast .card h4,
-.high-contrast .card h5 {
-    color: #fff !important;
 }
 
 /* ===============================
@@ -160,45 +175,78 @@ body {
 }
 
 /* ===============================
-   PÁGINAS ESPECÍFICAS
+   LOGIN / ADMIN
    =============================== */
-.high-contrast .contact-page {
-    background-color: #000 !important;
-}
-
-.high-contrast .admin-access-bar {
-    background-color: #000 !important;
-    border-bottom: 2px solid #ffff00 !important;
-}
-
-/* ===============================
-   MENÚ ACCESIBILIDAD
-   =============================== */
-.accessibility-menu {
-    position: fixed;
+.high-contrast .login-container {
     background-color: #000;
-    width: 200px;
-    height: 500px;
-    top: 20%;
-    left: -100px;
-    scale: 0.5;
-    border-radius: 25px;
-    display: flex;
-    justify-content: space-around;
-    align-items: end;
-    padding-right: 20px;
-    flex-direction: column;
 }
 
-.accessibility-menu button {
-    padding: 5px;
-    background: transparent;
+.high-contrast .login-panel {
+    background-color: rgba(0, 0, 0, 0.85);
+}
+
+.high-contrast .dashboard-card {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #ffff00;
+}
+
+.high-contrast .dashboard-card:hover,
+.high-contrast .dashboard-card:focus {
+    background-color: #fff !important;
+    color: #000 !important;
+    border: 2px solid #fff;
+}
+
+.high-contrast .admin-input {
+    background-color: #000;
+    color: #fff;
     border: none;
 }
 
-.accessibility-menu button:hover {
-    cursor: pointer;
-    background-color: #333;
-    scale: 1.1;
-    transition: scale 100ms ease;
+.high-contrast .admin-input:hover,
+.high-contrast .admin-input:focus {
+    border: 2px solid #ffff00;
+}
+
+.high-contrast .admin-button {
+    background-color: #000;
+    color: #ffff00;
+}
+
+.high-contrast .admin-button:hover,
+.high-contrast .admin-button:focus {
+    border: 2px solid #ffff00 !important;
+}
+
+/* ===============================
+   TEXTO
+   =============================== */
+.high-contrast p,
+.high-contrast h1,
+.high-contrast h2,
+.high-contrast h3,
+.high-contrast h4,
+.high-contrast h5,
+.high-contrast span,
+.high-contrast strong {
+    color: #fff !important;
+}
+
+/* ===============================
+   TABLAS
+   =============================== */
+.high-contrast .data-table thead th {
+    background-color: #fff;
+    border: 2px solid #fff;
+    color: #000;
+}
+
+.high-contrast .data-table td {
+    background-color: #000;
+}
+
+.high-contrast .data-table .badge {
+    background-color: #fff;
+    color: #000 !important;
 }

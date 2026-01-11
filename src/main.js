@@ -10,5 +10,10 @@ window.$ = window.jQuery = $
 
 import './assets/css/body.css'
 import './assets/css/accessibility.css'
+import { createPinia } from 'pinia'
 
-createApp(App).use(router).mount('#app')
+const app = createApp(App)
+app.use(router)
+app.use(createPinia())
+
+app.mount('#app')
