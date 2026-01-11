@@ -10,6 +10,7 @@
           Contáctanos <span aria-hidden="true">🌷</span>
         </h1>
 
+        <!-- Nombre -->
         <label for="nombre">Nombre completo</label>
         <input
           id="nombre"
@@ -19,6 +20,7 @@
           autocomplete="name"
         />
 
+        <!-- Email -->
         <label for="email">Correo electrónico</label>
         <input
           id="email"
@@ -28,6 +30,7 @@
           autocomplete="email"
         />
 
+        <!-- Motivo -->
         <label for="motivo">Motivo de la consulta</label>
         <select
           id="motivo"
@@ -41,6 +44,7 @@
           <option>Estado de un pedido</option>
         </select>
 
+        <!-- Mensaje -->
         <label for="mensaje">Mensaje</label>
         <textarea
           id="mensaje"
@@ -54,13 +58,17 @@
           <button
             type="button"
             class="btn-cancel"
+            :disabled="loading"
             @click="cancelar"
           >
             Cancelar
           </button>
 
-          <button type="submit">
-            Enviar
+          <button type="submit" :disabled="loading">
+            <span v-if="!loading">Enviar</span>
+            <span v-else class="loading-text">
+              Enviando…
+            </span>
           </button>
         </div>
       </form>
@@ -69,10 +77,11 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const loading = ref(false)
 
 const form = reactive({
   nombre: '',
@@ -81,12 +90,18 @@ const form = reactive({
   mensaje: ''
 })
 
-const enviarFormulario = () => {
+const enviarFormulario = async () => {
   if (Object.values(form).some(v => !v)) {
     alert('Complete todos los campos')
     return
   }
 
+  loading.value = true
+
+  // Simulación de envío real (API / backend)
+  await new Promise(resolve => setTimeout(resolve, 2000))
+
+  loading.value = false
   alert('Mensaje enviado correctamente')
 
   Object.keys(form).forEach(key => {
@@ -134,7 +149,7 @@ const cancelar = () => {
 
 /* Labels */
 label {
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 0.35rem;
   display: block;
   color: #000;
@@ -169,7 +184,7 @@ textarea:focus {
   gap: 1rem;
 }
 
-/* Enviar */
+/* Botón Enviar */
 button[type="submit"] {
   width: 100%;
   background-color: #c2410c;
@@ -182,11 +197,11 @@ button[type="submit"] {
   transition: background-color 0.25s ease;
 }
 
-button[type="submit"]:hover {
+button[type="submit"]:hover:enabled {
   background-color: #9a3412;
 }
 
-/* Cancelar */
+/* Botón Cancelar */
 .btn-cancel {
   width: 100%;
   background-color: transparent;
@@ -199,9 +214,22 @@ button[type="submit"]:hover {
   transition: all 0.25s ease;
 }
 
-.btn-cancel:hover {
+.btn-cancel:hover:enabled {
   background-color: #c2410c;
-  color: #fff;
+  color: #ffffff;
+}
+
+/* Estados disabled */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Texto cargando */
+.loading-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 /* Focus botones */
