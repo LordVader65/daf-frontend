@@ -43,8 +43,18 @@ const closeMenu = () => {
       aria-label="Navegación principal"
     >
       <router-link to="/" @click="closeMenu">Home</router-link>
-      <router-link to="/products" @click="closeMenu">Productos</router-link>
-      <router-link to="/contact" @click="closeMenu">Contáctanos</router-link>
+
+      <router-link to="/products" @click="closeMenu">
+        Productos
+      </router-link>
+
+      <!-- FIX: ruta correcta al contacto -->
+      <router-link
+        :to="{ name: 'Contacto' }"
+        @click="closeMenu"
+      >
+        Contáctanos
+      </router-link>
 
       <router-link
         class="cart-btn"

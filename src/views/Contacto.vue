@@ -299,4 +299,16 @@ button:focus-visible {
   color: #ffff00 !important;
   text-decoration: underline !important;
 }
+
+/* ===============================
+   FIX: DESFASE BOTONES EN ALTO CONTRASTE
+   =============================== */
+.high-contrast .form-actions button {
+  line-height: 1.2;              /* evita que el subrayado empuje */
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
 </style>
