@@ -18,6 +18,8 @@ import AdminDashboard from '@/views/admin/AdminDashboard.vue'
 // ===============================
 import MateriaPrimaView from '@/views/admin/MateriaPrima/MateriaPrimaView.vue'
 import MateriaPrimaForm from '@/views/admin/MateriaPrima/MateriaPrimaForm.vue'
+import KardexMPView from '@/views/admin/KardexMP/KardexMPView.vue'
+import KardexMPForm from '@/views/admin/KardexMP/KardexMPForm.vue'
 
 const routes = [
   /* ===============================
@@ -65,6 +67,21 @@ const routes = [
     path: '/admin/materia-prima/form/:id?',
     name: 'MateriaPrimaForm',
     component: MateriaPrimaForm
+  },
+    {
+    path: '/admin/kardex/materia-prima',
+    name: 'KardexMPView',
+    component: KardexMPView
+  },
+  {
+    path: '/admin/kardex/materia-prima/form',
+    name: 'KardexMPForm',
+    component: KardexMPForm
+  },
+  {
+    path: '/admin/kardex/materia-prima/form/:id?',
+    name: 'KardexMPForms',
+    component: KardexMPForm
   }
 ]
 

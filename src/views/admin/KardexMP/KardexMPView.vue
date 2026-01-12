@@ -6,16 +6,17 @@
 import axios from 'axios';
 import { obtainToken } from '../../../utils/obtain-token.js';
 import { toast } from '../../../utils/toast.js';
+import { formatter } from '../../../utils/timestamp-formatter.js';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND + 'pos'
 });
 
 export default {
-  name: 'MateriaPrimaList',
+  name: 'KardexMPList',
   data() {
     return {
-      materiasPrimas: [],
+      kardexMP: [],
       loading: false,
       error: null,
       searchQuery: '',
@@ -37,8 +38,8 @@ export default {
       try {
         const token = obtainToken();
         const endpoint = this.searchQuery
-          ? `materiaprima/search?name=${encodeURIComponent(this.searchQuery)}&page=${this.currentPage}`
-          : `materiaprima?page=${this.currentPage}`;
+          ? `kardexmp/search?name=${encodeURIComponent(this.searchQuery)}&page=${this.currentPage}`
+          : `kardexmp?page=${this.currentPage}`;
 
         const { data } = await api.get(endpoint, {
           headers: {
@@ -48,7 +49,7 @@ export default {
 
         console.log(data);
 
-        this.materiasPrimas = data.data || [];
+        this.kardexMP = data.data || [];
         this.totalPages = Math.ceil(data.count / parseInt(data.limit || 20));
       } catch (err) {
         this.error = err.response?.data?.message || 'Error al cargar los datos';
@@ -72,7 +73,7 @@ export default {
     },
 
     nextPage() {
-      if (this.materiasPrimas.length >= 20) {
+      if (this.kardexMP.length >= 20) {
         this.currentPage++;
         this.loadData();
       }
@@ -100,11 +101,11 @@ export default {
     },
 
     goToCreate() {
-      this.$router.push('/admin/materia-prima/form');
+      this.$router.push('/admin/kardex/materia-prima/form');
     },
 
     goToEdit(codigo) {
-      this.$router.push(`/admin/materia-prima/form/${codigo}`);
+      this.$router.push(`/admin/kardex/materia-prima/form/${codigo}`);
     },
 
     confirmDelete(item) {
@@ -120,17 +121,17 @@ export default {
     async deleteItem() {
       try {
         const token = obtainToken();
-        await api.delete(`/materiaprima/${this.itemToDelete.mp_codigo}`, {
+        await api.delete(`/kardexmp/${this.itemToDelete.krd_codigo}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
         });
 
-        toast.success('Materia prima eliminada correctamente');
+        toast.success('Kardex eliminado correctamente');
         this.closeDeleteModal();
         this.loadData();
       } catch (err) {
-        const errorMsg = err.response?.data?.message || 'Error al eliminar la materia prima';
+        const errorMsg = err.response?.data?.message || 'Error al eliminar el registro de kardex';
         toast.error(errorMsg);
       }
     }
@@ -153,9 +154,9 @@ export default {
           type="text"
           v-model="searchQuery"
           @input="handleSearch"
-          placeholder="Buscar por descripción..."
+          placeholder="Buscar por descripción de materia prima..."
           class="search-input"
-          aria-label="Buscar materia prima"
+          aria-label="Buscar por nombre de materia prima"
         />
       </div>
       <button @click="goToCreate" class="btn-create">
@@ -177,36 +178,36 @@ export default {
         <button @click="loadData" class="btn-retry">Reintentar</button>
       </div>
 
-      <div v-else-if="materiasPrimas.length === 0" class="empty-state">
+      <div v-else-if="kardexMP.length === 0" class="empty-state">
         <Icon icon="mdi:package-variant" width="64"/>
-        <p>No se encontraron materias primas</p>
+        <p>No se encontraron registros de Kardex</p>
       </div>
 
       <div class="table-scroll">
         <table class="data-table">
           <thead>
             <tr>
-              <th style="width: 700px;">Descripción</th>
-              <th>Precio de Compra</th>
+              <th style="width: 500px;">Materia Prima</th>
+              <th>Órden de Compra</th>
               <th>Cantidad</th>
-              <th>Prioridad</th>
+              <th>Razón</th>
+              <th>Usuario</th>
+              <th>Fecha y Hora</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in materiasPrimas" :key="item.mp_codigo">
+            <tr v-for="item in kardexMP" :key="item.krd_codigo">
               <td>{{ item.mp_descripcion }}</td>
-              <td>${{ parseFloat(item.mp_precio_compra).toFixed(2) }}</td>
-              <td>{{ item.mp_cantidad }}</td>
-              <td>
-                <span :class="['badge', 'badge-' + item.mp_prioridad]">
-                  {{ item.mp_prioridad === 'L' ? 'LIFO' : 'FIFO' }}
-                </span>
-              </td>
+              <td>{{ (item.oc_codigo)? item.oc_codigo : "NA" }}</td>
+              <td>{{ item.krd_cantidad }}</td>
+              <td>{{ item.krd_razon }}</td>
+              <td>{{ item.usr_id }}</td>
+              <td>{{ formatter.format(new Date(item.krd_fechahora)) }}</td>
               <td>
                 <div class="action-buttons">
                   <button
-                    @click="goToEdit(item.mp_codigo)"
+                    @click="goToEdit(item.krd_codigo)"
                     class="btn-action btn-edit"
                     :aria-label="'Editar ' + item.mp_descripcion"
                   >
@@ -228,7 +229,7 @@ export default {
     </div>
 
     <!-- Paginación -->
-    <div v-if="!loading && materiasPrimas.length > 0" class="pagination">
+    <div v-if="!loading && kardexMP.length > 0" class="pagination">
       <button
         @click="goToFirstPage"
         :disabled="currentPage === 1"
@@ -248,7 +249,7 @@ export default {
       <span class="page-info">{{ currentPage }}/{{ totalPages || 1 }}</span>
       <button
         @click="nextPage"
-        :disabled="currentPage >= totalPages || materiasPrimas.length < 20"
+        :disabled="currentPage >= totalPages || kardexMP.length < 20"
         class="btn-pagination"
         aria-label="Página siguiente"
       >
@@ -256,7 +257,7 @@ export default {
       </button>
       <button
         @click="goToLastPage"
-        :disabled="currentPage >= totalPages || materiasPrimas.length < 20"
+        :disabled="currentPage >= totalPages || kardexMP.length < 20"
         class="btn-pagination"
         aria-label="Última página"
       >
@@ -274,9 +275,7 @@ export default {
           </button>
         </div>
         <div class="modal-body">
-          <p>¿Está seguro que desea eliminar la materia prima?</p>
-          <p class="item-name">{{ itemToDelete?.mp_descripcion }}</p>
-          <p class="warning-text">Esta acción cambiará el estado a inactivo.</p>
+          <p>¿Está seguro que desea eliminar el registro de Kardex?</p>
         </div>
         <div class="modal-footer">
           <button @click="closeDeleteModal" class="btn-cancel">Cancelar</button>
