@@ -26,6 +26,8 @@ const closeMenu = () => {
       class="menu-toggle"
       @click="toggleMenu"
       aria-label="Abrir menú"
+      aria-controls="main-navigation"
+      :aria-expanded="isMenuOpen.toString()"
     >
       <Icon
         :icon="isMenuOpen ? 'mingcute:close-line' : 'mingcute:menu-line'"
@@ -36,6 +38,7 @@ const closeMenu = () => {
 
     <!-- Navegación -->
     <nav
+      id="main-navigation"
       :class="{ open: isMenuOpen }"
       aria-label="Navegación principal"
     >
@@ -47,7 +50,7 @@ const closeMenu = () => {
         class="cart-btn"
         to="/carrito"
         @click="closeMenu"
-        aria-label="Usuario"
+        aria-label="Carrito"
       >
         <Icon icon="mingcute:user-1-line" width="32" height="32" />
       </router-link>
@@ -56,112 +59,13 @@ const closeMenu = () => {
 </template>
 
 <style scoped>
-/* =========================
-   HEADER BASE
-   ========================= */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 1.5rem;
-  background-color: #8f3e00;
-  color: #ffffff;
-}
-
-/* =========================
-   LOGO
-   ========================= */
-.logo-area {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.logo-area img {
-  width: 48px;
-}
-
-.logo-area h1 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-/* =========================
-   NAV (NORMAL)
-   ========================= */
-nav {
-  display: flex;
-  align-items: center;
-  gap: 1.25rem;
-}
-
-nav a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 600;
-  padding: 0.4rem 0.7rem;
-  border-radius: 4px;
-}
-
-/* Hover */
-nav a:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-/* Activo */
-nav a.router-link-active {
-  background-color: #ffffff;
-  color: #8f3e00;
-}
-
-/* Focus */
-nav a:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: 2px;
-}
-
-/* Evitar doble foco */
-nav a.router-link-active:focus-visible {
-  outline: none;
-}
-
-/* =========================
-   HIGH CONTRAST
-   ========================= */
-.high-contrast header {
-  background-color: #000 !important;
-}
-
-.high-contrast nav a {
-  color: #ffff00 !important;
-}
-
-.high-contrast nav a.router-link-active {
-  background-color: #000 !important;
-  border: 2px solid #ffff00 !important;
-  color: #ffff00 !important;
-}
-
-.high-contrast nav a:focus-visible {
-  outline: 2px solid #ffff00 !important;
-  outline-offset: 2px;
-}
-
-/* Evitar doble foco en contraste */
-.high-contrast nav a.router-link-active:focus-visible {
-  outline: none !important;
-}
-
-/* =========================
-   BOTÓN MENÚ
-   ========================= */
 .menu-toggle {
   display: none;
   background: transparent;
   border: none;
   color: white;
   cursor: pointer;
+  padding: 0;
 }
 
 /* =========================
@@ -170,6 +74,7 @@ nav a.router-link-active:focus-visible {
 @media (max-width: 768px) {
   header {
     flex-wrap: wrap;
+    position: relative;
   }
 
   .menu-toggle {
@@ -180,10 +85,11 @@ nav a.router-link-active:focus-visible {
     display: none;
     width: 100%;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
     padding: 1rem 0;
     margin-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   nav.open {
