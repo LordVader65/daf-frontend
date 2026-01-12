@@ -44,13 +44,12 @@
 
         const { data } = await axios.get(
         import.meta.env.VITE_BACKEND + 'pos/access',
-        {
-            headers: {
-            Authorization: `Bearer ${token}`
+            {
+                headers: {
+                Authorization: `Bearer ${token}`
+                }
             }
-        }
         )
-
         enabledModules.value = Object.entries(data.access)
         .filter(([_, value]) => value)
         .flatMap(([key]) => modulesMap[key] || [])
