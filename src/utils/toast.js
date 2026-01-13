@@ -1,7 +1,7 @@
 export const toast = {
   show(message, type = 'info') {
     const toastContainer = document.getElementById('toast-container') || this.createContainer();
-    
+
     const toast = document.createElement('div');
     toast.className = `toast toast-${type} show`;
     toast.innerHTML = `
@@ -10,20 +10,20 @@ export const toast = {
         <span class="toast-message">${message}</span>
       </div>
     `;
-    
+
     toastContainer.appendChild(toast);
-    
+
     setTimeout(() => {
       toast.classList.remove('show');
       setTimeout(() => toast.remove(), 300);
     }, 3000);
   },
-  
+
   createContainer() {
     const container = document.createElement('div');
     container.id = 'toast-container';
     document.body.appendChild(container);
-    
+
     // Agregar estilos
     if (!document.getElementById('toast-styles')) {
       const style = document.createElement('style');
@@ -85,6 +85,11 @@ export const toast = {
           background-color: #ffc107;
           color: #333 !important;
         }
+
+        .toast-loading {
+          background-color: #6c757d;
+          color: #fff !important;
+        }
         
         .toast-warning .toast-content {
           color: #333;
@@ -92,33 +97,38 @@ export const toast = {
       `;
       document.head.appendChild(style);
     }
-    
+
     return container;
   },
-  
+
   getIcon(type) {
     const icons = {
       success: '✓',
       error: '✕',
       info: 'ℹ',
-      warning: '⚠'
+      warning: '⚠',
+      loading: '⏳'
     };
     return icons[type] || icons.info;
   },
-  
+
   success(message) {
     this.show(message, 'success');
   },
-  
+
   error(message) {
     this.show(message, 'error');
   },
-  
+
   info(message) {
     this.show(message, 'info');
   },
-  
+
   warning(message) {
     this.show(message, 'warning');
+  },
+
+  loading(message) {
+    this.show(message, 'loading');
   }
 };

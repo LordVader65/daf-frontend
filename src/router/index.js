@@ -55,7 +55,7 @@ const routes = [
     name: 'MateriaPrimaForm',
     component: MateriaPrimaForm
   },
-    {
+  {
     path: '/admin/kardex/materia-prima',
     name: 'KardexMPView',
     component: KardexMPView

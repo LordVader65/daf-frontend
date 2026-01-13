@@ -25,9 +25,16 @@
         <router-link to="/" @click="isMenuOpen = false">Home</router-link>
         <router-link to="/products" @click="isMenuOpen = false">Productos</router-link>
         <router-link to="/contact" @click="isMenuOpen = false">Contáctanos</router-link>
-        <router-link class="cart-btn" to="/carrito" @click="isMenuOpen = false">
-          <Icon icon="mingcute:user-1-line" width="32px" height="32px" />
-        </router-link>
+        <div class="dropdown">
+          <a class="cart-btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            <Icon icon="mingcute:user-1-line" width="32px" height="32px" />
+          </a>
+
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li><a class="dropdown-item" href="#">Registrarse</a></li>
+            <li><a class="dropdown-item" href="#">Mi Carrito</a></li>
+          </ul>
+        </div>
       </nav>
     </header>
   </div>
