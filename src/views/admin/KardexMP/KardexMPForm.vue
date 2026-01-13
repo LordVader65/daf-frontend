@@ -5,148 +5,195 @@ import { Icon } from "@iconify/vue";
 <template>
   <div class="form-container">
     <div class="top-bar">
-      <button @click="goBack" class="btn-back" aria-label="Regresar">
+      <button 
+        @click="goBack" 
+        class="btn-back" 
+        aria-label="Regresar a la lista de kardex"
+        title="Volver a la lista"
+      >
         <Icon icon="mdi:arrow-left" width="24"></Icon>
         Regresar
       </button>
     </div>
 
-    <div class="form-header">
+    <div class="form-header text-center mb-4">
       <h2>{{ isEditMode ? 'Editar Kardex' : 'Nuevo registro de Kardex' }}</h2>
+      <p class="text-muted">
+        {{ isEditMode ? 'Modifique los campos necesarios' : 'Registre un movimiento de inventario' }}
+      </p>
     </div>
 
-    <div v-if="loadingData" class="loading-container">
-      <Icon icon="mdi:loading" width="48" class="spinner"></Icon>
-      <p>Cargando datos...</p>
+    <div v-if="loadingData" class="loading-container d-flex flex-column align-items-center py-5">
+      <Icon icon="mdi:loading" width="48" class="spinner text-primary"></Icon>
+      <p class="mt-3 text-muted">Cargando datos...</p>
     </div>
 
-    <form v-else @submit.prevent="handleSubmit" class="materia-prima-form">
-      <div class="form-group">
-        <label for="materia_prima" class="form-label">
-          Materia Prima <span class="required">*</span>
-        </label>
-        <select
-          id="materia_prima"
-          v-model="formData.materiaPrima"
-          class="form-control"
-          :class="{ 'is-invalid': errors.materiaPrima }"
-          style="max-width: 300px;"
-          required
-          :disabled="loadingMateriasPrimas || isEditMode"
-        >
-          <option value="">Seleccione una materia prima</option>
-          <option
-            v-for="mp in materiaPrima"
-            :key="mp.mp_codigo"
-            :value="mp.mp_codigo.trim()"
-          >
-            {{ mp.mp_descripcion.trim() }}
-          </option>
-        </select>
-        <span v-if="errors.materiaPrima" class="error-message">
-          {{ errors.materiaPrima }}
-        </span>
-      </div>
+    <form v-else @submit.prevent="handleSubmit" class="materia-prima-form" novalidate>
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="card shadow-sm">
+            <div class="card-body p-4">
+              
+              <p class="text-muted small mb-4">
+                <span class="text-danger">*</span> Campos obligatorios
+              </p>
 
-      <div class="form-group">
-        <label for="transaccion" class="form-label">
-          Transacción <span class="required">*</span>
-        </label>
-        <select
-          id="transaccion"
-          v-model="formData.transaccion"
-          class="form-control"
-          :class="{ 'is-invalid': errors.transaccion }"
-          style="max-width: 300px;"
-          required
-          :disabled="loadingTransaccion || isEditMode"
-        >
-          <option value="">Seleccione una transacción</option>
-          <option
-            v-for="trn in transaccion"
-            :key="trn.trn_cod"
-            :value="trn.trn_cod.trim()"
-          >
-            {{ trn.trn_descripcion.trim() }}
-          </option>
-        </select>
-        <span v-if="errors.transaccion" class="error-message">
-          {{ errors.transaccion }}
-        </span>
-      </div>
+              <!-- Materia Prima -->
+              <div class="mb-4">
+                <label for="materia_prima" class="form-label fw-semibold">
+                  Materia Prima <span class="text-danger">*</span>
+                </label>
+                <select
+                  id="materia_prima"
+                  v-model="formData.materiaPrima"
+                  class="form-select"
+                  :class="{ 'is-invalid': errors.materiaPrima }"
+                  required
+                  :disabled="loadingMateriasPrimas || isEditMode"
+                  aria-describedby="materia_prima_help"
+                >
+                  <option value="">Seleccione una materia prima</option>
+                  <option
+                    v-for="mp in materiaPrima"
+                    :key="mp.mp_codigo"
+                    :value="mp.mp_codigo.trim()"
+                  >
+                    {{ mp.mp_descripcion.trim() }}
+                  </option>
+                </select>
+                <div v-if="errors.materiaPrima" class="invalid-feedback d-block">
+                  <Icon icon="mdi:alert-circle" width="16" class="me-1"></Icon>
+                  {{ errors.materiaPrima }}
+                </div>
+                <div id="materia_prima_help" class="form-text">
+                  {{ isEditMode ? 'No se puede cambiar en modo edición' : 'Seleccione el material a registrar' }}
+                </div>
+              </div>
 
-      <!-- Razón -->
-      <div class="form-group">
-        <label for="razon" class="form-label">
-          Razón
-        </label>
-        <input
-          type="text"
-          id="razon"
-          v-model="formData.razon"
-          style="width: 500px;"
-          class="form-control"
-          :class="{ 'is-invalid': errors.razon }"
-          placeholder="Ingrese la razón"
-          maxlength="60"
-        />
-        <span v-if="errors.razon" class="error-message">
-          {{ errors.razon }}
-        </span>
-        <small class="form-text">{{ formData.razon.length }}/60 caracteres</small>
-      </div>
+              <!-- Transacción -->
+              <div class="mb-4">
+                <label for="transaccion" class="form-label fw-semibold">
+                  Transacción <span class="text-danger">*</span>
+                </label>
+                <select
+                  id="transaccion"
+                  v-model="formData.transaccion"
+                  class="form-select"
+                  :class="{ 'is-invalid': errors.transaccion }"
+                  required
+                  :disabled="loadingTransaccion || isEditMode"
+                  aria-describedby="transaccion_help"
+                >
+                  <option value="">Seleccione una transacción</option>
+                  <option
+                    v-for="trn in transaccion"
+                    :key="trn.trn_cod"
+                    :value="trn.trn_cod.trim()"
+                  >
+                    {{ trn.trn_descripcion.trim() }}
+                  </option>
+                </select>
+                <div v-if="errors.transaccion" class="invalid-feedback d-block">
+                  <Icon icon="mdi:alert-circle" width="16" class="me-1"></Icon>
+                  {{ errors.transaccion }}
+                </div>
+                <div id="transaccion_help" class="form-text">
+                  {{ isEditMode ? 'No se puede cambiar en modo edición' : 'Tipo de movimiento (entrada/salida)' }}
+                </div>
+              </div>
 
-      <!-- Cantidad -->
-      <div class="form-group">
-        <label for="cantidad" class="form-label">
-          Cantidad <span class="required">*</span>
-        </label>
-        <input
-          type="number"
-          id="cantidad"
-          style="max-width: 200px;"
-          v-model.number="formData.cantidad"
-          class="form-control"
-          :class="{ 'is-invalid': errors.cantidad }"
-          placeholder="0"
-          min="0"
-          step="1"
-          required
-        />
-        <span v-if="errors.cantidad" class="error-message">
-          {{ errors.cantidad }}
-        </span>
-      </div>
+              <!-- Razón -->
+              <div class="mb-4">
+                <label for="razon" class="form-label fw-semibold">
+                  Razón
+                </label>
+                <input
+                  type="text"
+                  id="razon"
+                  v-model="formData.razon"
+                  class="form-control"
+                  :class="{ 'is-invalid': errors.razon }"
+                  placeholder="Ej: Compra de proveedor, Ajuste de inventario..."
+                  maxlength="60"
+                  aria-describedby="razon_help"
+                />
+                <div v-if="errors.razon" class="invalid-feedback d-block">
+                  <Icon icon="mdi:alert-circle" width="16" class="me-1"></Icon>
+                  {{ errors.razon }}
+                </div>
+                <div id="razon_help" class="form-text d-flex justify-content-between">
+                  <span>Motivo del movimiento (opcional)</span>
+                  <span :class="{ 'text-warning': formData.razon.length > 50, 'text-danger': formData.razon.length >= 60 }">
+                    {{ formData.razon.length }}/60
+                  </span>
+                </div>
+              </div>
 
-      <!-- Botones de acción -->
-      <div class="form-actions">
-        <button
-          type="button"
-          @click="goBack"
-          class="btn btn-secondary"
-          :disabled="submitting"
-        >
-          <Icon icon="mdi:close" width="20"></Icon>
-          Cancelar
-        </button>
-        <button
-          type="submit"
-          class="btn btn-primary"
-          :disabled="submitting || !isFormValid"
-        >
-          <icon
-            v-if="submitting"
-            icon="mdi:loading"
-            width="20"
-            class="spinner"
-          ></Icon>
-          <Icon v-else icon="mdi:content-save" width="20"></Icon>
-          {{ submitting ? 'Guardando...' : 'Guardar' }}
-        </button>
+              <!-- Cantidad -->
+              <div class="mb-4">
+                <label for="cantidad" class="form-label fw-semibold">
+                  Cantidad <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  id="cantidad"
+                  v-model.number="formData.cantidad"
+                  class="form-control"
+                  :class="{ 'is-invalid': errors.cantidad }"
+                  placeholder="0"
+                  min="1"
+                  step="1"
+                  required
+                  aria-describedby="cantidad_help"
+                />
+                <div v-if="errors.cantidad" class="invalid-feedback d-block">
+                  <Icon icon="mdi:alert-circle" width="16" class="me-1"></Icon>
+                  {{ errors.cantidad }}
+                </div>
+                <div id="cantidad_help" class="form-text">
+                  Cantidad a registrar en el movimiento
+                </div>
+              </div>
+
+              <hr class="my-4">
+
+              <!-- Botones de acción -->
+              <div class="d-flex justify-content-end gap-3">
+                <button
+                  type="button"
+                  @click="goBack"
+                  class="btn btn-outline-secondary"
+                  :disabled="submitting"
+                  aria-label="Cancelar y volver a la lista"
+                >
+                  <Icon icon="mdi:close" width="20" class="me-1"></Icon>
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  :disabled="submitting || !isFormValid"
+                  aria-label="Guardar registro de kardex"
+                >
+                  <Icon
+                    v-if="submitting"
+                    icon="mdi:loading"
+                    width="20"
+                    class="spinner me-1"
+                  ></Icon>
+                  <Icon v-else icon="mdi:content-save" width="20" class="me-1"></Icon>
+                  {{ submitting ? 'Guardando...' : 'Guardar' }}
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
     </form>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';

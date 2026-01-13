@@ -56,16 +56,23 @@ const closeMenu = () => {
         Contáctanos
       </router-link>
 
-      <router-link
-        class="cart-btn"
-        to="/carrito"
-        @click="closeMenu"
-        aria-label="Carrito"
-      >
-        <Icon icon="mingcute:user-1-line" width="32" height="32" />
-      </router-link>
-    </nav>
-  </header>
+      <nav :class="{ 'open': isMenuOpen }" aria-label="Navegación principal">
+        <router-link to="/" @click="isMenuOpen = false">Home</router-link>
+        <router-link to="/products" @click="isMenuOpen = false">Productos</router-link>
+        <router-link to="/contact" @click="isMenuOpen = false">Contáctanos</router-link>
+        <div class="dropdown">
+          <a class="cart-btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            <Icon icon="mingcute:user-1-line" width="32px" height="32px" />
+          </a>
+
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li><a class="dropdown-item" href="#">Registrarse</a></li>
+            <li><a class="dropdown-item" href="#">Mi Carrito</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+  </div>
 </template>
 
 <style scoped>

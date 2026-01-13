@@ -14,40 +14,88 @@ const cancel = () => {
 <template>
     <div class="login-container">
         <div class="login-panel">
-            <h2>Ingreso de Usuarios</h2>
+            <h2 class="text-center mb-2">Ingreso de Usuarios</h2>
+            <p class="text-muted text-center mb-4">Ingrese sus credenciales para acceder al sistema</p>
 
-            <label>Login</label>
-            <input v-model="user" type="text" class="admin-input" />
+            <form @submit.prevent="login" novalidate>
+                <!-- Usuario -->
+                <div class="mb-3">
+                    <label for="user" class="form-label fw-semibold">
+                        Usuario <span class="text-danger">*</span>
+                    </label>
+                    <input 
+                        id="user"
+                        v-model="user" 
+                        type="text" 
+                        class="form-control admin-input" 
+                        placeholder="Ingrese su nombre de usuario"
+                        required
+                        autocomplete="username"
+                        aria-describedby="user_help"
+                    />
+                    <div id="user_help" class="form-text">
+                        Su nombre de usuario asignado
+                    </div>
+                </div>
 
-            <label>Contraseña</label>
-            <input v-model="password" type="password" class="admin-input" />
+                <!-- Contraseña -->
+                <div class="mb-4">
+                    <label for="password" class="form-label fw-semibold">
+                        Contraseña <span class="text-danger">*</span>
+                    </label>
+                    <input 
+                        id="password"
+                        v-model="password" 
+                        type="password" 
+                        class="form-control admin-input" 
+                        placeholder="Ingrese su contraseña"
+                        required
+                        autocomplete="current-password"
+                        aria-describedby="password_help"
+                    />
+                    <div id="password_help" class="form-text">
+                        Su contraseña de acceso
+                    </div>
+                </div>
 
-            <div class="d-flex flex-column flex-md-row gap-2 button-group">
-                <button @click="cancel" class="admin-button btn-cancel">
-                    <Icon icon="mingcute:close-line" />
-                    Cancelar
-                </button>
-                <button @click="login" class="admin-button btn-login">
-                    <Icon icon="solar:user-bold" />
-                    Ingresar
-                </button>
-            </div>
+                <hr class="my-4">
+
+                <!-- Botones -->
+                <div class="d-flex flex-column flex-md-row gap-3 button-group">
+                    <button 
+                        type="button"
+                        @click="cancel" 
+                        class="admin-button btn-cancel"
+                        aria-label="Cancelar y volver al inicio"
+                    >
+                        <Icon icon="mingcute:close-line" />
+                        Cancelar
+                    </button>
+                    <button 
+                        type="submit"
+                        class="admin-button btn-login"
+                        aria-label="Iniciar sesión"
+                    >
+                        <Icon icon="solar:user-bold" />
+                        Ingresar
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </template>
 
 <style scoped>
-/* Inline styles to ensure we meet the requirement without modifying the external CSS file */
 .button-group {
     display: flex;
     gap: 1rem;
     margin-top: 1rem;
-    justify-content: flex-end; /* Or space-between, user said Left and Right */
-    justify-content: space-between; /* To keep them apart or just in flow */
+    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 .admin-button {
-    flex: 1; /* Make them equal width if desired, or auto */
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -70,7 +118,7 @@ const cancel = () => {
 }
 
 .btn-login {
-    background-color: #c2410c; /* Matching the orange theme */
+    background-color: #c2410c;
     color: white;
 }
 
