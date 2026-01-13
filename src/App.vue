@@ -6,9 +6,15 @@ import AccessibilityMenu from './components/AccessibilityMenu.vue'
 
 <template>
   <div id="app">
-    <AccessibilityMenu />
     <Header />
-    <router-view />
+
+    <AccessibilityMenu />
+
+    <!-- CONTENIDO DINÁMICO -->
+    <main id="main-content">
+      <router-view />
+    </main>
+
     <Footer />
   </div>
 </template>
@@ -18,5 +24,11 @@ import AccessibilityMenu from './components/AccessibilityMenu.vue'
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* CLAVE: permite que las vistas se rendericen correctamente */
+#main-content {
+  flex: 1;
+  display: block;
 }
 </style>

@@ -1,6 +1,8 @@
 <template>
   <div class="home-page">
     <main class="flex-grow">
+
+      <!-- NOSOTROS -->
       <section id="nosotros" class="container mx-auto px-4 py-5">
         <div class="row g-4">
           <div class="col-md-6 p-3">
@@ -14,8 +16,7 @@
                 celebramos la belleza natural de las flores con arreglos únicos
                 diseñados en Ecuador. Nuestro emprendimiento familiar nació con
                 la idea de compartir emociones a través de cada flor, creando
-                experiencias memorables para toda ocasión: desde detalles
-                románticos hasta eventos empresariales o sociales.
+                experiencias memorables para toda ocasión.
               </p>
 
               <p class="mb-4 text-justify">
@@ -25,14 +26,12 @@
                 parte de la tuya.
               </p>
 
-              <div class="d-flex gap-3">
-                <router-link
-                  to="/contact"
-                  class="btn btn-custom-dark"
-                >
-                  Contáctanos
-                </router-link>
-              </div>
+              <router-link
+                to="/contact"
+                class="btn btn-custom-dark"
+              >
+                Contáctanos
+              </router-link>
             </article>
           </div>
 
@@ -53,13 +52,23 @@
         </div>
       </section>
 
+      <!-- PRODUCTOS DESTACADOS -->
       <section id="productos" class="bg-white py-5">
         <div class="container text-center">
-          <h4 class="mb-4 text-primary-custom">Algunos de nuestros arreglos florales</h4>
-          <h2 class="text-2xl font-weight-bold mb-5 text-primary-custom">NUESTROS PRODUCTOS DESTACADOS</h2>
+          <h4 class="mb-4 text-primary-custom">
+            Algunos de nuestros arreglos florales
+          </h4>
+
+          <h2 class="text-2xl font-weight-bold mb-5 text-primary-custom">
+            NUESTROS PRODUCTOS DESTACADOS
+          </h2>
 
           <div class="row g-4">
-            <div class="col-md-4" v-for="product in featuredProducts" :key="product.id">
+            <div
+              class="col-md-4"
+              v-for="product in featuredProducts"
+              :key="product.id"
+            >
               <article class="card h-100 shadow-sm mx-auto">
                 <div class="card-body d-flex flex-column">
                   <h3 class="card-title font-weight-semibold mb-3">
@@ -98,6 +107,7 @@
           </div>
         </div>
       </section>
+
     </main>
   </div>
 </template>
@@ -137,7 +147,7 @@ const featuredProducts = ref([
 
 .btn-custom-dark {
   background-color: #8f3e00;
-  color: white;
+  color: #ffffff;
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
   text-decoration: none;
@@ -146,7 +156,7 @@ const featuredProducts = ref([
 
 .btn-custom-dark:hover {
   background-color: #4d2100;
-  color: white;
+  color: #ffffff;
 }
 
 .home-page {
