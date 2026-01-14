@@ -32,6 +32,9 @@ const isHighContrast = ref(false)
 const toggleHighContrast = () => {
   $("body").toggleClass("high-contrast")
   isHighContrast.value = !isHighContrast.value
+  
+  // Guardar estado en localStorage
+  localStorage.setItem('highContrast', isHighContrast.value.toString())
 }
 
 const increaseTextSize = () => {
@@ -41,7 +44,9 @@ const increaseTextSize = () => {
   )
 
   if (size < 1.75) {
-    root.style.setProperty("--text-size", (size + 0.25) + "em")
+    size += 0.25
+    root.style.setProperty("--text-size", size + "em")
+    localStorage.setItem('textSize', size.toString())
   }
 }
 
@@ -52,12 +57,28 @@ const decreaseTextSize = () => {
   )
 
   if (size > 1) {
-    root.style.setProperty("--text-size", (size - 0.25) + "em")
+    size -= 0.25
+    root.style.setProperty("--text-size", size + "em")
+    localStorage.setItem('textSize', size.toString())
   }
 }
 
 onMounted(() => {
   const root = document.documentElement
-  root.style.setProperty("--text-size", "1em")
+  
+  // Cargar tamaño del texto desde localStorage
+  const savedTextSize = localStorage.getItem('textSize')
+  if (savedTextSize) {
+    root.style.setProperty("--text-size", savedTextSize + "em")
+  } else {
+    root.style.setProperty("--text-size", "1em")
+  }
+  
+  // Cargar estado de alto contraste desde localStorage
+  const savedHighContrast = localStorage.getItem('highContrast')
+  if (savedHighContrast === 'true') {
+    isHighContrast.value = true
+    $("body").addClass("high-contrast")
+  }
 })
 </script>

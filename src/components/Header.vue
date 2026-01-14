@@ -48,50 +48,53 @@ const closeMenu = () => {
         height="32"
       />
     </button>
-      <nav :class="{ 'open': isMenuOpen }" aria-label="Navegación principal">
-        <router-link to="/" @click="isMenuOpen = false">Home</router-link>
-        <router-link to="/products" @click="isMenuOpen = false">Productos</router-link>
-        <router-link to="/contacto" @click="isMenuOpen = false">Contáctanos</router-link>
-        <div class="dropdown">
-          <a class="cart-btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-            <Icon icon="mingcute:user-1-line" width="32px" height="32px" />
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li v-if="!isAuthenticated">
-              <router-link class="dropdown-item" to="/login">
-                Registrarse
+
+    <!-- Navegación -->
+    <nav 
+      id="main-navigation"
+      :class="{ 'open': isMenuOpen }" 
+      aria-label="Navegación principal"
+    >
+      <router-link to="/" @click="closeMenu">Home</router-link>
+      <router-link to="/products" @click="closeMenu">Productos</router-link>
+      <router-link to="/contacto" @click="closeMenu">Contáctanos</router-link>
+      
+      <div class="dropdown">
+        <a class="cart-btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          <Icon icon="mingcute:user-1-line" width="32px" height="32px" />
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li v-if="!isAuthenticated">
+            <router-link class="dropdown-item" to="/login">
+              Registrarse
+            </router-link>
+          </li>
+
+          <!-- Usuario Registrado -->
+          <template v-else>
+            <li>
+              <router-link class="dropdown-item" to="/profile">
+                Mi Perfil
               </router-link>
             </li>
 
-            <!-- Usuario Registrado -->
-            <template v-else>
-              <li>
-                <router-link class="dropdown-item" to="/profile">
-                  Mi Perfil
-                </router-link>
-              </li>
+            <li>
+              <router-link class="dropdown-item" to="/carrito">
+                Mi Carrito
+              </router-link>
+            </li>
 
-              <li>
-                <router-link class="dropdown-item" to="/carrito">
-                  Mi Carrito
-                </router-link>
-              </li>
+            <li>
+              <a class="dropdown-item text-danger" href="#" @click.prevent="logout">
+                Cerrar Sesión
+              </a>
+            </li>
+          </template>
 
-              <li>
-                <a class="dropdown-item text-danger" href="#" @click.prevent="logout">
-                  Cerrar Sesión
-                </a>
-              </li>
-            </template>
-
-          </ul>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><router-link class="dropdown-item" to="/login">Registrarse</router-link></li>
-            <li><a class="dropdown-item" href="#">Mi Carrito</a></li>
-          </ul>
-        </div>
-      </nav>
-    </header>
+        </ul>
+      </div>
+    </nav>
+  </header>
 </template>
 
 <style scoped>

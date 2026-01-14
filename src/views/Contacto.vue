@@ -143,11 +143,76 @@ const cancelar = () => {
 </script>
 
 <style scoped>
-/* ===============================
-   MODO NORMAL (WCAG AA)
-   =============================== */
 .contact-page {
   min-height: 100vh;
+}
+
+/* ===============================
+   ALTO CONTRASTE PARA CONTACTO
+   =============================== */
+.high-contrast .contact-page {
+  background-color: #000 !important;
+}
+
+.high-contrast .contact-card {
+  background: #000 !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: none !important;
+}
+
+.high-contrast .contact-title {
+  color: #fff !important;
+}
+
+.high-contrast label {
+  color: #fff !important;
+}
+
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+  background-color: #000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+.high-contrast input::placeholder,
+.high-contrast textarea::placeholder {
+  color: #cccccc !important;
+}
+
+.high-contrast input:focus-visible,
+.high-contrast select:focus-visible,
+.high-contrast textarea:focus-visible {
+  outline: none !important;
+  border: 2px solid #ffffff !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6) !important;
+}
+
+.high-contrast .btn-submit {
+  background-color: #000 !important;
+  color: #ffff00 !important;
+  border: 2px solid #ffffff !important;
+  text-decoration: underline !important;
+}
+
+.high-contrast .btn-cancel {
+  background-color: #000 !important;
+  color: #ffff00 !important;
+  border: 2px solid #ffffff !important;
+  text-decoration: underline !important;
+}
+
+.high-contrast .btn-submit:hover,
+.high-contrast .btn-cancel:hover {
+  background-color: #333 !important;
+}
+
+.high-contrast .loading-box,
+.high-contrast .success-box {
+  background: #000 !important;
+  color: #fff !important;
+  border: 2px solid #ffffff !important;
 }
 
 .contact-wrapper {

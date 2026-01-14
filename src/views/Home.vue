@@ -166,4 +166,41 @@ const featuredProducts = ref([
   flex-direction: column;
   min-height: 100vh;
 }
+
+/* ===============================
+   ALTO CONTRASTE PARA HOME
+   =============================== */
+.high-contrast .text-primary-custom {
+  color: #ffff00 !important;
+}
+
+.high-contrast .btn-custom-dark {
+  background-color: #000 !important;
+  color: #ffff00 !important;
+  border: 2px solid #ffffff !important;
+  text-decoration: underline !important;
+}
+
+.high-contrast .btn-custom-dark:hover {
+  background-color: #333 !important;
+  color: #ffff00 !important;
+}
+
+.high-contrast .card {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 2px solid #ffffff !important;
+}
+
+.high-contrast .card-title {
+  color: #fff !important;
+}
+
+.high-contrast .card-text {
+  color: #fff !important;
+}
+
+.high-contrast .bg-white {
+  background-color: #000 !important;
+}
 </style>

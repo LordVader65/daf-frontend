@@ -9,18 +9,28 @@ export const useUserStore = defineStore('user', {
 
   actions: {
     async login(user, password) {
-      const { data } = await loginRequest(user, password)
+      console.log('🔐 User Store - Login attempt:', { user, password })
 
-      this.token = data.token
-      this.role = data.role
+      try {
+        const { data } = await loginRequest(user, password)
+        console.log('✅ User Store - Login successful:', data)
 
-      localStorage.setItem(
-        'user',
-        JSON.stringify({
-          token: data.token,
-          role: data.role
-        })
-      )
+        this.token = data.token
+        this.role = data.role
+
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            token: data.token,
+            role: data.role
+          })
+        )
+        
+        console.log('💾 User Store - Data saved to localStorage')
+      } catch (error) {
+        console.log('❌ User Store - Login failed:', error)
+        throw error
+      }
     },
 
     loadFromStorage() {
