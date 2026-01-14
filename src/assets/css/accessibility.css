@@ -257,26 +257,307 @@ textarea:focus-visible {
 }
 
 .high-contrast .data-table .badge {
-    background-color: #ffffff;
+    background-color: white;
+    color: black !important;
+}
+
+/* Section headers */
+.high-contrast .section-header {
+    color: #ffff00 !important;
+    border-bottom-color: #ffff00 !important;
+    background-color: #000 !important;
+}
+
+/* Badges de estado */
+.high-contrast .badge {
+    background-color: #000 !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast .badge-warning {
+    color: #ffff00 !important;
+    border-color: #ffff00 !important;
+}
+
+.high-contrast .badge-success {
+    color: #00ff00 !important;
+    border-color: #00ff00 !important;
+}
+
+.high-contrast .badge-danger {
+    color: #ff6666 !important;
+    border-color: #ff6666 !important;
+}
+
+.high-contrast .badge-secondary {
+    color: #fff !important;
+    border-color: #fff !important;
+}
+
+.high-contrast .badge-count {
+    background-color: #ffff00 !important;
     color: #000 !important;
 }
 
-/* ===============================
-   IMÁGENES
-   =============================== */
-.high-contrast img {
-    filter: none !important;
+/* Contenedor de detalles */
+.high-contrast .detalles-container {
+    background-color: #000 !important;
+    border-color: #fff !important;
 }
 
-/* ===============================
-   CONTACTO
-   =============================== */
-.high-contrast .contact-page,
-.high-contrast .contact-wrapper {
+.high-contrast .empty-detalles {
     background-color: #000 !important;
 }
 
-.high-contrast .contact-card {
+/* Tabla de detalles */
+.high-contrast .table-detalles {
     background-color: #000 !important;
-    border: 2px solid #ffffff !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast .table-detalles thead {
+    background-color: #333 !important;
+}
+
+.high-contrast .table-detalles th {
+    color: #000000 !important;
+    border-bottom: 2px solid #fff !important;
+}
+
+.high-contrast .table-detalles td {
+    background-color: #000 !important;
+    color: #fff !important;
+    border-bottom-color: #444 !important;
+}
+
+.high-contrast .table-detalles tbody tr:hover {
+    background-color: #222 !important;
+}
+
+.high-contrast .table-detalles .codigo {
+    background-color: #222 !important;
+    color: #ffff00 !important;
+    border: 1px solid #ffff00 !important;
+}
+
+/* Inputs dentro de la tabla */
+.high-contrast .cantidad-input {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #ffff00 !important;
+}
+
+.high-contrast .cantidad-display {
+    color: #fff !important;
+}
+
+/* Alertas */
+.high-contrast .alert {
+    background-color: #000 !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast .alert-danger {
+    border-color: #ff6666 !important;
+    color: #ff6666 !important;
+}
+
+/* Modal */
+.high-contrast .modal-overlay {
+    background-color: rgba(0, 0, 0, 0.85) !important;
+}
+
+.high-contrast .modal-content {
+    background-color: #000 !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast .modal-header {
+    border-bottom-color: #fff !important;
+}
+
+.high-contrast .modal-header h3 {
+    color: #ffff00 !important;
+}
+
+.high-contrast .modal-body {
+    background-color: #000 !important;
+}
+
+.high-contrast .modal-footer {
+    border-top-color: #fff !important;
+    background-color: #000 !important;
+}
+
+.high-contrast .btn-close-modal {
+    color: #fff !important;
+}
+
+.high-contrast .btn-close-modal:hover {
+    background-color: #333 !important;
+}
+
+.high-contrast .item-name {
+    color: #ffff00 !important;
+}
+
+/* Botones */
+.high-contrast .btn-primary {
+    background-color: #000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+.high-contrast .btn-primary:hover:not(:disabled) {
+    background-color: #ffff00 !important;
+    color: #000 !important;
+}
+
+.high-contrast .btn-success {
+    background-color: #000 !important;
+    color: #00ff00 !important;
+    border: 2px solid #00ff00 !important;
+}
+
+.high-contrast .btn-success:hover:not(:disabled) {
+    background-color: #00ff00 !important;
+    color: #000 !important;
+}
+
+.high-contrast .btn-warning {
+    background-color: #000 !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+.high-contrast .btn-warning:hover:not(:disabled) {
+    background-color: #ffff00 !important;
+    color: #000 !important;
+}
+
+.high-contrast .btn-danger {
+    background-color: #000 !important;
+    color: #ff6666 !important;
+    border: 2px solid #ff6666 !important;
+}
+
+.high-contrast .btn-danger:hover:not(:disabled) {
+    background-color: #ff6666 !important;
+    color: #000 !important;
+}
+
+.high-contrast .btn-outline-primary {
+    background-color: transparent !important;
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+.high-contrast .btn-outline-primary:hover:not(:disabled) {
+    background-color: #ffff00 !important;
+    color: #000 !important;
+}
+
+.high-contrast .btn-outline-secondary {
+    background-color: transparent !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast .btn-outline-secondary:hover:not(:disabled) {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+
+/* Form elements */
+.high-contrast .form-select {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast .form-select:focus {
+    border-color: #ffff00 !important;
+}
+
+.high-contrast .form-select:disabled {
+    background-color: #222 !important;
+    color: #888 !important;
+}
+
+.high-contrast .form-control {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast .form-control:focus {
+    border-color: #ffff00 !important;
+}
+
+.high-contrast .form-control.is-invalid,
+.high-contrast .form-select.is-invalid {
+    border-color: #ff6666 !important;
+}
+
+.high-contrast .form-label {
+    color: #ffff00 !important;
+}
+
+.high-contrast .form-text {
+    color: #ccc !important;
+}
+
+.high-contrast .invalid-feedback {
+    color: #ff6666 !important;
+}
+
+.high-contrast .text-muted {
+    color: #ccc !important;
+}
+
+.high-contrast .text-danger {
+    color: #ff6666 !important;
+}
+
+.high-contrast .text-warning {
+    color: #ffff00 !important;
+}
+
+/* Card */
+.high-contrast .card-body {
+    background-color: #000 !important;
+}
+
+/* Separadores */
+.high-contrast hr {
+    border-color: #444 !important;
+}
+
+/* Loading spinner */
+.high-contrast .loading-container {
+    background-color: #000 !important;
+}
+
+.high-contrast .spinner {
+    color: #ffff00 !important;
+}
+
+/* Focus states para accesibilidad */
+.high-contrast .form-control:focus,
+.high-contrast .form-select:focus,
+.high-contrast .btn:focus {
+    outline: 3px solid #ffff00 !important;
+    outline-offset: 2px;
+}
+
+/* Botón regresar */
+.high-contrast .btn-back {
+    color: #ffff00 !important;
+    background-color: #000 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+.high-contrast .btn-back:hover {
+    background-color: #ffff00 !important;
+    color: #000 !important;
 }

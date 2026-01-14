@@ -212,8 +212,11 @@ export default {
       isEditMode: false,
       loadingData: false,
       loadingMateriasPrimas: false,
+      loadingTransaccion: false,
       submitting: false,
       unidadesMedida: [],
+      materiaPrima: [],
+      transaccion: [],
       kardex: {},
       formData: {
         materiaPrima: '',
@@ -297,9 +300,9 @@ export default {
 
         this.kardex = data;
         this.formData = {
-          materiaPrima: data.mp_codigo.trim(),
-          transaccion: data.trn_cod.trim(),
-          razon: (data.krd_razon)? data.krd_razon.trim() : "",
+          materiaPrima: data.mp_codigo ? data.mp_codigo.trim() : '',
+          transaccion: data.trn_cod ? data.trn_cod.trim() : '',
+          razon: data.krd_razon ? data.krd_razon.trim() : '',
           cantidad: data.krd_cantidad
         };
       } catch (err) {
@@ -363,10 +366,17 @@ export default {
           const createData = {
             mp_codigo: this.formData.materiaPrima.trim(),
             trn_cod: this.formData.transaccion.trim(),
-            krd_razon: this.formData.razon,
+            krd_razon: this.formData.razon ? this.formData.razon.trim() : null,
             krd_cantidad: this.formData.cantidad
           };
 
+          if (!createData.mp_codigo || !createData.trn_cod) {
+            toast.error('Debe seleccionar una materia prima y una transacción');
+            this.submitting = false;
+            return;
+          }
+
+          console.log(createData);
           await api.post('/kardexmp', createData, {
             headers: {
               Authorization: `Bearer ${token}`
