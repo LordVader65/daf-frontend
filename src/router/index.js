@@ -12,6 +12,8 @@ import MateriaPrimaView from '@/views/admin/MateriaPrima/MateriaPrimaView.vue'
 import MateriaPrimaForm from '@/views/admin/MateriaPrima/MateriaPrimaForm.vue'
 import KardexMPView from '@/views/admin/KardexMP/KardexMPView.vue'
 import KardexMPForm from '@/views/admin/KardexMP/KardexMPForm.vue'
+import EstandarView from '@/views/admin/Estandar/EstandarView.vue'
+import EstandarForm from '@/views/admin/Estandar/EstandarForm.vue'
 
 const routes = [
   {
@@ -69,6 +71,21 @@ const routes = [
     path: '/admin/kardex/materia-prima/form/:id?',
     name: 'KardexMPForms',
     component: KardexMPForm
+  },
+  {
+    path: '/admin/estandar',
+    name: 'EstandarView',
+    component: EstandarView
+  },
+  {
+    path: '/admin/estandar/form',
+    name: 'EstandarFormNew',
+    component: EstandarForm
+  },
+  {
+    path: '/admin/estandar/form/:id?',
+    name: 'EstandarForm',
+    component: EstandarForm
   }
 ]
 
