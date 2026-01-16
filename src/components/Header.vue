@@ -17,22 +17,57 @@
     router.push('/');
   };
 
-  const toggleMenu = () => {
-    isMenuOpen.value = !isMenuOpen.value;
-  };
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+const closeMenu = () => {
+  isMenuOpen.value = false
+}
 </script>
 
 <template>
-  <div>
-    <header>
-      <div class="logo-area">
-        <img src="/images/logo.jpeg" alt="DAF Logo">
-        <h1>Decoraciones de Arreglos Florales</h1>
-      </div>
+  <header>
+    <!-- Logo -->
+    <div class="logo-area">
+      <img src="/images/logo.jpeg" alt="DAF Logo" />
+      <h1>Decoraciones de Arreglos Florales</h1>
+    </div>
 
-      <button class="menu-toggle" @click="toggleMenu" aria-label="Abrir menú">
-        <Icon :icon="isMenuOpen ? 'mingcute:close-line' : 'mingcute:menu-line'" width="32px" height="32px" />
-      </button>
+    <!-- Botón menú móvil -->
+    <button
+      class="menu-toggle"
+      @click="toggleMenu"
+      aria-label="Abrir menú"
+      aria-controls="main-navigation"
+      :aria-expanded="isMenuOpen.toString()"
+    >
+      <Icon
+        :icon="isMenuOpen ? 'mingcute:close-line' : 'mingcute:menu-line'"
+        width="32"
+        height="32"
+      />
+    </button>
+
+    <!-- Navegación -->
+    <nav
+      id="main-navigation"
+      :class="{ open: isMenuOpen }"
+      aria-label="Navegación principal"
+    >
+      <router-link to="/" @click="closeMenu">Home</router-link>
+
+      <router-link to="/products" @click="closeMenu">
+        Productos
+      </router-link>
+
+      <!-- FIX: ruta correcta al contacto -->
+      <router-link
+        :to="{ name: 'Contacto' }"
+        @click="closeMenu"
+      >
+        Contáctanos
+      </router-link>
 
       <nav :class="{ 'open': isMenuOpen }" aria-label="Navegación principal">
         <router-link to="/" @click="isMenuOpen = false">Home</router-link>
@@ -91,6 +126,9 @@
   padding: 0;
 }
 
+/* =========================
+   RESPONSIVE
+   ========================= */
 @media (max-width: 768px) {
   header {
     flex-wrap: wrap;
@@ -102,7 +140,7 @@
   }
 
   nav {
-    display: none; /* Hidden by default on mobile */
+    display: none;
     width: 100%;
     flex-direction: column;
     align-items: center;

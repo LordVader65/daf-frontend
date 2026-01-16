@@ -2,57 +2,58 @@
   <AccessibilityMenu/>
   <div class="products-page">
     <main class="flex-grow">
+      <!-- Título -->
       <div id="productos" class="text-center mt-5 text-orange-custom">
-        <h1 class="display-4 font-weight-bold">Nuestros Productos</h1>
+        <h1 class="display-4 fw-bold">Nuestros Productos</h1>
         <p class="opacity-70">Explora todo lo que tenemos para ti</p>
       </div>
 
+      <!-- Filtros -->
       <section class="container mt-5">
-        <div class="filter-section p-4 rounded">
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label font-weight-semibold">Buscar</label>
+        <div class="filter-section">
+          <div class="filter-grid">
+            <div>
+              <label>Buscar</label>
               <input
-                placeholder="Producto"
                 v-model="filters.query"
                 type="text"
-                class="form-control rounded-3"
+                placeholder="Producto"
               />
             </div>
 
-            <div class="col-md-3">
-              <label class="form-label font-weight-semibold">Precio min.</label>
+            <div>
+              <label>Precio mín.</label>
               <input
-                placeholder="0.00"
                 v-model.number="filters.minPrice"
                 type="number"
                 min="0"
-                class="form-control rounded-3"
+                placeholder="0.00"
               />
             </div>
 
-            <div class="col-md-3">
-              <label class="form-label font-weight-semibold">Precio max.</label>
+            <div>
+              <label>Precio máx.</label>
               <input
-                placeholder="0.00"
                 v-model.number="filters.maxPrice"
                 type="number"
                 min="0"
-                class="form-control rounded-3"
+                placeholder="0.00"
               />
             </div>
           </div>
         </div>
       </section>
 
+      <!-- Loading -->
       <div v-if="loading" class="container my-5">
-        <div class="loading-box text-center p-5 rounded shadow">
+        <div class="loading-box text-center p-5 rounded">
           <div class="display-1 mb-3">⏳</div>
-          <p class="h5 font-weight-semibold">Cargando...</p>
+          <p class="h5 fw-semibold">Cargando...</p>
           <p class="small opacity-75">Preparando productos...</p>
         </div>
       </div>
 
+      <!-- Productos -->
       <section v-else class="container my-5">
         <div class="products-grid">
           <div
@@ -65,14 +66,13 @@
               :alt="product.name"
               class="product-image"
             />
+
             <div class="product-info">
               <h5 class="product-title">{{ product.name }}</h5>
               <p class="product-description">{{ product.description }}</p>
-              <p class="product-price">
-                ${{ product.price }}
-              </p>
+              <p class="product-price">${{ product.price }}</p>
             </div>
-            
+
             <div class="product-actions">
               <button class="btn-detail" @click="navigateToDetail(product.id)">
                 Detalle
@@ -95,6 +95,7 @@ import AccessibilityMenu from '../components/AccessibilityMenu.vue'
 
 const router = useRouter()
 const loading = ref(true)
+
 const products = ref([])
 const filters = ref({
   query: '',
@@ -102,25 +103,23 @@ const filters = ref({
   maxPrice: null
 })
 
-const filteredProducts = computed(() => {
-  return products.value.filter(product => {
-    const matchesQuery =
+const filteredProducts = computed(() =>
+  products.value.filter(p => {
+    const q =
       !filters.value.query ||
-      product.name.toLowerCase().includes(filters.value.query.toLowerCase())
+      p.name.toLowerCase().includes(filters.value.query.toLowerCase())
 
-    const matchesMinPrice =
-      !filters.value.minPrice ||
-      product.price >= filters.value.minPrice
+    const min =
+      filters.value.minPrice == null || p.price >= filters.value.minPrice
 
-    const matchesMaxPrice =
-      !filters.value.maxPrice ||
-      product.price <= filters.value.maxPrice
+    const max =
+      filters.value.maxPrice == null || p.price <= filters.value.maxPrice
 
-    return matchesQuery && matchesMinPrice && matchesMaxPrice
+    return q && min && max
   })
-})
+)
 
-const navigateToDetail = (id) => {
+const navigateToDetail = id => {
   router.push(`/products/${id}`)
 }
 
@@ -155,18 +154,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* ===============================
+   GENERAL
+   =============================== */
 .text-orange-custom {
-  color: #9a3412;
-}
-
-.filter-section {
-  background-color: #9a3412;
-  border: 1px solid rgba(251, 191, 36, 0.4);
-  color: #ffffff;
-}
-
-.loading-box {
-  background-color: #fdcb80;
   color: #9a3412;
 }
 
@@ -176,25 +167,82 @@ onMounted(() => {
   min-height: 100vh;
 }
 
-/* New Grid Layout */
+/* ===============================
+   FILTROS (CENTRADO Y LIMPIO)
+   =============================== */
+.filter-section {
+  display: flex;
+  justify-content: center;
+  background: transparent;
+}
+
+.filter-grid {
+  width: 100%;
+  max-width: 1000px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.filter-grid label {
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+  display: block;
+  color: #9a3412;
+}
+
+.filter-grid input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #c2410c;
+  background: #fff;
+  color: #000;
+}
+
+/* Alto contraste */
+.high-contrast .filter-section {
+  background: transparent !important;
+}
+
+.high-contrast .filter-grid label {
+  color: #ffff00 !important;
+}
+
+.high-contrast .filter-grid input {
+  background: #f5f5f5 !important;
+  color: #000 !important;
+  border: 2px solid #ffff00 !important;
+}
+
+/* ===============================
+   LOADING
+   =============================== */
+.loading-box {
+  background-color: #fdcb80;
+  color: #9a3412;
+}
+
+/* ===============================
+   GRID PRODUCTOS
+   =============================== */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
-  padding: 1rem 0;
 }
 
-/* Product Card */
+/* ===============================
+   CARD PRODUCTO
+   =============================== */
 .product-card {
-  background: white;
-  border: 1px solid #e0e0e0;
+  background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
   padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s, box-shadow 0.2s;
-  overflow: hidden;
+  transition: transform .2s, box-shadow .2s;
 }
 
 .product-card:hover {
@@ -210,23 +258,13 @@ onMounted(() => {
   margin-bottom: 1rem;
 }
 
-.product-info {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
 .product-title {
   font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #333;
 }
 
 .product-description {
   color: #666;
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
 }
 
 .product-price {
@@ -234,42 +272,37 @@ onMounted(() => {
   font-weight: 700;
   color: #c2410c;
   margin-top: auto;
-  margin-bottom: 1rem;
 }
 
-/* Action Buttons Container */
+/* ===============================
+   ACCIONES
+   =============================== */
 .product-actions {
   display: flex;
   gap: 1rem;
-  margin-top: auto;
+  margin-top: 1rem;
 }
 
-.btn-detail, .btn-cart {
+.btn-detail,
+.btn-cart {
   flex: 1;
-  padding: 0.75rem 0.5rem;
-  border: none;
+  padding: .75rem;
   border-radius: 8px;
+  border: none;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
-  font-size: 0.9rem;
 }
 
 .btn-detail {
-  background-color: #f3f4f6;
-  color: #374151;
-}
-
-.btn-detail:hover {
-  background-color: #e5e7eb;
+  background: #f3f4f6;
 }
 
 .btn-cart {
-  background-color: #8f3e00; /* Merging User Preference: Darker Orange/Brown */
-  color: white;
+  background: #8f3e00;
+  color: #fff;
 }
 
 .btn-cart:hover {
-  background-color: #4d2100; /* Merging User Preference Hover */
+  background: #4d2100;
 }
 </style>
