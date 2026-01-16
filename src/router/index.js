@@ -25,6 +25,13 @@ import EstandarView from '@/views/admin/Estandar/EstandarView.vue'
 import EstandarForm from '@/views/admin/Estandar/EstandarForm.vue'
 import PerfilView from '@/views/PerfilView.vue'
 
+// ===============================
+// RUTAS CRUD - PROVEEDOR
+// ===============================
+import ProveedorView from '@/views/admin/Proveedor/ProveedorView.vue'
+import ProveedorForm from '@/views/admin/Proveedor/ProveedorForm.vue'
+
+
 const routes = [
   /* ===============================
      RUTAS PÚBLICAS
@@ -109,12 +116,51 @@ const routes = [
     path: '/admin/estandar/form/:id?',
     name: 'EstandarForm',
     component: EstandarForm
-  }
-]
+  },
 
+
+  /* ==============================
+     CRUD PROVEEDOR
+     ============================== */
+  {
+    path: '/admin/proveedor',
+    name: 'Proveedor',
+    component: ProveedorView
+  },
+  {
+    path: '/admin/proveedor/form/:id?',
+    name: 'ProveedorForm',
+    component: ProveedorForm
+  },
+
+]
 const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
+// ===============================
+// GUARD GLOBAL DE AUTENTICACIÓN
+// ===============================
+import { obtainToken } from '@/utils/obtain-token';
+
+router.beforeEach((to, from, next) => {
+  const token = obtainToken();
+
+  const isAdminRoute = to.path.startsWith('/admin');
+  const isLoginRoute = to.path === '/admin';
+
+  // 1. Rutas admin requieren token
+  if (isAdminRoute && !isLoginRoute && !token) {
+    return next('/admin');
+  }
+
+  // 2. Si ya está logueado, no mostrar login
+  if (isLoginRoute && token) {
+    return next('/admin/dashboard');
+  }
+
+  next();
+});
 
 export default router

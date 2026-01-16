@@ -1,0 +1,21 @@
+// src/api/ciudad.service.js
+import axios from 'axios';
+import { obtainToken } from '@/utils/obtain-token';
+
+const api = axios.create({
+    baseURL: import.meta.env.VITE_BACKEND,
+});
+
+api.interceptors.request.use((config) => {
+    const token = obtainToken();
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
+export const CiudadService = {
+    getAll() {
+        return api.get('/api/pos/ciudad');
+    },
+};
