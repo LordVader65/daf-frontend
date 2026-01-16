@@ -1,4 +1,5 @@
 <template>
+  <AccessibilityMenu/>
   <div class="products-page">
     <main class="flex-grow">
       <!-- Título -->
@@ -90,6 +91,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import AccessibilityMenu from '../components/AccessibilityMenu.vue'
 
 const router = useRouter()
 const loading = ref(true)

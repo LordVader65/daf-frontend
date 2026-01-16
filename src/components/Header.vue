@@ -1,8 +1,21 @@
 <script setup>
-import { ref } from 'vue'
-import { Icon } from '@iconify/vue'
+  import { ref, onMounted } from 'vue';
+  import { Icon } from "@iconify/vue";
+  import { useRouter } from "vue-router";
+  const router = useRouter();
+  const isMenuOpen = ref(false);
+  const isAuthenticated = ref(false);
 
-const isMenuOpen = ref(false)
+  onMounted(() => {
+    const token = localStorage.getItem("client");
+    isAuthenticated.value = !!token;
+  });
+
+  const logout = () => {
+    localStorage.removeItem("client");
+    isAuthenticated.value = false;
+    router.push('/');
+  };
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
@@ -64,9 +77,37 @@ const closeMenu = () => {
           <a class="cart-btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
             <Icon icon="mingcute:user-1-line" width="32px" height="32px" />
           </a>
-
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Registrarse</a></li>
+            <li v-if="!isAuthenticated">
+              <router-link class="dropdown-item" to="/login">
+                Registrarse
+              </router-link>
+            </li>
+
+            <!-- Usuario Registrado -->
+            <template v-else>
+              <li>
+                <router-link class="dropdown-item" to="/profile">
+                  Mi Perfil
+                </router-link>
+              </li>
+
+              <li>
+                <router-link class="dropdown-item" to="/carrito">
+                  Mi Carrito
+                </router-link>
+              </li>
+
+              <li>
+                <a class="dropdown-item text-danger" href="#" @click.prevent="logout">
+                  Cerrar Sesión
+                </a>
+              </li>
+            </template>
+
+          </ul>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li><router-link class="dropdown-item" to="/login">Registrarse</router-link></li>
             <li><a class="dropdown-item" href="#">Mi Carrito</a></li>
           </ul>
         </div>

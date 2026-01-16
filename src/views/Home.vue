@@ -1,5 +1,6 @@
 <template>
   <div class="home-page">
+    <AccessibilityMenu />
     <main class="flex-grow">
 
       <!-- NOSOTROS -->
@@ -114,6 +115,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import AccessibilityMenu from '../components/AccessibilityMenu.vue'
 
 const featuredProducts = ref([
   {
