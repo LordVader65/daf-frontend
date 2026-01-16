@@ -48,31 +48,10 @@ const closeMenu = () => {
         height="32"
       />
     </button>
-
-    <!-- Navegación -->
-    <nav
-      id="main-navigation"
-      :class="{ open: isMenuOpen }"
-      aria-label="Navegación principal"
-    >
-      <router-link to="/" @click="closeMenu">Home</router-link>
-
-      <router-link to="/products" @click="closeMenu">
-        Productos
-      </router-link>
-
-      <!-- FIX: ruta correcta al contacto -->
-      <router-link
-        :to="{ name: 'Contacto' }"
-        @click="closeMenu"
-      >
-        Contáctanos
-      </router-link>
-
       <nav :class="{ 'open': isMenuOpen }" aria-label="Navegación principal">
         <router-link to="/" @click="isMenuOpen = false">Home</router-link>
         <router-link to="/products" @click="isMenuOpen = false">Productos</router-link>
-        <router-link to="/contact" @click="isMenuOpen = false">Contáctanos</router-link>
+        <router-link to="/contacto" @click="isMenuOpen = false">Contáctanos</router-link>
         <div class="dropdown">
           <a class="cart-btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
             <Icon icon="mingcute:user-1-line" width="32px" height="32px" />
@@ -113,7 +92,6 @@ const closeMenu = () => {
         </div>
       </nav>
     </header>
-  </div>
 </template>
 
 <style scoped>
@@ -123,12 +101,10 @@ const closeMenu = () => {
   border: none;
   color: white;
   cursor: pointer;
+  outline: none;
   padding: 0;
 }
 
-/* =========================
-   RESPONSIVE
-   ========================= */
 @media (max-width: 768px) {
   header {
     flex-wrap: wrap;

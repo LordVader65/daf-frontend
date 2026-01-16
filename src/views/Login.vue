@@ -1,6 +1,6 @@
 <template>
   <AccessibilityMenu/>
-    <main id="main-content" class="form-container">
+    <main class="main-content form-container">
       <div class="auth-card">
         <div class="auth-header">
           <h2>{{ isLogin ? 'Iniciar Sesión' : 'Crear Cuenta' }}</h2>
@@ -149,6 +149,7 @@
                 <label for="cli_telefono" class="form-label">
                   <Icon icon="mdi:phone" class="label-icon" />
                   Teléfono
+                  <span class="required" aria-label="requerido">*</span>
                 </label>
                 <input
                   id="cli_telefono"
@@ -158,6 +159,7 @@
                   placeholder="0999999999"
                   maxlength="10"
                   @input="validarTelefono"
+                  required
                   :aria-invalid="errors.cli_telefono ? 'true' : 'false'"
                 />
                 <span v-if="errors.cli_telefono" class="error-message" role="alert">
@@ -169,6 +171,7 @@
                 <label for="cli_celular" class="form-label">
                   <Icon icon="mdi:cellphone" class="label-icon" />
                   Celular
+                  <span class="required" aria-label="requerido">*</span>
                 </label>
                 <input
                   id="cli_celular"
@@ -178,6 +181,7 @@
                   placeholder="099999999"
                   maxlength="9"
                   @input="validarCelular"
+                  required
                   :aria-invalid="errors.cli_celular ? 'true' : 'false'"
                 />
                 <span v-if="errors.cli_celular" class="error-message" role="alert">
@@ -446,7 +450,7 @@ const buscarCliente = async () => {
       const status = error.response.status;
       const message = error.response.data?.message || 'Error al buscar cliente';
       
-      toast.error(message);
+      toast.info(message);
       
       if (status === 404) {
         mostrarDatosCliente.value = true;
@@ -633,7 +637,6 @@ main {
 .form-control:disabled,
 .form-control:read-only {
   background-color: #f5f5f5;
-  cursor: not-allowed;
   opacity: 0.7;
 }
 
@@ -699,11 +702,24 @@ main {
   cursor: not-allowed;
 }
 
+.high-contrast .btn-search:hover {
+  background-color: white !important;
+  color: #000;
+}
+
+.high-contrast .btn-search:focus {
+  background-color: white !important;
+  color: #000;
+}
+
 .client-data-section {
-  background: #f8f9fa;
   padding: 24px;
   border-radius: 8px;
   border: 2px dashed #944000;
+}
+
+.high-contrast .client-data-section {
+  border: 2px dashed #fff
 }
 
 .section-title {
@@ -794,7 +810,7 @@ main {
 .btn-link {
   background: none;
   border: none;
-  color: #944000;
+  color: #000;
   cursor: pointer;
   font-size: 0.95rem;
   text-decoration: underline;
@@ -802,9 +818,21 @@ main {
   transition: color 0.2s ease;
 }
 
-.btn-link:hover {
-  color: #7a3400;
+.high-contrast .btn-link {
+  color: #ff0;
 }
+
+
+.high-contrast .btn-link:hover {
+  border: #ff0;
+  color: #ff0
+}
+
+.high-contrast .btn-link:focus {
+  border: #ff0;
+  color: #ff0
+}
+
 
 textarea.form-control {
   resize: vertical;

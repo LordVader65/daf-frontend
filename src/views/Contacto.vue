@@ -147,7 +147,6 @@ const cancelar = () => {
    MODO NORMAL (WCAG AA)
    =============================== */
 .contact-page {
-  background-color: #fff7f2;
   min-height: 100vh;
 }
 
@@ -171,14 +170,12 @@ const cancelar = () => {
   font-size: 2rem;
   font-weight: 800;
   margin-bottom: 2rem;
-  color: #000;
 }
 
 label {
   font-weight: 700;
   margin-bottom: 0.35rem;
   display: block;
-  color: #000;
 }
 
 input,
@@ -218,22 +215,11 @@ button {
 .btn-submit {
   background-color: #c2410c;
   color: #ffffff;
-  border: 2px solid #c2410c;
-}
-
-.btn-submit:hover {
-  background-color: #9a3412;
 }
 
 .btn-cancel {
   background-color: transparent;
-  color: #c2410c;
   border: 2px solid #c2410c;
-}
-
-.btn-cancel:hover {
-  background-color: #c2410c;
-  color: #ffffff;
 }
 
 button:disabled {
@@ -292,25 +278,13 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
-/* ===============================
-   FIX FINAL: TEXTO ENVIAR EN AMARILLO
-   (span dentro del botón submit)
-   =============================== */
-.high-contrast .btn-submit,
-.high-contrast .btn-submit span {
-  color: #ffff00 !important;
-  text-decoration: underline !important;
-}
-
-/* ===============================
-   FIX: DESFASE BOTONES EN ALTO CONTRASTE
-   =============================== */
 .high-contrast .form-actions button {
-  line-height: 1.2;              /* evita que el subrayado empuje */
+  line-height: 1.2;
   padding-top: 0.85rem;
   padding-bottom: 0.85rem;
   align-items: center;
   display: flex;
   justify-content: center;
 }
+
 </style>

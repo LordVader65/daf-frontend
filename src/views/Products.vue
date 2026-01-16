@@ -188,7 +188,6 @@ onMounted(() => {
   font-weight: 700;
   margin-bottom: 0.3rem;
   display: block;
-  color: #9a3412;
 }
 
 .filter-grid input {
@@ -198,21 +197,6 @@ onMounted(() => {
   border: 1px solid #c2410c;
   background: #fff;
   color: #000;
-}
-
-/* Alto contraste */
-.high-contrast .filter-section {
-  background: transparent !important;
-}
-
-.high-contrast .filter-grid label {
-  color: #ffff00 !important;
-}
-
-.high-contrast .filter-grid input {
-  background: #f5f5f5 !important;
-  color: #000 !important;
-  border: 2px solid #ffff00 !important;
 }
 
 /* ===============================
