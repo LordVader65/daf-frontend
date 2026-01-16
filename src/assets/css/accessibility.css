@@ -540,3 +540,12 @@ select:hover {
     background-color: #ffff00 !important;
     color: #000 !important;
 }
+
+.high-contrast .auth-card {
+    background-color: #000;
+}
+
+.high-contrast .dropdown-menu {
+    background-color: #000;
+    border: #ffff00 !important;
+}

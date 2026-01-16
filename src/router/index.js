@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Products from '../views/Products.vue'
 import Contacto from '../views/Contacto.vue'
+import Login from '@/views/Login.vue'
 
 // RUTAS ADMIN
 import AdminLogin from '../views/admin/AdminLogin.vue'
@@ -14,6 +15,7 @@ import KardexMPView from '@/views/admin/KardexMP/KardexMPView.vue'
 import KardexMPForm from '@/views/admin/KardexMP/KardexMPForm.vue'
 import EstandarView from '@/views/admin/Estandar/EstandarView.vue'
 import EstandarForm from '@/views/admin/Estandar/EstandarForm.vue'
+import PerfilView from '@/views/PerfilView.vue'
 
 const routes = [
   {
@@ -31,6 +33,17 @@ const routes = [
     name: 'Contacto',
     component: Contacto
   },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: PerfilView
+  },
+  
   /* Rutas de Administrador */
   {
     path: '/admin',

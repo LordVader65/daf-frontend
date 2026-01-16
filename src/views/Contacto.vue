@@ -1,4 +1,5 @@
 <template>
+  <AccessibilityMenu />
   <div class="contact-page">
     <main class="contact-wrapper">
       <form
@@ -49,6 +50,7 @@
 <script setup>
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
+import AccessibilityMenu from '../components/AccessibilityMenu.vue'
 
 const router = useRouter()
 
