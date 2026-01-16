@@ -28,7 +28,7 @@
               </p>
 
               <router-link
-                to="/contact"
+                to="/contacto"
                 class="btn btn-custom-dark"
               >
                 Contáctanos

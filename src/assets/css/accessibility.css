@@ -9,13 +9,11 @@ body {
     font-size: var(--text-size);
 }
 
-/* Focus NORMAL (fino, visible y limpio) */
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-    outline: 1px solid #000;
-    outline-offset: 2px;
+    border: 1px solid #000;
 }
 
 /* ===============================
@@ -32,7 +30,7 @@ textarea:focus-visible {
    =============================== */
 .high-contrast a {
     color: #ffff00 !important;
-    background-color: transparent !important;
+    background-color: #000 !important;
     text-decoration: underline;
 }
 
@@ -47,9 +45,6 @@ textarea:focus-visible {
     color: #fff !important;
 }
 
-/* ===============================
-   MENÚ DE ACCESIBILIDAD
-   =============================== */
 .accessibility-menu {
     position: fixed;
     top: 25%;
@@ -85,14 +80,10 @@ textarea:focus-visible {
 
 .accessibility-menu button:focus,
 .accessibility-menu button:focus-visible {
-    outline: 1px solid #ffffff;
-    outline-offset: 2px;
+    border: 2px solid #ff0;
     box-shadow: none;
 }
 
-/* ===============================
-   HEADER / FOOTER / NAV
-   =============================== */
 .high-contrast header,
 .high-contrast footer {
     background-color: #000 !important;
@@ -100,39 +91,40 @@ textarea:focus-visible {
 }
 
 .high-contrast nav a {
-    color: #ffff00 !important;
+    color: #ffff00;
     text-decoration: underline;
 }
 
-.high-contrast nav a:focus-visible {
-    outline: 1px solid #ffff00 !important;
-    outline-offset: 2px;
+.high-contrast nav a:focus {
+    border: 1px solid #ffff00;
 }
 
-/* ===============================
-   BOTONES (FINAL DEFINITIVO)
-   =============================== */
+.high-contrast nav a:hover {
+    border: 1px solid #ffff00;
+}
+
 .high-contrast button {
-    background-color: #000 !important;        /* fondo negro */
-    color: #ffff00 !important;                /* texto amarillo */
-    border: 2px solid #ffffff !important;     /* borde blanco */
-    text-decoration: underline !important;    /* subrayado */
+    background-color: #000 !important;
+    color: #fff;
+    border: 2px solid #ffffff;
+    text-decoration: none !important;
     text-underline-offset: 3px;
 }
 
-/* FIX CRÍTICO: btn-submit NO debe forzar color blanco */
 .high-contrast .btn-submit {
-    color: #ffff00 !important;
-    background-color: #000 !important;
-    border: 2px solid #ffffff !important;
+    background-color: #000;
+    border: 2px solid #ffffff;
 }
 
-/* Focus ALTO CONTRASTE: fino, blanco, sin bordes */
-.high-contrast button:focus,
-.high-contrast button:focus-visible {
-    outline: 1px solid #ffffff !important;
-    outline-offset: 2px;
-    box-shadow: none !important;
+.high-contrast .btn-submit:hover {
+  border: #ff0 2px solid;
+  text-decoration: underline;
+}
+
+.high-contrast .btn-cancel:hover {
+  border: 2px solid #f00 !important;
+  background-color: #f00 !important;
+  color: #000 !important;
 }
 
 /* ===============================
@@ -140,7 +132,6 @@ textarea:focus-visible {
    =============================== */
 .high-contrast form {
     background-color: #000 !important;
-    border: 2px solid #ffffff !important;
 }
 
 .high-contrast form {
@@ -163,9 +154,7 @@ textarea:focus-visible {
 .high-contrast input:focus,
 .high-contrast select:focus,
 .high-contrast textarea:focus {
-    outline: none !important;
-    border: 2px solid #ffffff !important;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.6) !important;
+    border: 2px solid #ff0 !important;
 }
 
 .high-contrast input:hover,
@@ -402,6 +391,17 @@ textarea:focus-visible {
 }
 
 /* Botones */
+.high-contrast .btn:focus {
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+.high-contrast .btn:hover {
+    color: #ffff00 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+
 .high-contrast .btn-primary {
     background-color: #000 !important;
     color: #ffff00 !important;
@@ -546,8 +546,7 @@ textarea:focus-visible {
 .high-contrast .form-control:focus,
 .high-contrast .form-select:focus,
 .high-contrast .btn:focus {
-    outline: 3px solid #ffff00 !important;
-    outline-offset: 2px;
+    border: 1px solid #ffff00 !important;
 }
 
 /* Botón regresar */
