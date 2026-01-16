@@ -109,10 +109,33 @@ const closeMenu = () => {
   header {
     flex-wrap: wrap;
     position: relative;
+    padding: 0.5rem 1rem; /* Reduce padding slightly */
+  }
+
+  /* User Request: Flex column and reduce text size */
+  .logo-area {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .logo-area img {
+    width: 48px; /* Smaller logo */
+    height: 48px;
+  }
+
+  .logo-area h1 {
+    font-size: 0.9rem; /* Reduced text size */
+    line-height: 1.1;
   }
 
   .menu-toggle {
     display: block;
+    /* Absolute position to keep it reachable on the right even if logo takes width */
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   nav {
@@ -122,7 +145,7 @@ const closeMenu = () => {
     align-items: center;
     gap: 1rem;
     padding: 1rem 0;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
