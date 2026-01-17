@@ -240,6 +240,12 @@
 
           <!-- Botones -->
           <div class="form-actions">
+            <router-link
+              to="/"
+              class="btn btn-secondary">
+              <Icon icon="ion:return-up-back" />
+              Regresar
+            </router-link>
             <button
               type="submit"
               class="btn btn-primary"

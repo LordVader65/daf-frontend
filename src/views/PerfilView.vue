@@ -1,7 +1,7 @@
 <template>
     <AccessibilityMenu/>
   <div class="perfil-page"> 
-    <main id="main-content" class="form-container">
+    <main class="main-content form-container">
       <div class="perfil-container">
         <div class="perfil-header">
           <Icon icon="mdi:account-circle" class="perfil-icon" />
