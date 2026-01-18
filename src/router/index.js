@@ -31,6 +31,12 @@ import PerfilView from '@/views/PerfilView.vue'
 import ProveedorView from '@/views/admin/Proveedor/ProveedorView.vue'
 import ProveedorForm from '@/views/admin/Proveedor/ProveedorForm.vue'
 
+// ===============================
+// RUTAS CRUD - PRODUCTO
+// ===============================
+import ProductoView from '@/views/admin/Producto/ProductoView.vue'
+import ProductoForm from '@/views/admin/Producto/ProductoForm.vue'
+
 
 const routes = [
   /* ===============================
@@ -131,6 +137,20 @@ const routes = [
     path: '/admin/proveedor/form/:id?',
     name: 'ProveedorForm',
     component: ProveedorForm
+  },
+
+  /* ===============================
+   CRUD PRODUCTO
+   =============================== */
+  {
+    path: '/admin/producto',
+    name: 'Producto',
+    component: ProductoView
+  },
+  {
+    path: '/admin/producto/form/:id?',
+    name: 'ProductoForm',
+    component: ProductoForm
   },
 
 ]
