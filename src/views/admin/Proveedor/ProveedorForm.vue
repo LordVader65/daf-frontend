@@ -44,41 +44,48 @@ const loadCiudades = async () => {
 // VALIDACIONES
 // ===============================
 const validateForm = () => {
+  let valid = true
   errors.value = {}
-  
-  if (!form.value.prv_razonsocial.trim()) {
+
+  if (!form.value.prv_razonsocial?.trim()) {
     errors.value.prv_razonsocial = 'La razón social es obligatoria'
+    valid = false
   }
 
   if (!form.value.prv_ruc) {
     errors.value.prv_ruc = 'El RUC es obligatorio'
+    valid = false
   } else if (!/^\d{13}$/.test(form.value.prv_ruc)) {
     errors.value.prv_ruc = 'El RUC debe tener 13 dígitos numéricos'
+    valid = false
   }
 
+  // ciudad: si estás guardando ct_codigo como número
   if (!form.value.ct_codigo) {
     errors.value.ct_codigo = 'Debe seleccionar una ciudad'
+    valid = false
   }
 
   if (form.value.prv_mail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.value.prv_mail)) {
     errors.value.prv_mail = 'Formato de correo electrónico no válido'
+    valid = false
   }
 
   if (form.value.prv_celular && !/^\d+$/.test(form.value.prv_celular)) {
     errors.value.prv_celular = 'El celular solo debe contener números'
-  }
-  
-  if (form.value.prv_telefono && !/^\d+$/.test(form.value.prv_telefono)) {
-    errors.value.prv_telefono = 'El teléfono solo debe contener números'
+    valid = false
   }
 
-  const isValid = Object.keys(errors.value).length === 0
-  
-  if (!isValid) {
+  if (form.value.prv_telefono && !/^\d+$/.test(form.value.prv_telefono)) {
+    errors.value.prv_telefono = 'El teléfono solo debe contener números'
+    valid = false
+  }
+
+  if (!valid) {
     toast.warning('Por favor, corrija los errores en el formulario')
   }
-  
-  return isValid
+
+  return valid
 }
 
 // ===============================
@@ -90,16 +97,26 @@ const submit = async () => {
   loading.value = true
 
   try {
-    const payload = {
-      ...form.value,
-      prv_estado: 'ACT',
-      prv_fecha_alta: new Date()
-    }
-
     if (isEdit.value) {
+  // ✅ UPDATE CORRECTO
+  const payload = {
+    ...form.value,
+    ct_codigo: form.value.ct_codigo // ← SIN Number()
+  }
+      console.log('PAYLOAD A ENVIAR:', payload);
+      console.log('payload.ct_codigo:', payload.ct_codigo, typeof payload.ct_codigo);
+
       await ProveedorService.update(route.params.id, payload)
-      toast.success('Proveedor actualizado correctamente')
+      toast.success('Proveedor actualizado correctamente') 
+
     } else {
+      // 🟢 CREATE (sí enviar prv_fecha_alta)
+      const payload = {
+        ...form.value, 
+        prv_estado: 'ACT',
+        prv_fecha_alta: new Date()
+      }
+
       await ProveedorService.create(payload)
       toast.success('Proveedor creado correctamente')
     }
@@ -107,28 +124,18 @@ const submit = async () => {
     router.push('/admin/proveedor')
 
   } catch (error) {
-    if (error.response && error.response.data) {
-      // 👉 Mensaje específico del backend 
-      if (error.response.data.message) {
-        toast.error(error.response.data.message)
-      }
-      
-      // 👉 Validaciones múltiples (DTO)
-      if (error.response.data.errors) {
-        if (Array.isArray(error.response.data.errors)) {
-           toast.error(error.response.data.errors.join(', '))
-        } else {
-           toast.error(JSON.stringify(error.response.data.errors))
-        }
-      }
+    if (error.response?.data?.message) {
+      toast.error(error.response.data.message)
+    } else if (error.response?.data?.errors) {
+      toast.error(JSON.stringify(error.response.data.errors))
     } else {
-      // 👉 Fallback
       toast.error('Ocurrió un error al guardar')
     }
   } finally {
     loading.value = false
   }
 }
+
 
 // ===============================
 // ACCIONES
@@ -142,13 +149,17 @@ const cancel = () => {
 }
 
 onMounted(async () => {
+  console.log('ProveedorForm onMounted EXECUTED');
+ 
+
   loadingData.value = true
   try {
     await loadCiudades();
 
     if (isEdit.value) {
-      const { data } = await ProveedorService.getById(route.params.id);
-
+      const response = await ProveedorService.getById(route.params.id);
+      const data = response.data;
+      console.log('EDIT ct_codigo RAW:', data.ct_codigo, typeof data.ct_codigo)  
       form.value = {
         prv_razonsocial: data.prv_razonsocial ?? '',
         prv_ruc: data.prv_ruc ?? '',
@@ -156,7 +167,10 @@ onMounted(async () => {
         prv_celular: data.prv_celular ?? '',
         prv_mail: data.prv_mail?.trim() ?? '',
         prv_direccion: data.prv_direccion ?? '',
-        ct_codigo: data.ct_codigo?.trim() ?? '' 
+        ct_codigo: data.ct_codigo ? String(data.ct_codigo).trim() : ''
+
+
+
       };
     }
   } catch (error) {
@@ -248,13 +262,10 @@ onMounted(async () => {
                   <label class="form-label fw-semibold">
                     Ciudad <span class="text-danger">*</span>
                   </label>
-                  <select 
-                    v-model="form.ct_codigo" 
-                    class="form-select"
-                    :class="{ 'is-invalid': errors.ct_codigo }"
-                    required
-                  >
-                    <option value="">Seleccione una ciudad</option>
+                  
+                  <select v-model="form.ct_codigo">
+                    <option disabled value="">Seleccione una ciudad</option>
+
                     <option
                       v-for="c in ciudades"
                       :key="c.ct_codigo"
@@ -262,7 +273,9 @@ onMounted(async () => {
                     >
                       {{ c.ct_descripcion }}
                     </option>
-                  </select>
+                  </select> 
+                  
+
                   <div v-if="errors.ct_codigo" class="invalid-feedback d-block">
                      <Icon icon="mdi:alert-circle" width="16" class="me-1"></Icon>
                     {{ errors.ct_codigo }}
