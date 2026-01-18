@@ -236,6 +236,7 @@ import { Icon } from "@iconify/vue";
 import axios from 'axios';
 import { obtainToken } from '../../../utils/obtain-token.js';
 import { toast } from '../../../utils/toast.js';
+import { CiudadService } from '../../../api/ciudad.service.js';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BACKEND + 'pos'
@@ -285,35 +286,12 @@ export default {
     async loadCiudades() {
       this.loadingCiudades = true;
       try {
-        const token = obtainToken();
-        console.log('Token obtenido:', token ? 'Token existe' : 'Token NULO');
-        
-        const response = await api.get('/ciudad', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-        
-        console.log('Respuesta Ciudad:', response);
-        const data = response.data;
-        
-        // Verifica si la respuesta es el array directo o está paginado
-        if (Array.isArray(data)) {
-            this.ciudades = data;
-        } else if (data.data && Array.isArray(data.data)) {
-            this.ciudades = data.data;
-        } else {
-            console.warn('Formato de ciudades desconocido:', data);
-            this.ciudades = [];
-        }
-        
-      } catch (err) {
-        console.error('Error cargando ciudades:', err);
-        if (err.response) {
-            console.error('Detalle error backend:', err.response.data);
-            console.error('Status:', err.response.status);
-        }
-        toast.error('Error al cargar las ciudades. Revise la consola.');
+        const { data } = await CiudadService.getAll();
+        // Ajustar si la respuesta viene directa o envuelta
+        this.ciudades = Array.isArray(data) ? data : (data.data || []);
+      } catch (error) {
+        console.error('Error al cargar ciudades:', error);
+        toast.error('Error al cargar las ciudades');
       } finally {
         this.loadingCiudades = false;
       }
