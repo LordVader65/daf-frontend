@@ -162,7 +162,7 @@ export default {
           type="text"
           v-model="searchQuery"
           @input="handleSearch"
-          placeholder="Buscar por nombre o identificación..."
+          placeholder="Buscar por nombre..."
           class="search-input"
           aria-label="Buscar cliente"
         />

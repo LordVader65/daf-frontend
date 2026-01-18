@@ -36,31 +36,6 @@ import { Icon } from "@iconify/vue";
               <p class="text-muted small mb-4">
                 <span class="text-danger">*</span> Campos obligatorios
               </p>
-
-              <!-- Tipo de Identificación -->
-              <div class="mb-4">
-                <label for="tipo_identificacion" class="form-label fw-semibold">
-                  Tipo de Identificación <span class="text-danger">*</span>
-                </label>
-                <select
-                  id="tipo_identificacion"
-                  v-model="formData.tipo_identificacion"
-                  class="form-select"
-                  :class="{ 'is-invalid': errors.tipo_identificacion }"
-                  required
-                  aria-describedby="tipo_identificacion_help"
-                >
-                  <option value="">Seleccione un tipo</option>
-                  <option value="CEDULA">Cédula</option>
-                  <option value="RUC">RUC</option>
-                  <option value="PASAPORTE">Pasaporte</option>
-                </select>
-                <div v-if="errors.tipo_identificacion" class="invalid-feedback d-block">
-                  <Icon icon="mdi:alert-circle" width="16" class="me-1"></Icon>
-                  {{ errors.tipo_identificacion }}
-                </div>
-              </div>
-
               <!-- Identificación -->
               <div class="mb-4">
                 <label for="identificacion" class="form-label fw-semibold">
@@ -73,7 +48,7 @@ import { Icon } from "@iconify/vue";
                   class="form-control"
                   :class="{ 'is-invalid': errors.identificacion }"
                   placeholder="Ej: 1712345678"
-                  maxlength="20"
+                  maxlength="13"
                   required
                 />
                 <div v-if="errors.identificacion" class="invalid-feedback d-block">
@@ -115,11 +90,31 @@ import { Icon } from "@iconify/vue";
                   class="form-control"
                   :class="{ 'is-invalid': errors.telefono }"
                   placeholder="Ej: 0991234567"
-                  maxlength="15"
+                  maxlength="10"
                 />
                 <div v-if="errors.telefono" class="invalid-feedback d-block">
                   <Icon icon="mdi:alert-circle" width="16" class="me-1"></Icon>
                   {{ errors.telefono }}
+                </div>
+              </div>
+
+              <!-- Celular -->
+              <div class="mb-4">
+                <label for="celular" class="form-label fw-semibold">
+                  Celular
+                </label>
+                <input
+                  type="text"
+                  id="celular"
+                  v-model="formData.celular"
+                  class="form-control"
+                  :class="{ 'is-invalid': errors.celular }"
+                  placeholder="Ej: 099123456"
+                  maxlength="9"
+                />
+                <div v-if="errors.celular" class="invalid-feedback d-block">
+                  <Icon icon="mdi:alert-circle" width="16" class="me-1"></Icon>
+                  {{ errors.celular }}
                 </div>
               </div>
 
@@ -252,10 +247,10 @@ export default {
       cliente: {},
       ciudades: [],
       formData: {
-        tipo_identificacion: 'CEDULA', // Default
         identificacion: '',
         nombre: '',
         telefono: '',
+        celular: '',
         email: '',
         direccion: '',
         ciudad: '' // ct_codigo
@@ -332,12 +327,12 @@ export default {
         this.cliente = data;
         // Asumiendo que el backend devuelve cli_ruc_ced, cli_nombre, etc.
         this.formData = {
-          tipo_identificacion: data.cli_tipo_identificacion || 'CEDULA', // Si existe este campo
-          identificacion: data.cli_ruc_ced,
-          nombre: data.cli_nombre,
-          telefono: data.cli_telefono,
-          email: data.cli_mail,
-          direccion: data.cli_direccion || '',
+          identificacion: data.cli_ruc_ced.trim(),
+          nombre: data.cli_nombre.trim(),
+          telefono: data.cli_telefono.trim(),
+          celular: data.cli_celular.trim(),
+          email: data.cli_mail.trim(),
+          direccion: data.cli_direccion.trim() || '',
           ciudad: data.ct_codigo
         };
       } catch (err) {
@@ -354,6 +349,8 @@ export default {
 
       if (!this.formData.identificacion.trim()) {
         this.errors.identificacion = 'El número de identificación (RUC/CED) es requerido';
+      } else if (!/^\d+$/.test(this.formData.identificacion)) {
+        this.errors.identificacion = 'El identificador debe tener dígitos numéricos';
       }
 
       if (!this.formData.nombre.trim()) {
@@ -366,9 +363,15 @@ export default {
         this.errors.telefono = 'El teléfono debe tener 10 dígitos numéricos';
       }
 
+      if (!this.formData.celular.trim()) {
+        this.errors.celular = 'El celular es requerido';
+      } else if (this.formData.celular.length !== 9 || !/^\d+$/.test(this.formData.celular)) {
+        this.errors.celular = 'El teléfono debe tener 10 dígitos numéricos';
+      }
+
       if (!this.formData.email.trim()) {
         this.errors.email = 'El email es requerido';
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.formData.email)) {
+      } else if (!this.formData.email.includes('@')) {
         this.errors.email = 'El formato del correo electrónico no es válido';
       }
       
@@ -389,16 +392,15 @@ export default {
 
       try {
         const token = obtainToken();
-        
-        // Mapeo a los campos exactos que pide el error: cli_nombre, cli_ruc_ced, cli_telefono, cli_mail, ct_codigo
+      
         const clientData = {
             cli_ruc_ced: this.formData.identificacion,
             cli_nombre: this.formData.nombre,
             cli_telefono: this.formData.telefono,
+            cli_celular: this.formData.celular,
             cli_mail: this.formData.email,
             cli_direccion: this.formData.direccion,
             ct_codigo: this.formData.ciudad
-            // cli_tipo_identificacion: this.formData.tipo_identificacion // Enviarlo si el backend lo soporta, si no, omitir
         };
 
         if (this.isEditMode) {
