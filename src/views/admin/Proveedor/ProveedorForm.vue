@@ -150,13 +150,13 @@ onMounted(async () => {
       const { data } = await ProveedorService.getById(route.params.id);
 
       form.value = {
-        prv_razonsocial: data.prv_razonsocial ?? '',
-        prv_ruc: data.prv_ruc ?? '',
-        prv_telefono: data.prv_telefono ?? '',
-        prv_celular: data.prv_celular ?? '',
+        prv_razonsocial: data.prv_razonsocial.trim() ?? '',
+        prv_ruc: data.prv_ruc.trim() ?? '',
+        prv_telefono: data.prv_telefono.trim() ?? '',
+        prv_celular: data.prv_celular.trim() ?? '',
         prv_mail: data.prv_mail?.trim() ?? '',
-        prv_direccion: data.prv_direccion ?? '',
-        ct_codigo: data.ct_codigo?.trim() ?? '' 
+        prv_direccion: data.prv_direccion.trim() ?? '',
+        ct_codigo: data.ct_codigo ?? '' 
       };
     }
   } catch (error) {
@@ -276,6 +276,9 @@ onMounted(async () => {
                   <label class="form-label fw-semibold">Teléfono</label>
                   <input 
                     v-model="form.prv_telefono" 
+                    required
+                    max="10"
+                    maxlength="10"
                     class="form-control" 
                     :class="{ 'is-invalid': errors.prv_telefono }"
                     placeholder="Ej: 022..."
@@ -288,8 +291,11 @@ onMounted(async () => {
                 <div class="col-md-6 mb-3">
                   <label class="form-label fw-semibold">Celular</label>
                   <input 
+                    max="9"
+                    maxlength="9"
                     v-model="form.prv_celular" 
                     class="form-control" 
+                    required
                     :class="{ 'is-invalid': errors.prv_celular }"
                     placeholder="Ej: 099..."
                   />
@@ -309,6 +315,7 @@ onMounted(async () => {
                   <input 
                     type="email" 
                     v-model="form.prv_mail" 
+                    required
                     class="form-control"
                     :class="{ 'is-invalid': errors.prv_mail }"
                     placeholder="ejemplo@correo.com" 
@@ -327,6 +334,8 @@ onMounted(async () => {
                   v-model="form.prv_direccion" 
                   class="form-control" 
                   rows="2"
+                  required
+                  :class="{ 'is-invalid': errors.prv_razonsocial }"
                   placeholder="Dirección completa"
                 ></textarea>
               </div>
