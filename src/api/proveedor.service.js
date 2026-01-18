@@ -16,20 +16,18 @@ api.interceptors.request.use((config) => {
 
 export const ProveedorService = {
     getAll() {
-        return api.get('/api/pos/proveedor');
+        return api.get('pos/proveedor');
     },
     create(data) {
-        return api.post('/api/pos/proveedor', data);
+        return api.post('pos/proveedor', data);
     },
     update(id, data) {
-        return api.put(`/api/pos/proveedor/${id}`, data);
+        return api.put(`pos/proveedor/${id}`, data);
     },
     remove(id) {
-        return api.delete(`/api/pos/proveedor/${id}`);
+        return api.delete(`pos/proveedor/${id}`);
     },
     getById(id) {
-        return api.get(`/api/pos/proveedor/${id}`);
+        return api.get(`pos/proveedor/${id}`);
     },
-
-
 };

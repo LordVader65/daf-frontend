@@ -36,6 +36,10 @@ import ProveedorForm from '@/views/admin/Proveedor/ProveedorForm.vue'
 // ===============================
 import ProductoView from '@/views/admin/Producto/ProductoView.vue'
 import ProductoForm from '@/views/admin/Producto/ProductoForm.vue'
+// RUTAS CRUD - CLIENTE
+// ===============================
+import ClienteView from '@/views/admin/Cliente/ClienteView.vue'
+import ClienteForm from '@/views/admin/Cliente/ClienteForm.vue'
 
 
 const routes = [
@@ -67,7 +71,7 @@ const routes = [
     name: 'profile',
     component: PerfilView
   },
-  
+
   /* Rutas de Administrador */
   {
     path: '/admin',
@@ -151,6 +155,19 @@ const routes = [
     path: '/admin/producto/form/:id?',
     name: 'ProductoForm',
     component: ProductoForm
+  },
+  /* ==============================
+     CRUD CLIENTE
+     ============================== */
+  {
+    path: '/admin/cliente',
+    name: 'Cliente',
+    component: ClienteView
+  },
+  {
+    path: '/admin/cliente/form/:id?',
+    name: 'ClienteForm',
+    component: ClienteForm
   },
 
 ]

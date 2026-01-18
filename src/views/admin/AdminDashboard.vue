@@ -43,7 +43,7 @@
         const token = obtainToken()
 
        const { data } = await axios.get(
-        `${import.meta.env.VITE_BACKEND}/api/pos/access`,
+        `${import.meta.env.VITE_BACKEND}pos/access`,
         {
             headers: {
             Authorization: `Bearer ${token}`,
@@ -54,6 +54,11 @@
         enabledModules.value = Object.entries(data.access)
         .filter(([_, value]) => value)
         .flatMap(([key]) => modulesMap[key] || [])
+
+        // Forzar visualización de CLIENTE para desarrollo/pruebas
+        if (!enabledModules.value.find(m => m.label === 'CLIENTE')) {
+            enabledModules.value.push(...modulesMap['CLIENTE']);
+        }
 
     } catch (err) {
         error.value = 'No se pudo cargar el dashboard: ' + err.message
