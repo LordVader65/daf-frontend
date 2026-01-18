@@ -3,12 +3,14 @@
     import axios from 'axios'
     import DashboardButton from '@/components/DashboardButton.vue'
     import { obtainToken } from '../../utils/obtain-token.js'
+    import { useRouter } from 'vue-router'
 
     import '@/assets/css/admin/admin-body.css'
 
     const loading = ref(true)
     const error = ref(null)
     const enabledModules = ref([])
+    const router = useRouter()
 
     const modulesMap = {
     PRODUCTO: [
@@ -38,6 +40,11 @@
     ]
     }
 
+    const logout = () => {
+      localStorage.removeItem('user')
+      router.push('/admin')
+    }
+
     const fetchAccess = async () => {
     try {
         const token = obtainToken()
@@ -54,11 +61,6 @@
         enabledModules.value = Object.entries(data.access)
         .filter(([_, value]) => value)
         .flatMap(([key]) => modulesMap[key] || [])
-
-        // Forzar visualización de CLIENTE para desarrollo/pruebas
-        if (!enabledModules.value.find(m => m.label === 'CLIENTE')) {
-            enabledModules.value.push(...modulesMap['CLIENTE']);
-        }
 
     } catch (err) {
         error.value = 'No se pudo cargar el dashboard: ' + err.message
@@ -98,6 +100,8 @@
                 :icon_name="module.icon_name">
         </DashboardButton>
         </div>
+        
+        <button class="btn btn-danger w-50 h-75" @click="logout">Cerrar Sesión</button>
       </div>
     </main>
   </div>
