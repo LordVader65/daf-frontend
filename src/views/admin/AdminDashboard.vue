@@ -43,7 +43,7 @@
         const token = obtainToken()
 
        const { data } = await axios.get(
-        `${import.meta.env.VITE_BACKEND}/api/pos/access`,
+        `${import.meta.env.VITE_BACKEND}pos/access`,
         {
             headers: {
             Authorization: `Bearer ${token}`,
