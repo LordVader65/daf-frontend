@@ -55,6 +55,11 @@
         .filter(([_, value]) => value)
         .flatMap(([key]) => modulesMap[key] || [])
 
+        // Forzar visualización de CLIENTE para desarrollo/pruebas
+        if (!enabledModules.value.find(m => m.label === 'CLIENTE')) {
+            enabledModules.value.push(...modulesMap['CLIENTE']);
+        }
+
     } catch (err) {
         error.value = 'No se pudo cargar el dashboard: ' + err.message
         console.log(err)
