@@ -32,10 +32,20 @@ import ProveedorView from '@/views/admin/Proveedor/ProveedorView.vue'
 import ProveedorForm from '@/views/admin/Proveedor/ProveedorForm.vue'
 
 // ===============================
+// RUTAS CRUD - PRODUCTO
+// ===============================
+import ProductoView from '@/views/admin/Producto/ProductoView.vue'
+import ProductoForm from '@/views/admin/Producto/ProductoForm.vue'
 // RUTAS CRUD - CLIENTE
 // ===============================
 import ClienteView from '@/views/admin/Cliente/ClienteView.vue'
 import ClienteForm from '@/views/admin/Cliente/ClienteForm.vue'
+
+// ===============================
+// RUTAS CRUD - ORDEN COMPRA
+// ==============================
+import OrdenCompraView from '@/views/admin/OrdenCompra/OrdenCompraView.vue'
+import OrdenCompraForm from '@/views/admin/OrdenCompra/OrdenCompraForm.vue'
 
 
 const routes = [
@@ -137,6 +147,34 @@ const routes = [
     path: '/admin/proveedor/form/:id?',
     name: 'ProveedorForm',
     component: ProveedorForm
+  },
+
+  /* ===============================
+   CRUD PRODUCTO
+   =============================== */
+  {
+    path: '/admin/producto',
+    name: 'Producto',
+    component: ProductoView
+  },
+  {
+    path: '/admin/producto/form/:id?',
+    name: 'ProductoForm',
+    component: ProductoForm
+  },
+
+  /* ===============================
+   CRUD ORDEN COMPRA
+   =============================== */
+  {
+    path: '/admin/orden-compra',
+    name: 'OrdenCompra',
+    component: OrdenCompraView
+  },
+  {
+    path: '/admin/orden-compra/form/:id?',
+    name: 'OrdenCompraForm',
+    component: OrdenCompraForm
   },
 
   /* ==============================
