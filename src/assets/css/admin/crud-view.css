@@ -104,8 +104,12 @@
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .error-state iconify-icon {
@@ -136,7 +140,6 @@
   width: 100%;
   border-collapse: collapse;
 }
-
 
 .data-table thead {
   background-color: #944000;
@@ -180,6 +183,11 @@
 .badge-F {
   background-color: #cce5ff;
   color: #004085;
+}
+
+.badge-ANU {
+  background-color: #f8d7da;
+  color: #721c24;
 }
 
 .action-buttons {

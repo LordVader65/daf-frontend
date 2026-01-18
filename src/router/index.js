@@ -41,6 +41,12 @@ import ProductoForm from '@/views/admin/Producto/ProductoForm.vue'
 import ClienteView from '@/views/admin/Cliente/ClienteView.vue'
 import ClienteForm from '@/views/admin/Cliente/ClienteForm.vue'
 
+// ===============================
+// RUTAS CRUD - ORDEN COMPRA
+// ==============================
+import OrdenCompraView from '@/views/admin/OrdenCompra/OrdenCompraView.vue'
+import OrdenCompraForm from '@/views/admin/OrdenCompra/OrdenCompraForm.vue'
+
 
 const routes = [
   /* ===============================
@@ -156,6 +162,21 @@ const routes = [
     name: 'ProductoForm',
     component: ProductoForm
   },
+
+  /* ===============================
+   CRUD ORDEN COMPRA
+   =============================== */
+  {
+    path: '/admin/orden-compra',
+    name: 'OrdenCompra',
+    component: OrdenCompraView
+  },
+  {
+    path: '/admin/orden-compra/form/:id?',
+    name: 'OrdenCompraForm',
+    component: OrdenCompraForm
+  },
+
   /* ==============================
      CRUD CLIENTE
      ============================== */

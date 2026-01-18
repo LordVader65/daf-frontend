@@ -8,7 +8,7 @@ import { obtainToken } from "../../../utils/obtain-token.js";
 import { toast } from "../../../utils/toast.js";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND + "/api/pos",
+  baseURL: import.meta.env.VITE_BACKEND + "pos",
 });
 
 export default {

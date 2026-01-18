@@ -124,7 +124,7 @@ import { Icon } from "@iconify/vue";
                   class="form-control"
                   :class="{ 'is-invalid': errors.prd_desc_corta }"
                   placeholder="Ej: Arreglo mediano con rosas..."
-                  maxlength="255"
+                  maxlength="60"
                   required
                 />
                 <div v-if="errors.prd_desc_corta" class="invalid-feedback d-block">
@@ -145,7 +145,7 @@ import { Icon } from "@iconify/vue";
                   class="form-control"
                   :class="{ 'is-invalid': errors.prd_desc_larga }"
                   placeholder="Ej: Incluye flores de temporada..."
-                  maxlength="60"
+                  maxlength="255"
                   required
                 />
                 <div v-if="errors.prd_desc_larga" class="invalid-feedback d-block">
@@ -303,7 +303,7 @@ import { obtainToken } from "../../../utils/obtain-token.js";
 import { toast } from "../../../utils/toast.js";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND + "/api/pos",
+  baseURL: import.meta.env.VITE_BACKEND + "pos",
 });
 
 export default {
@@ -487,15 +487,15 @@ export default {
       // desc corta
       if (!this.formData.prd_desc_corta.trim()) {
         this.errors.prd_desc_corta = "La descripción corta es requerida";
-      } else if (this.formData.prd_desc_corta.trim().length > 255) {
-        this.errors.prd_desc_corta = "Máximo 255 caracteres";
+      } else if (this.formData.prd_desc_corta.trim().length > 60) {
+        this.errors.prd_desc_corta = "Máximo 60 caracteres";
       }
 
       // desc larga
       if (!this.formData.prd_desc_larga.trim()) {
         this.errors.prd_desc_larga = "La descripción larga es requerida";
-      } else if (this.formData.prd_desc_larga.trim().length > 60) {
-        this.errors.prd_desc_larga = "Máximo 60 caracteres";
+      } else if (this.formData.prd_desc_larga.trim().length > 255) {
+        this.errors.prd_desc_larga = "Máximo 255 caracteres";
       }
 
       // precio
