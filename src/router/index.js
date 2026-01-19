@@ -154,6 +154,20 @@ const routes = [
     component: ProveedorForm
   },
 
+  /* ==============================
+     KARDEX PRODUCTO
+     ============================== */
+  {
+    path: '/admin/kardex/producto',
+    name: 'KardexProductView',
+    component: () => import('@/views/admin/KardexPrd/KardexProductView.vue')
+  },
+  {
+    path: '/admin/kardex/producto/form',
+    name: 'KardexProductForm',
+    component: () => import('@/views/admin/KardexPrd/KardexProductForm.vue')
+  },
+
   /* ===============================
    CRUD PRODUCTO
    =============================== */
