@@ -110,7 +110,7 @@ import { Icon } from "@iconify/vue";
                   class="form-control"
                   :class="{ 'is-invalid': errors.celular }"
                   placeholder="Ej: 099123456"
-                  maxlength="9"
+                  maxlength="10"
                 />
                 <div v-if="errors.celular" class="invalid-feedback d-block">
                   <Icon icon="mdi:alert-circle" width="16" class="me-1"></Icon>

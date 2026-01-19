@@ -69,15 +69,15 @@ export default {
       try {
         const token = obtainToken();
 
-        // si hay búsqueda por proveedor => /ordencompra/search
-        let endpoint = "";
+        // Construir endpoint con parámetros de búsqueda
+        let endpoint = `ordencompra?page=${this.currentPage}`;
+        
         if (this.searchProveedor.trim()) {
-          endpoint = `ordencompra/search?prv=${encodeURIComponent(
-            this.searchProveedor.trim()
-          )}&page=${this.currentPage}`;
-        } else {
-          endpoint = `ordencompra?page=${this.currentPage}`;
-          if (this.estado) endpoint += `&estado=${encodeURIComponent(this.estado)}`;
+          endpoint += `&q=${encodeURIComponent(this.searchProveedor.trim())}`;
+        }
+        
+        if (this.estado) {
+          endpoint += `&estado=${encodeURIComponent(this.estado)}`;
         }
 
         const { data } = await api.get(endpoint, {
@@ -231,7 +231,7 @@ export default {
           type="text"
           v-model="searchProveedor"
           @input="handleSearchProveedor"
-          placeholder="Buscar por código de proveedor (PRV...)"
+          placeholder="Buscar por nombre de proveedor..."
           class="search-input"
           aria-label="Buscar por proveedor"
         />
