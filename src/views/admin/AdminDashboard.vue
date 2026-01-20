@@ -89,7 +89,7 @@
         {{ error }}
       </div>
 
-      <div class="row g-4 justify-content-center">
+      <div class="row g-4 justify-content-center d-flex mb-5">
         <div
             v-for="module in enabledModules"
             :key="module.route"
@@ -100,9 +100,10 @@
                 :icon_name="module.icon_name">
         </DashboardButton>
         </div>
-        
-        <button class="btn btn-danger w-50 h-75" @click="logout">Cerrar Sesión</button>
       </div>
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-danger w-50 h-75" @click="logout">Cerrar Sesión</button>
+        </div>
     </main>
   </div>
 </template>

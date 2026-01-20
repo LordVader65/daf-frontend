@@ -205,7 +205,7 @@ export default {
           </thead>
           <tbody>
             <tr v-for="item in kardex" :key="item.krd_codigo">
-              <td>{{ item.prd_descripcion }}</td>
+              <td>{{ item.prd_nombre }}</td>
               <td :class="getTransactionClass(item.trn_descripcion)">{{ item.trn_descripcion }}</td>
               <td>{{ item.fac_codigo || 'NA' }}</td>
               <td class="text-end fw-bold">{{ item.krd_cantidad }}</td>
