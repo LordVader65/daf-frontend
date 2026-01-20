@@ -181,6 +181,32 @@ textarea:focus-visible {
     border: 2px solid #ffffff !important;
 }
 
+/* Product Card specific */
+.high-contrast .product-card {
+    background-color: #000 !important;
+    border: 2px solid #ffffff !important;
+    color: #fff !important;
+}
+
+.high-contrast .product-title,
+.high-contrast .product-description,
+.high-contrast .product-price {
+    color: #fff !important;
+}
+
+.high-contrast .btn-detail,
+.high-contrast .btn-cart {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #ffffff !important;
+}
+
+.high-contrast .btn-detail:hover,
+.high-contrast .btn-cart:hover {
+    background-color: #ffffff !important;
+    color: #000 !important;
+}
+
 /* ===============================
    DASHBOARD / ADMIN
    =============================== */

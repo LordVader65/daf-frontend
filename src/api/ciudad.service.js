@@ -1,4 +1,3 @@
-// src/api/ciudad.service.js
 import axios from 'axios';
 import { obtainToken } from '@/utils/obtain-token';
 

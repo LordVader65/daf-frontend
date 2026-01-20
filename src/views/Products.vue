@@ -53,9 +53,26 @@
         </div>
       </div>
 
+      <!-- Error -->
+      <div v-else-if="error" class="container my-5">
+        <div class="error-box text-center p-5 rounded">
+          <div class="display-1 mb-3">⚠️</div>
+          <p class="h5 fw-semibold text-danger">{{ error }}</p>
+          <button @click="loadProducts" class="btn btn-primary mt-3">
+            Reintentar
+          </button>
+        </div>
+      </div>
+
       <!-- Productos -->
       <section v-else class="container my-5">
-        <div class="products-grid">
+        <div v-if="filteredProducts.length === 0" class="text-center p-5">
+          <div class="display-1 mb-3">🔍</div>
+          <p class="h5 fw-semibold">No se encontraron productos</p>
+          <p class="text-muted">Intenta ajustar los filtros de búsqueda</p>
+        </div>
+        
+        <div v-else class="products-grid">
           <div
             v-for="product in filteredProducts"
             :key="product.id"
@@ -70,7 +87,7 @@
             <div class="product-info">
               <h5 class="product-title">{{ product.name }}</h5>
               <p class="product-description">{{ product.description }}</p>
-              <p class="product-price">${{ product.price }}</p>
+              <p class="product-price">${{ product.price.toFixed(2) }}</p>
             </div>
 
             <div class="product-actions">
@@ -89,12 +106,14 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import AccessibilityMenu from '../components/AccessibilityMenu.vue'
+import productoService from '../api/ecom/producto.service'
 
 const router = useRouter()
 const loading = ref(true)
+const error = ref(null)
 
 const products = ref([])
 const filters = ref({
@@ -103,8 +122,10 @@ const filters = ref({
   maxPrice: null
 })
 
+// Computed para aplicar filtros en el frontend (ya que el backend hace la búsqueda principal)
 const filteredProducts = computed(() =>
   products.value.filter(p => {
+    // El filtro de query ya viene del backend, pero lo mantenemos por si se quiere filtrar más
     const q =
       !filters.value.query ||
       p.name.toLowerCase().includes(filters.value.query.toLowerCase())
@@ -123,33 +144,48 @@ const navigateToDetail = id => {
   router.push(`/products/${id}`)
 }
 
-onMounted(() => {
-  setTimeout(() => {
-    products.value = [
-      {
-        id: 1,
-        name: 'Arreglo Simple',
-        description: 'Hermoso arreglo floral simple',
-        price: 25,
-        image: '/images/details/arreglos_simples.jpeg'
-      },
-      {
-        id: 2,
-        name: 'Corona de Flores',
-        description: 'Corona artesanal con flores naturales',
-        price: 45,
-        image: '/images/details/corona_flores.jpg'
-      },
-      {
-        id: 3,
-        name: 'Pedestal Floral',
-        description: 'Pedestal decorativo elegante',
-        price: 85,
-        image: '/images/details/pedestal_flores.jpg'
-      }
-    ]
+const loadProducts = async () => {
+  loading.value = true
+  error.value = null
+  
+  try {
+    const response = await productoService.getAll({
+      q: filters.value.query,
+      minPrice: filters.value.minPrice,
+      maxPrice: filters.value.maxPrice
+    })
+    
+    // Mapear campos del backend al formato esperado por el UI
+    products.value = response.data.map(p => ({
+      id: p.id,
+      name: p.nombre,
+      description: p.descripcion_corta,
+      price: parseFloat(p.precio),
+      image: p.imagen || '/images/placeholder-product.jpg',
+      stock: p.stock,
+      categoria: p.categoria
+    }))
+  } catch (err) {
+    console.error('Error cargando productos:', err)
+    error.value = 'No se pudieron cargar los productos. Intenta nuevamente.'
+    products.value = []
+  } finally {
     loading.value = false
-  }, 1000)
+  }
+}
+
+// Debounce para búsqueda
+let searchTimeout = null
+watch(() => filters.value.query, () => {
+  clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    loadProducts()
+  }, 500)
+})
+
+// Cargar productos al montar
+onMounted(() => {
+  loadProducts()
 })
 </script>
 
@@ -200,11 +236,16 @@ onMounted(() => {
 }
 
 /* ===============================
-   LOADING
+   LOADING & ERROR
    =============================== */
 .loading-box {
   background-color: #fdcb80;
   color: #9a3412;
+}
+
+.error-box {
+  background-color: #fee2e2;
+  color: #991b1b;
 }
 
 /* ===============================

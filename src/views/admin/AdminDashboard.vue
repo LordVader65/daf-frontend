@@ -3,12 +3,14 @@
     import axios from 'axios'
     import DashboardButton from '@/components/DashboardButton.vue'
     import { obtainToken } from '../../utils/obtain-token.js'
+    import { useRouter } from 'vue-router'
 
     import '@/assets/css/admin/admin-body.css'
 
     const loading = ref(true)
     const error = ref(null)
     const enabledModules = ref([])
+    const router = useRouter()
 
     const modulesMap = {
     PRODUCTO: [
@@ -36,6 +38,11 @@
         { label: 'KARDEX PRODUCTO', route: '/admin/kardex/producto', icon_name: 'mdi:package-variant' },
         { label: 'KARDEX MATERIA PRIMA', route: '/admin/kardex/materia-prima', icon_name: 'mdi:package-variant' }
     ]
+    }
+
+    const logout = () => {
+      localStorage.removeItem('user')
+      router.push('/admin')
     }
 
     const fetchAccess = async () => {
@@ -82,7 +89,7 @@
         {{ error }}
       </div>
 
-      <div class="row g-4 justify-content-center">
+      <div class="row g-4 justify-content-center d-flex mb-5">
         <div
             v-for="module in enabledModules"
             :key="module.route"
@@ -94,6 +101,9 @@
         </DashboardButton>
         </div>
       </div>
+        <div class="d-flex justify-content-center">
+            <button class="btn btn-danger w-50 h-75" @click="logout">Cerrar Sesión</button>
+        </div>
     </main>
   </div>
 </template>

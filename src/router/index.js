@@ -37,6 +37,21 @@ import ProveedorForm from '@/views/admin/Proveedor/ProveedorForm.vue'
 import FacturaView from "@/views/admin/factura/FacturaView.vue"
 import FacturaForm from "@/views/admin/factura/FacturaForm.vue"
 
+// RUTAS CRUD - PRODUCTO
+// ===============================
+import ProductoView from '@/views/admin/Producto/ProductoView.vue'
+import ProductoForm from '@/views/admin/Producto/ProductoForm.vue'
+// RUTAS CRUD - CLIENTE
+// ===============================
+import ClienteView from '@/views/admin/Cliente/ClienteView.vue'
+import ClienteForm from '@/views/admin/Cliente/ClienteForm.vue'
+
+// ===============================
+// RUTAS CRUD - ORDEN COMPRA
+// ==============================
+import OrdenCompraView from '@/views/admin/OrdenCompra/OrdenCompraView.vue'
+import OrdenCompraForm from '@/views/admin/OrdenCompra/OrdenCompraForm.vue'
+
 
 const routes = [
   /* ===============================
@@ -51,6 +66,11 @@ const routes = [
     path: '/products',
     name: 'Products',
     component: Products
+  },
+  {
+    path: '/products/:id',
+    name: 'ProductDetail',
+    component: () => import('../views/ProductDetail.vue')
   },
   {
     path: '/contacto',
@@ -152,6 +172,61 @@ const routes = [
     name: "FacturaForm",
     component: FacturaForm,
     props: true
+  },
+  /* ==============================
+     KARDEX PRODUCTO
+     ============================== */
+  {
+    path: '/admin/kardex/producto',
+    name: 'KardexProductView',
+    component: () => import('@/views/admin/KardexPrd/KardexProductView.vue')
+  },
+  {
+    path: '/admin/kardex/producto/form',
+    name: 'KardexProductForm',
+    component: () => import('@/views/admin/KardexPrd/KardexProductForm.vue')
+  },
+
+  /* ===============================
+   CRUD PRODUCTO
+   =============================== */
+  {
+    path: '/admin/producto',
+    name: 'Producto',
+    component: ProductoView
+  },
+  {
+    path: '/admin/producto/form/:id?',
+    name: 'ProductoForm',
+    component: ProductoForm
+  },
+
+  /* ===============================
+   CRUD ORDEN COMPRA
+   =============================== */
+  {
+    path: '/admin/orden-compra',
+    name: 'OrdenCompra',
+    component: OrdenCompraView
+  },
+  {
+    path: '/admin/orden-compra/form/:id?',
+    name: 'OrdenCompraForm',
+    component: OrdenCompraForm
+  },
+
+  /* ==============================
+     CRUD CLIENTE
+     ============================== */
+  {
+    path: '/admin/cliente',
+    name: 'Cliente',
+    component: ClienteView
+  },
+  {
+    path: '/admin/cliente/form/:id?',
+    name: 'ClienteForm',
+    component: ClienteForm
   },
 
 ]
