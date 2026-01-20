@@ -31,6 +31,12 @@ import PerfilView from '@/views/PerfilView.vue'
 import ProveedorView from '@/views/admin/Proveedor/ProveedorView.vue'
 import ProveedorForm from '@/views/admin/Proveedor/ProveedorForm.vue'
 
+// ===============================
+// RUTAS CRUD - FACTURACIÓN
+// ===============================
+import FacturaView from "@/views/admin/factura/FacturaView.vue"
+import FacturaForm from "@/views/admin/factura/FacturaForm.vue"
+
 
 const routes = [
   /* ===============================
@@ -61,7 +67,7 @@ const routes = [
     name: 'profile',
     component: PerfilView
   },
-  
+
   /* Rutas de Administrador */
   {
     path: '/admin',
@@ -131,6 +137,21 @@ const routes = [
     path: '/admin/proveedor/form/:id?',
     name: 'ProveedorForm',
     component: ProveedorForm
+  },
+
+  // ===============================
+  // FACTURACIÓN
+  // ===============================
+  {
+    path: "/admin/factura",
+    name: "FacturaView",
+    component: FacturaView,
+  },
+  {
+    path: "/admin/factura/:id",
+    name: "FacturaForm",
+    component: FacturaForm,
+    props: true
   },
 
 ]
