@@ -161,7 +161,7 @@ const loadProducts = async () => {
       name: p.nombre,
       description: p.descripcion_corta,
       price: parseFloat(p.precio),
-      image: p.imagen || '/images/placeholder-product.jpg', // Imagen por defecto si no existe
+      image: p.imagen || '/images/placeholder-product.jpg',
       stock: p.stock,
       categoria: p.categoria
     }))
