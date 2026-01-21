@@ -92,7 +92,7 @@
                 <button
                   class="btn-add-cart"
                   :disabled="product.stock <= 0"
-                  @click="addToCart"
+                  @click="addToCart()"
                 >
                   <iconify-icon icon="mdi:cart-plus" width="20"></iconify-icon>
                   {{ product.stock > 0 ? 'Agregar al carrito' : 'No disponible' }}
@@ -111,6 +111,8 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AccessibilityMenu from '../components/AccessibilityMenu.vue'
 import productoService from '../api/ecom/producto.service'
+import axios from 'axios'
+import { toast } from '../utils/toast.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -128,6 +130,36 @@ const product = ref({
   categoria: '',
   um_descripcion: ''
 })
+
+const addToCart = async () => {
+  try {
+    const token = JSON.parse(localStorage.getItem('client')).token;
+    if (!token) {
+      toast.info('Es necesario iniciar sesión');
+      router.push('/login')
+      return
+    }
+
+    await axios.post(
+      import.meta.env.VITE_BACKEND + 'ecom/carrito/',
+      { prd_codigo: product.value.id },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+
+    toast.success('Carrito modificado');
+  } catch (err) {
+    if (err.response?.status === 401) {
+      toast.info('Es necesario iniciar sesión');
+      router.push('/login')
+    } else {
+      toast.error('Error al ingresar producto al carrito');
+    }
+  }
+}
 
 const loadProduct = async () => {
   loading.value = true
@@ -158,11 +190,6 @@ const loadProduct = async () => {
 
 const goBack = () => {
   router.push('/products')
-}
-
-const addToCart = () => {
-  // TODO: Implementar funcionalidad de carrito
-  alert(`Producto "${product.value.name}" agregado al carrito (funcionalidad pendiente)`)
 }
 
 onMounted(() => {

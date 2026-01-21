@@ -94,7 +94,8 @@
               <button class="btn-detail" @click="navigateToDetail(product.id)">
                 Detalle
               </button>
-              <button class="btn-cart">
+              <button class="btn-cart"
+                @click="addToCart(product.id)">
                 <Icon icon="flowbite:cart-plus-alt-solid" width="30px" height="30px" />
               </button>
             </div>
@@ -157,6 +158,8 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import AccessibilityMenu from '../components/AccessibilityMenu.vue'
 import productoService from '../api/ecom/producto.service'
+import axios from 'axios';
+import { toast } from '../utils/toast.js'
 
 const router = useRouter()
 const loading = ref(true)
@@ -194,9 +197,43 @@ const filteredProducts = computed(() =>
   })
 )
 
+const addToCart = async id => {
+  try {
+    const product = products.value.find(p => p.id === id)
+    if (!product) return
+
+    const token = JSON.parse(localStorage.getItem('client')).token;
+    if (!token) {
+      toast.info('Es necesario iniciar sesión');
+      router.push('/login')
+      return
+    }
+
+    await axios.post(
+      import.meta.env.VITE_BACKEND + 'ecom/carrito/',
+      { prd_codigo: product.id },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+
+    toast.success('Carrito modificado');
+  } catch (err) {
+    if (err.response?.status === 401) {
+      toast.info('Es necesario iniciar sesión');
+      router.push('/login')
+    } else {
+      toast.error('Error al ingresar producto al carrito');
+    }
+  }
+}
+
 const navigateToDetail = id => {
   router.push(`/products/${id}`)
 }
+
 const loadProducts = async () => {
   loading.value = true
   error.value = null
