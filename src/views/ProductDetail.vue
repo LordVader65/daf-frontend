@@ -25,7 +25,7 @@
       <section v-else class="container my-5">
         <!-- Back Button -->
         <div class="mb-4">
-          <button @click="goBack" class="btn-back">
+          <button @click="goBack" class="btn btn-custom-dark">
             <iconify-icon icon="mdi:arrow-left" width="20"></iconify-icon>
             Volver al catálogo
           </button>
@@ -200,29 +200,12 @@ onMounted(() => {
 /* ===============================
    BACK BUTTON
    =============================== */
-.btn-back {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #f3f4f6;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-back:hover {
-  background-color: #e5e7eb;
-}
-
 .btn-custom-dark {
   background-color: #8f3e00;
   color: #ffffff;
   padding: 0.75rem 1.5rem;
   border-radius: 0.375rem;
-  border: none;
+  border: 1px solid yellow;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s;

@@ -529,51 +529,43 @@ export default {
       try {
         const token = obtainToken();
 
-        // Normalizamos opcionales
-        const cat_codigo = this.formData.cat_codigo ? String(this.formData.cat_codigo).trim() : null;
-        const prd_img = null;
+        const formData = new FormData();
+
+        formData.append("um_venta", this.formData.um_venta);
+        formData.append("cat_codigo", this.formData.cat_codigo ?? "");
+        formData.append("prd_nombre", this.formData.prd_nombre);
+        formData.append("prd_desc_corta", this.formData.prd_desc_corta);
+        formData.append("prd_desc_larga", this.formData.prd_desc_larga);
+        formData.append("prd_precio_venta", this.formData.prd_precio_venta);
+        formData.append("prd_stock", this.formData.prd_stock);
+        formData.append("prd_prioridad", this.formData.prd_prioridad);
+
+        if (this.selectedImageFile) {
+          formData.append("prd_img", this.selectedImageFile);
+        }
+
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
 
         if (this.isEditMode) {
-          const updateData = {
-            um_venta: this.formData.um_venta,
-            cat_codigo,
-            prd_nombre: this.formData.prd_nombre,
-            prd_desc_corta: this.formData.prd_desc_corta,
-            prd_desc_larga: this.formData.prd_desc_larga,
-            prd_precio_venta: this.formData.prd_precio_venta,
-            prd_stock: this.formData.prd_stock,
-            prd_prioridad: this.formData.prd_prioridad,
-            prd_img: null,
-          };
-
-          await api.put(`/producto/${this.producto.prd_codigo}`, updateData, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-
+          await api.put(
+            `/producto/${this.producto.prd_codigo}`,
+            formData,
+            config
+          );
           toast.success("Producto actualizado correctamente");
         } else {
-          const createData = {
-            um_venta: this.formData.um_venta,
-            cat_codigo,
-            prd_nombre: this.formData.prd_nombre,
-            prd_desc_corta: this.formData.prd_desc_corta,
-            prd_desc_larga: this.formData.prd_desc_larga,
-            prd_precio_venta: this.formData.prd_precio_venta,
-            prd_stock: this.formData.prd_stock,
-            prd_prioridad: this.formData.prd_prioridad,
-            prd_img: null,
-          };
-
-          await api.post("/producto", createData, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-
+          await api.post("/producto", formData, config);
           toast.success("Producto creado correctamente");
         }
 
         this.$router.push("/admin/producto");
       } catch (err) {
-        const errorMsg = err.response?.data?.message || "Error al guardar el producto";
+        const errorMsg =
+          err.response?.data?.message || "Error al guardar el producto";
 
         if (err.response?.data?.errors && Array.isArray(err.response.data.errors)) {
           err.response.data.errors.forEach((e) => toast.error(e));

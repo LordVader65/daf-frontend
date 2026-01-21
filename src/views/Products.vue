@@ -95,17 +95,64 @@
                 Detalle
               </button>
               <button class="btn-cart">
-                Agregar al carrito
+                <Icon icon="flowbite:cart-plus-alt-solid" width="30px" height="30px" />
               </button>
             </div>
           </div>
         </div>
       </section>
+
+      <div
+        v-if="pagination.totalPages > 1"
+        class="pagination-bar"
+      >
+        <button
+          class="page-btn"
+          :disabled="pagination.page === 1"
+          @click="goToFirst"
+          title="Primera página"
+        >
+          |&lt;
+        </button>
+
+        <button
+          class="page-btn"
+          :disabled="pagination.page === 1"
+          @click="goToPrev"
+          title="Página anterior"
+        >
+          &lt;
+        </button>
+
+        <span class="page-info">
+          {{ pagination.page }} / {{ pagination.totalPages }}
+        </span>
+
+        <button
+          class="page-btn"
+          :disabled="pagination.page === pagination.totalPages"
+          @click="goToNext"
+          title="Página siguiente"
+        >
+          &gt;
+        </button>
+
+        <button
+          class="page-btn"
+          :disabled="pagination.page === pagination.totalPages"
+          @click="goToLast"
+          title="Última página"
+        >
+          &gt;|
+        </button>
+      </div>
+
     </main>
   </div>
 </template>
 
 <script setup>
+import { Icon } from '@iconify/vue';
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import AccessibilityMenu from '../components/AccessibilityMenu.vue'
@@ -120,6 +167,13 @@ const filters = ref({
   query: '',
   minPrice: null,
   maxPrice: null
+})
+
+const pagination = ref({
+  page: 1,
+  limit: 20,
+  totalPages: 1,
+  totalCount: 0
 })
 
 // Computed para aplicar filtros en el frontend (ya que el backend hace la búsqueda principal)
@@ -143,19 +197,18 @@ const filteredProducts = computed(() =>
 const navigateToDetail = id => {
   router.push(`/products/${id}`)
 }
-
 const loadProducts = async () => {
   loading.value = true
   error.value = null
-  
+
   try {
     const response = await productoService.getAll({
       q: filters.value.query,
       minPrice: filters.value.minPrice,
-      maxPrice: filters.value.maxPrice
+      maxPrice: filters.value.maxPrice,
+      page: pagination.value.page
     })
-    
-    // Mapear campos del backend al formato esperado por el UI
+
     products.value = response.data.map(p => ({
       id: p.id,
       name: p.nombre,
@@ -165,23 +218,64 @@ const loadProducts = async () => {
       stock: p.stock,
       categoria: p.categoria
     }))
+
+    pagination.value.totalPages = response.pagination.totalPages
+    pagination.value.totalCount = response.pagination.totalCount
+    pagination.value.limit = response.pagination.limit
+
   } catch (err) {
-    console.error('Error cargando productos:', err)
-    error.value = 'No se pudieron cargar los productos. Intenta nuevamente.'
+    error.value = 'No se pudieron cargar los productos.'
     products.value = []
   } finally {
     loading.value = false
   }
 }
 
+const goToFirst = () => {
+  if (pagination.value.page !== 1) {
+    pagination.value.page = 1
+    loadProducts()
+  }
+}
+
+const goToPrev = () => {
+  if (pagination.value.page > 1) {
+    pagination.value.page--
+    loadProducts()
+  }
+}
+
+const goToNext = () => {
+  if (pagination.value.page < pagination.value.totalPages) {
+    pagination.value.page++
+    loadProducts()
+  }
+}
+
+const goToLast = () => {
+  if (pagination.value.page !== pagination.value.totalPages) {
+    pagination.value.page = pagination.value.totalPages
+    loadProducts()
+  }
+}
+
+watch(
+  () => [filters.value.query, filters.value.minPrice, filters.value.maxPrice],
+  () => {
+    pagination.value.page = 1
+    loadProducts()
+  }
+)
+
 // Debounce para búsqueda
 let searchTimeout = null
-watch(() => filters.value.query, () => {
-  clearTimeout(searchTimeout)
-  searchTimeout = setTimeout(() => {
+watch(
+  () => [filters.value.query, filters.value.minPrice, filters.value.maxPrice],
+  () => {
+    pagination.value.page = 1
     loadProducts()
-  }, 500)
-})
+  }
+)
 
 // Cargar productos al montar
 onMounted(() => {
@@ -329,5 +423,37 @@ onMounted(() => {
 
 .btn-cart:hover {
   background: #4d2100;
+}
+
+.pagination-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 3rem;
+}
+
+.page-btn {
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  background: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-weight: 700;
+  color: #9a3412;
+  min-width: 80px;
+  text-align: center;
+}
+
+.page-btn:hover {
+  border: 3px solid white;
 }
 </style>
