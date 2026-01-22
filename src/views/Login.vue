@@ -321,11 +321,13 @@ onMounted(async () => {
 
 const cargarCiudades = async () => {
   try {
-    const { data } = await axios.get(`${import.meta.env.VITE_BACKEND}ecom/ciudad/`);
+    const url = `${import.meta.env.VITE_BACKEND}ecom/ciudad/`;
+    console.log('INTENTANDO CARGAR CIUDADES DESDE:', url); 
+    const { data } = await axios.get(url);
     ciudades.value = data;
   } catch (error) {
-    console.error('Error al cargar ciudades:', error);
-    toast.error('No se pudieron cargar las ciudades');
+    console.warn('No se pudieron cargar las ciudades (probablemente base de datos vacía o error de red).', error.message);
+    ciudades.value = [];
   }
 };
 

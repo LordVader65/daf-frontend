@@ -15,6 +15,6 @@ api.interceptors.request.use((config) => {
 
 export const CiudadService = {
     getAll() {
-        return api.get('pos/ciudad');
+        return api.get('/pos/ciudad');
     },
 };
