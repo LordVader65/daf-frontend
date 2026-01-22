@@ -5,10 +5,15 @@
     <div class="header">
       <h2>Facturación</h2>
 
-      <button class="btn btn-primary" @click="goNuevaFactura">
-        <Icon icon="mdi:plus" />
-        Nueva factura
-      </button>
+      <div>
+        <button class="btn btn-secondary me-2" @click="router.push('/admin/dashboard')">
+          Regresar
+        </button>
+        <button class="btn btn-primary" @click="goNuevaFactura">
+          <Icon icon="mdi:plus" />
+          Nueva factura
+        </button>
+      </div>
     </div>
 
     <!-- BUSCADOR -->
@@ -36,7 +41,7 @@
         </thead>
 
         <tbody>
-          <tr v-for="fac in facturas" :key="fac.fac_codigo">
+          <tr v-for="fac in facturasFiltradas" :key="fac.fac_codigo">
             <td>{{ fac.fac_codigo }}</td>
             <td>{{ fac.cli_nombre?.trim() }}</td>
             <td>{{ formatter.format(new Date(fac.fac_fecha)) }}</td>
@@ -51,21 +56,6 @@
                 Ver
                 </button>
 
-                <button
-                v-if="fac.fac_estado === 'PEN'"
-                class="btn btn-sm btn-success ms-1"
-                @click="aprobarFactura(fac.fac_codigo)"
-                >
-                Aprobar
-                </button>
-
-                <button
-                v-if="fac.fac_estado === 'PEN'"
-                class="btn btn-sm btn-danger ms-1"
-                @click="anularFactura(fac.fac_codigo)"
-                >
-                Anular
-                </button>
             </td>
             </tr>
 
@@ -132,8 +122,8 @@ onMounted(loadFacturas)
 const facturasFiltradas = computed(() => {
   const q = search.value.toLowerCase()
   return facturas.value.filter(f =>
-    f.fac_codigo.toLowerCase().includes(q) ||
-    f.cliente_nombre.toLowerCase().includes(q)
+    String(f.fac_codigo || '').toLowerCase().includes(q) ||
+    String(f.cli_nombre || '').toLowerCase().includes(q)
   )
 })
 

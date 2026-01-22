@@ -22,8 +22,8 @@ export const FacturaService = {
         return api.get(`/pos/factura/${codigo}`)
     },
 
-    create() {
-        return api.post('/pos/factura')
+    create(payload) {
+        return api.post('/pos/factura', payload)
     },
 
     aprobar(codigo) {
