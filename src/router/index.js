@@ -83,7 +83,20 @@ const routes = [
     component: PerfilView
   },
 
-  /* Rutas de Administrador */
+  /* ===============================
+     RUTAS ECOMMERCE
+     =============================== */
+  {
+    path: '/carrito',
+    name: 'CartView',
+    component: () => import('../views/ecom/CartView.vue')
+  },
+  {
+    path: '/ecom/checkout',
+    name: 'CheckoutView',
+    component: () => import('../views/ecom/CheckoutView.vue')
+  },
+
   {
     path: '/admin',
     name: 'AdminLogin',

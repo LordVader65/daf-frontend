@@ -274,6 +274,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import axios from 'axios';
 import { Icon } from '@iconify/vue';
 import { toast } from '@/utils/toast';
@@ -310,7 +311,11 @@ const errors = reactive({
   cli_direccion: ''
 });
 
+const route = useRoute();
 onMounted(async () => {
+  if (route.query.mode === 'register') {
+    isLogin.value = false;
+  }
   await cargarCiudades();
 });
 
