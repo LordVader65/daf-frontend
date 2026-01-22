@@ -16,7 +16,7 @@ export const toast = {
     setTimeout(() => {
       toast.classList.remove('show');
       setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    }, 2000);
   },
 
   createContainer() {
@@ -31,7 +31,7 @@ export const toast = {
       style.textContent = `
         #toast-container {
           position: fixed;
-          top: 20px;
+          top: 80px;
           right: 20px;
           z-index: 9999;
           display: flex;

@@ -25,7 +25,7 @@
       <section v-else class="container my-5">
         <!-- Back Button -->
         <div class="mb-4">
-          <button @click="goBack" class="btn-back">
+          <button @click="goBack" class="btn btn-custom-dark">
             <iconify-icon icon="mdi:arrow-left" width="20"></iconify-icon>
             Volver al catálogo
           </button>
@@ -92,7 +92,7 @@
                 <button
                   class="btn-add-cart"
                   :disabled="product.stock <= 0"
-                  @click="addToCart"
+                  @click="addToCart()"
                 >
                   <iconify-icon icon="mdi:cart-plus" width="20"></iconify-icon>
                   {{ product.stock > 0 ? 'Agregar al carrito' : 'No disponible' }}
@@ -111,6 +111,8 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AccessibilityMenu from '../components/AccessibilityMenu.vue'
 import productoService from '../api/ecom/producto.service'
+import axios from 'axios'
+import { toast } from '../utils/toast.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -128,6 +130,36 @@ const product = ref({
   categoria: '',
   um_descripcion: ''
 })
+
+const addToCart = async () => {
+  try {
+    const token = JSON.parse(localStorage.getItem('client')).token;
+    if (!token) {
+      toast.info('Es necesario iniciar sesión');
+      router.push('/login')
+      return
+    }
+
+    await axios.post(
+      import.meta.env.VITE_BACKEND + 'ecom/carrito/',
+      { prd_codigo: product.value.id },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+
+    toast.success('Carrito modificado');
+  } catch (err) {
+    if (err.response?.status === 401) {
+      toast.info('Es necesario iniciar sesión');
+      router.push('/login')
+    } else {
+      toast.error('Error al ingresar producto al carrito');
+    }
+  }
+}
 
 const loadProduct = async () => {
   loading.value = true
@@ -158,11 +190,6 @@ const loadProduct = async () => {
 
 const goBack = () => {
   router.push('/products')
-}
-
-const addToCart = () => {
-  // TODO: Implementar funcionalidad de carrito
-  alert(`Producto "${product.value.name}" agregado al carrito (funcionalidad pendiente)`)
 }
 
 onMounted(() => {
@@ -200,29 +227,12 @@ onMounted(() => {
 /* ===============================
    BACK BUTTON
    =============================== */
-.btn-back {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background-color: #f3f4f6;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.btn-back:hover {
-  background-color: #e5e7eb;
-}
-
 .btn-custom-dark {
   background-color: #8f3e00;
   color: #ffffff;
   padding: 0.75rem 1.5rem;
   border-radius: 0.375rem;
-  border: none;
+  border: 1px solid yellow;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s;
