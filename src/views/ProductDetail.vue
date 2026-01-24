@@ -26,7 +26,7 @@
         <!-- Back Button -->
         <div class="mb-4">
           <button @click="goBack" class="btn btn-custom-dark">
-            <iconify-icon icon="mdi:arrow-left" width="20"></iconify-icon>
+            <Icon icon="mdi:arrow-left" width="20" />
             Volver al catálogo
           </button>
         </div>
@@ -65,11 +65,11 @@
 
               <!-- Stock Status -->
               <div class="stock-status mb-4">
-                <iconify-icon
+                <Icon
                   :icon="product.stock > 0 ? 'mdi:check-circle' : 'mdi:alert-circle'"
                   :class="product.stock > 0 ? 'text-success' : 'text-danger'"
                   width="20"
-                ></iconify-icon>
+                />
                 <span :class="product.stock > 0 ? 'text-success' : 'text-danger'">
                   {{ product.stock > 0 ? `${product.stock} disponibles` : 'Agotado' }}
                 </span>
@@ -94,7 +94,7 @@
                   :disabled="product.stock <= 0"
                   @click="addToCart()"
                 >
-                  <iconify-icon icon="mdi:cart-plus" width="20"></iconify-icon>
+                  <Icon icon="mdi:cart-plus" width="20" />
                   {{ product.stock > 0 ? 'Agregar al carrito' : 'No disponible' }}
                 </button>
               </div>
@@ -102,6 +102,22 @@
           </div>
         </div>
       </section>
+      <!-- Auth Logic Modal -->
+      <div v-if="showAuthModal" class="modal-overlay">
+        <div class="modal-content-custom">
+           <div class="text-center mb-4">
+              <i class="bi bi-exclamation-circle text-warning display-1"></i>
+           </div>
+           <h3 class="fw-bold text-center mb-3">¡Atención!</h3>
+           <p class="text-center text-muted mb-4 fs-5">
+             No estás registrado. Para agregar este producto necesito estar registrado al sistema.
+           </p>
+           <div class="d-grid gap-2">
+              <button class="btn btn-primary" @click="goToRegister">Registrarme</button>
+              <button class="btn btn-outline-secondary" @click="showAuthModal = false">Cancelar / Seguir viendo</button>
+           </div>
+        </div>
+      </div>
     </main>
   </div>
 </template>
@@ -111,11 +127,16 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AccessibilityMenu from '../components/AccessibilityMenu.vue'
 import productoService from '../api/ecom/producto.service'
-import axios from 'axios'
+import { Icon } from '@iconify/vue'
+import { useCartStore } from '../stores/cart.store'
+import { useClientStore } from '../stores/client.store'
 import { toast } from '../utils/toast.js'
 
 const route = useRoute()
 const router = useRouter()
+
+const cartStore = useCartStore()
+const clientStore = useClientStore()
 
 const loading = ref(true)
 const error = ref(null)
@@ -131,34 +152,34 @@ const product = ref({
   um_descripcion: ''
 })
 
+const showAuthModal = ref(false)
+
 const addToCart = async () => {
+  // Verificar sesión
+  clientStore.loadFromStorage()
+  if (!clientStore.token) {
+    showAuthModal.value = true
+    return
+  }
+
   try {
-    const token = JSON.parse(localStorage.getItem('client')).token;
-    if (!token) {
-      toast.info('Es necesario iniciar sesión');
-      router.push('/login')
-      return
-    }
-
-    await axios.post(
-      import.meta.env.VITE_BACKEND + 'ecom/carrito/',
-      { prd_codigo: product.value.id },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    )
-
-    toast.success('Carrito modificado');
+    await cartStore.addItem(product.value.id, 1)
+    toast.success('Producto agregado al carrito')
+    cartStore.openCart()
   } catch (err) {
     if (err.response?.status === 401) {
-      toast.info('Es necesario iniciar sesión');
+      toast.info('Tu sesión ha expirado')
       router.push('/login')
     } else {
-      toast.error('Error al ingresar producto al carrito');
+      console.error(err)
+      toast.error('No se pudo agregar al carrito')
     }
   }
+}
+
+const goToRegister = () => {
+  showAuthModal.value = false
+  router.push('/login?mode=register')
 }
 
 const loadProduct = async () => {
@@ -413,5 +434,35 @@ onMounted(() => {
   background-color: #000 !important;
   color: #ffff00 !important;
   border: 2px solid #ffffff !important;
+}
+
+/* Modal Custom Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-content-custom {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 </style>
