@@ -112,9 +112,10 @@ const remove = async () => {
           class="search-input"
           placeholder="Buscar por razón social o RUC..."
           aria-label="Buscar proveedor"
+          :disabled="loading"
         />
       </div>
-      <button @click="goCreate" class="btn-create">
+      <button @click="goCreate" class="btn-create" :disabled="loading">
         <Icon icon="mdi:plus" width="20" />
         Crear Proveedor
       </button>

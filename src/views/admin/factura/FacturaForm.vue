@@ -29,24 +29,40 @@
             
             <!-- CABECERA FACTURA NUEVA (AÑADIDO) -->
             <div v-if="isNueva" class="row mt-3 g-3">
-              <div class="col-md-6">
+              <div class="col-md-6 position-relative">
                 <label class="form-label">Cliente</label>
-               <select v-model="clienteSeleccionado" class="form-select">
-                <option :value="null">Seleccione cliente</option>
-                <option
-                  v-for="c in clientes"
-                  :key="c.cli_codigo"
-                  :value="c"
-                >
-                  {{ c.cli_ruc_ced }} - {{ c.cli_nombre }}
-                </option>
-              </select>
+                
+                <div class="searchable-select">
+                  <input 
+                    type="text"
+                    class="form-control"
+                    placeholder="🔍 Buscar o seleccionar cliente..."
+                    v-model="filtroCliente"
+                    @focus="showClientList = true"
+                    @blur="closeClientList"
+                  />
+                  
+                  <div v-if="showClientList && clientesFiltrados.length > 0" class="client-dropdown shadow-lg">
+                    <div 
+                      v-for="c in clientesFiltrados" 
+                      :key="c.cli_codigo"
+                      class="client-item"
+                      @click="seleccionarCliente(c)"
+                    >
+                      <div class="fw-bold">{{ c.cli_nombre }}</div>
+                      <div class="small text-muted">{{ c.cli_ruc_ced }}</div>
+                    </div>
+                  </div>
 
-              <div v-if="clienteSeleccionado" class="mt-2">
-                <p><strong>RUC / Cédula:</strong> {{ factura.cli_ruc_ced || '-' }}</p>
-                <p><strong>Cliente:</strong> {{ factura.cli_nombre || '-' }}</p>
-              </div>
+                  <div v-if="showClientList && clientesFiltrados.length === 0" class="client-dropdown p-3 text-muted small shadow-lg">
+                    No se encontraron clientes
+                  </div>
+                </div>
 
+                <div v-if="clienteSeleccionado" class="mt-2 p-2 bg-light rounded border border-info-subtle shadow-sm">
+                  <p class="mb-0"><strong>RUC / Cédula:</strong> {{ factura.cli_ruc_ced || '-' }}</p>
+                  <p class="mb-0"><strong>Seleccionado:</strong> {{ factura.cli_nombre || '-' }}</p>
+                </div>
               </div>
               <div class="col-md-6">
                 <label class="form-label">Descripción</label>
@@ -54,7 +70,6 @@
                   type="text"
                   class="form-control"
                   v-model="factura.fac_descripcion"
-                  placeholder="Descripción de la factura"
                 />
               </div>
               <div class="col-12">
@@ -67,6 +82,9 @@
                 >
                   Guardar Factura
                 </button>
+                <div v-if="!clienteSeleccionado" class="text-danger small mt-1">
+                  * Por favor, seleccione un cliente para continuar.
+                </div>
               </div>
             </div>
           </div>
@@ -74,7 +92,7 @@
            
             <button
             class="btn btn-secondary me-2"
-            @click="router.push('/admin/factura')"
+            @click="irAListado"
             >
             Regresar
             </button>
@@ -88,21 +106,24 @@
               Imprimir
             </button>
 
-            <template v-if="isPEN && !isNueva">
+            <template v-if="!isNueva && !isANU">
           
-            <button class="btn btn-success" 
-            :disabled="!puedeAprobar" 
-            @click="aprobarFactura"
-            > 
-            Aprobar
-            </button>
+              <button 
+                v-if="isPEN"
+                class="btn btn-success" 
+                :disabled="!puedeAprobar" 
+                @click="aprobarFactura"
+              > 
+                Aprobar
+              </button>
 
-            <button class="btn btn-danger ms-2" 
-            :disabled="!puedeAnular"
-            @click="anularFactura"
-            >
-            Anular
-            </button> 
+              <button 
+                class="btn btn-danger ms-2" 
+                :disabled="!puedeAnular"
+                @click="anularFactura"
+              >
+                Anular
+              </button> 
 
             </template>
 
@@ -138,6 +159,7 @@
 
           <div class="col-md-3 d-grid">
             <button
+              v-if="!isNueva"
               class="btn btn-primary mb-2"
               :disabled="!puedeGuardar"
               @click="guardarDetalle"
@@ -190,6 +212,7 @@
                   min="1"
                   v-model.number="d.pxfa_cantidad"
                   :disabled="!puedeEditarDetalle"
+                  @input="markChanged"
                 />
               </td>
 
@@ -197,6 +220,7 @@
               <td>{{ money(Number(d.prd_precio_venta) * Number(d.pxfa_cantidad)) }}</td>
               <td class="text-center">
                 <button
+                  v-if="isPEN"
                   class="btn btn-danger btn-sm"
                   @click="eliminarDetalle(index)"
                   :disabled="!puedeEditarDetalle"
@@ -306,6 +330,8 @@ const normalizedEstado = computed(() => {
 })
 
 const isPEN = computed(() => normalizedEstado.value === 'PEN')
+const isAPR = computed(() => normalizedEstado.value === 'APR')
+const isANU = computed(() => normalizedEstado.value === 'ANU')
 
 
 const route = useRoute()
@@ -318,6 +344,35 @@ const isNueva = computed(() => facCodigo.value === 'NUEVA')
 // ✅ AÑADIDO: cabecera (cliente) para FACTURA NUEVA
 const clientes = ref([])
 const clienteSeleccionado = ref(null)
+const filtroCliente = ref('')
+const showClientList = ref(false)
+
+const clientesFiltrados = computed(() => {
+  const q = filtroCliente.value.toLowerCase().trim()
+  if (!q) return clientes.value
+  return clientes.value.filter(c => 
+    c.cli_nombre.toLowerCase().includes(q) || 
+    c.cli_ruc_ced?.includes(q)
+  )
+})
+
+const seleccionarCliente = (c) => {
+  clienteSeleccionado.value = c
+  filtroCliente.value = c.cli_nombre
+  showClientList.value = false
+}
+
+const closeClientList = () => {
+  setTimeout(() => {
+    showClientList.value = false
+  }, 200)
+}
+
+watch(() => route.params.id, (newId) => {
+  if (newId) {
+    loadFactura()
+  }
+})
 
 watch(clienteSeleccionado, (cli) => {
   if (!cli) return
@@ -466,9 +521,9 @@ const nuevoDetalle = ref({
 =========================== */
 
 const esPendiente = computed(() => isPEN.value)
-const puedeGuardar = computed(() => isPEN.value)
-const puedeAprobar = computed(() => isPEN.value)
-const puedeAnular  = computed(() => isPEN.value)
+const puedeGuardar = computed(() => isPEN.value && hasChanges.value)
+const puedeAprobar = computed(() => isPEN.value && !hasChanges.value)
+const puedeAnular  = computed(() => isPEN.value || isAPR.value)
 const isEditable = computed(() => isPEN.value)   
 const puedeEditarDetalle = computed(() => isPEN.value)
 
@@ -513,8 +568,10 @@ const loadFactura = async () => {
   if (isNueva.value) {
     factura.value = {
       fac_codigo: null,
-      estado: 'PEN', 
-      fac_descripcion: factura.value.fac_descripcion || ''
+      fac_estado: 'PEN', 
+      estado: 'PEN',
+      fac_descripcion: factura.value.fac_descripcion || '',
+      fac_fecha: new Date().toISOString()
     }
     detalle.value = []
     return
@@ -542,8 +599,6 @@ const loadFactura = async () => {
   estado: facturaApi.fac_estado?.toString().trim() || 'PEN'
 }
 
-  console.log('FAC_CODIGO EN STATE:', factura.value.fac_codigo)
-
   detalle.value = Array.isArray(detalleApi)
   ? detalleApi.map(d => ({
       ...d,
@@ -554,19 +609,20 @@ const loadFactura = async () => {
   : []
 
 
-  nextTick(() => {
-    factura.value.fac_subtotal = subtotal.value
-    factura.value.fac_iva = iva.value
-    factura.value.fac_total = total.value
-  })
+    nextTick(() => {
+      factura.value.fac_subtotal = subtotal.value
+      factura.value.fac_iva = iva.value
+      factura.value.fac_total = total.value
+      hasChanges.value = false
+    })
 
-} catch (e) {
-  console.error('ERROR loadFactura:', e)
-  toast.error('Error al cargar factura')
+  } catch (e) {
+    console.error('ERROR loadFactura:', e)
+    toast.error('Error al cargar factura')
+  } finally {
+    loading.value = false
+  }
 }
-
-}
-console.log('LOAD FACTURA → fac_codigo:', factura.value.fac_codigo)
 
 /* ===========================
    ACTIONS
@@ -584,6 +640,21 @@ const addDetalle = async () => {
       return
     }
 
+    // ✅ VALIDACIÓN: Evitar productos duplicados en el detalle
+    const existe = detalle.value.find(d => d.prd_codigo.trim() === producto.prd_codigo.trim())
+    if (existe) {
+      toast.warning(`El producto "${producto.prd_descripcion.trim()}" ya está en la lista. Si desea más unidades, por favor actualice la cantidad directamente en la tabla.`)
+      loading.value = false
+      return
+    }
+
+    // ✅ VALIDACIÓN: Control de Stock disponible
+    if (nuevoDetalle.value.pxfa_cantidad > (producto.prd_stock || 0)) {
+        toast.error(`Stock insuficiente. Solo hay ${producto.prd_stock} unidades disponibles de "${producto.prd_descripcion.trim()}".`)
+        loading.value = false
+        return
+    }
+
     // CASO 1: Factura Nueva (Solo Frontend)
     if (isNueva.value) {
         detalle.value.push({
@@ -595,7 +666,7 @@ const addDetalle = async () => {
         })
         
         nuevoDetalle.value = { prd_codigo: '', pxfa_cantidad: 1 }
-        toast.success('Detalle agregado (Local)')
+        toast.info('Producto registrado temporalmente (Pendiente de guardar)')
         loading.value = false
         return
     }
@@ -612,7 +683,8 @@ const addDetalle = async () => {
     if (res.data.detalle) detalle.value = res.data.detalle
 
     nuevoDetalle.value = { prd_codigo: '', pxfa_cantidad: 1 }
-    hasChanges.value = true
+    // Al agregar un ítem ya se sincroniza con la BD, por lo que no hay "cambios pendientes" en las cantidades
+    hasChanges.value = false
 
     toast.success('Detalle agregado')
   } catch (e) {
@@ -632,6 +704,9 @@ const onCantidadChange = (item) => {
 const eliminarDetalle = async (index) => {
   const item = detalle.value[index]
 
+  const confirm = window.confirm('¿Está seguro de que desea eliminar este producto de la factura?')
+  if (!confirm) return
+
   // CASO 1: aún no está en BD (factura nueva)
   if (!item.pxfa_codigo) {
     detalle.value.splice(index, 1)
@@ -647,6 +722,7 @@ const eliminarDetalle = async (index) => {
     if (res.data.factura) factura.value = res.data.factura
     if (res.data.detalle) detalle.value = res.data.detalle
 
+    hasChanges.value = false
     toast.success('Detalle eliminado')
   } catch (e) {
     toast.error(e.response?.data?.message || 'Error al eliminar detalle')
@@ -717,28 +793,25 @@ const guardarFactura = async () => {
 
 
 const guardarDetalle = async () => {
-  console.log(
-  'GUARDAR DETALLE → fac_codigo:',
-  factura.value.fac_codigo,
-  'isNueva:',
-  isNueva.value
-)
-
   loading.value = true
   try {
+    // ✅ VALIDACIÓN: Verificar stock antes de guardar cambios de cantidad
     for (const d of detalle.value) {
-      console.log(
-        'GUARDAR DETALLE → fac_codigo:',
-        factura.value.fac_codigo,
-        'isNueva:',
-        isNueva.value
-      )
+      const p = productos.value.find(prod => clean(prod.prd_codigo) === clean(d.prd_codigo))
+      if (p && Number(d.pxfa_cantidad) > Number(p.prd_stock)) {
+          toast.error(`No puede guardar. Stock insuficiente para "${p.prd_descripcion.trim()}" (Disponible: ${p.prd_stock}).`)
+          loading.value = false
+          return
+      }
+    }
+
+    for (const d of detalle.value) {
       await FacturaService.updateDetalle(d.pxfa_codigo, {
         pxfa_cantidad: d.pxfa_cantidad
       })
     }
     hasChanges.value = false
-    toast.success('Cambios guardados')
+    toast.success('Detalle de factura actualizado')
     await loadFactura()
   } catch {
     toast.error('Error al guardar cambios')
@@ -748,14 +821,64 @@ const guardarDetalle = async () => {
 }
 
 const aprobarFactura = async () => {
-  await FacturaService.aprobar(factura.value.fac_codigo)
-  toast.success('Factura aprobada')
-  router.push('/admin/factura')
+  if (loading.value) return
+  loading.value = true
+  try {
+    await FacturaService.aprobar(factura.value.fac_codigo)
+    toast.success('Factura aprobada')
+    router.push('/admin/factura')
+  } catch (e) {
+    console.error('ERROR APROBAR:', e)
+    toast.error(e.response?.data?.message || 'Error al aprobar factura')
+  } finally {
+    loading.value = false
+  }
 }
 
 const anularFactura = async () => {
-  await FacturaService.anular(factura.value.fac_codigo)
-  toast.success('Factura anulada')
+  if (loading.value) return
+  
+  const confirm = window.confirm('¿Está seguro de que desea anular esta factura? Esta acción no se puede deshacer.')
+  if (!confirm) return
+
+  loading.value = true
+  try {
+    await FacturaService.anular(factura.value.fac_codigo)
+    toast.success('Factura anulada')
+    router.push('/admin/factura')
+  } catch (e) {
+    console.error('ERROR ANULAR:', e)
+    toast.error(e.response?.data?.message || 'Error al anular factura')
+  } finally {
+    loading.value = false
+  }
+}
+
+const irAListado = async () => {
+  if (isNueva.value) {
+    router.push('/admin/factura')
+    return
+  }
+
+  // Si es PEN y el detalle está vacío, sugerir eliminar
+  if (isPEN.value && detalle.value.length === 0) {
+    const confirm = window.confirm('Esta factura no tiene productos registrados y quedará como un registro vacío. ¿Desea eliminarla antes de salir?')
+    if (confirm) {
+      loading.value = true
+      try {
+        await FacturaService.delete(factura.value.fac_codigo)
+        toast.info('Factura vacía eliminada')
+      } catch (e) {
+        console.error('ERROR DELETE EMPTY FACTURA:', e)
+      } finally {
+        loading.value = false
+      }
+    } else {
+      // Si el usuario cancela (dice "No"), se queda en la pantalla para agregar productos
+      return
+    }
+  }
+
   router.push('/admin/factura')
 }
 
@@ -776,3 +899,47 @@ const clean = v => (v || '').trim()
 
 
 </script>
+
+<style scoped>
+.searchable-select {
+  position: relative;
+}
+
+.client-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  border-radius: 8px;
+  margin-top: 5px;
+  max-height: 250px;
+  overflow-y: auto;
+  border: 1px solid #dee2e6;
+}
+
+.client-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #f8f9fa;
+  transition: background 0.2s;
+}
+
+.client-item:hover {
+  background: #f0f7ff;
+}
+
+.client-item:last-child {
+  border-bottom: none;
+}
+
+/* Scrollbar personalizada */
+.client-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+.client-dropdown::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 10px;
+}
+</style>
