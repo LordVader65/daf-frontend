@@ -14,8 +14,8 @@ api.interceptors.request.use(config => {
 })
 
 export const ProveedorService = {
-    getAll() {
-        return api.get('/pos/proveedor')
+    getAll(params = {}) {
+        return api.get('/pos/proveedor', { params })
     },
 
     getById(id) {

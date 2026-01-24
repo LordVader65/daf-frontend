@@ -1,35 +1,49 @@
 <template>
-  <div class="admin-container">
-
-    <!-- HEADER -->
-    <div class="header">
-      <h2>Facturación</h2>
-
-      <div>
-        <button class="btn btn-secondary me-2" @click="router.push('/admin/dashboard')">
-          Regresar
-        </button>
-        <button class="btn btn-primary" @click="goNuevaFactura">
-          <Icon icon="mdi:plus" />
-          Nueva factura
-        </button>
-      </div>
+  <div class="crud-container">
+    <!-- TOP BAR -->
+    <div class="top-bar">
+      <button @click="router.push('/admin/dashboard')" class="btn-back" aria-label="Regresar">
+        <Icon icon="mdi:arrow-left" width="24" />
+        Regresar
+      </button>
     </div>
 
-    <!-- BUSCADOR -->
-    <div class="filters">
-      <input
-        v-model="search"
-        type="text"
-        placeholder="Buscar por código o cliente"
-        class="input-search"
-      />
+    <!-- HEADER -->
+    <div class="page-header">
+      <h1>Gestión de Facturación</h1>
+      <p class="text-muted">Administre el registro de sus facturas emitidas</p>
+    </div>
+
+    <!-- BUSCADOR Y ACCIONES -->
+    <div class="search-section">
+      <div class="search-bar">
+        <input
+          v-model="search"
+          type="text"
+          class="search-input"
+          placeholder="Buscar por código o cliente..."
+        />
+      </div>
+      <button @click="goNuevaFactura" class="btn-create">
+        <Icon icon="mdi:plus" width="20" />
+        Nueva factura
+      </button>
     </div>
 
     <!-- TABLA -->
-    <div class="table-outer-container shadow-sm border rounded">
-      <div class="table-responsive custom-scrollbar">
-        <table class="table">
+    <div class="table-container">
+      <div v-if="loading" class="loading-state">
+        <Icon icon="mdi:loading" class="spinner" width="48" />
+        <p>Cargando datos...</p>
+      </div>
+
+      <div v-else-if="facturas.length === 0" class="empty-state">
+        <Icon icon="mdi:invoice-list-outline" width="64" />
+        <p>No se encontraron facturas</p>
+      </div>
+
+      <div v-else class="table-scroll">
+        <table class="data-table">
           <thead>
             <tr>
               <th>Código</th>
@@ -37,31 +51,33 @@
               <th>Fecha</th>
               <th>Total</th>
               <th>Estado</th>
-              <th style="width: 160px;">Acciones</th>
+              <th style="width: 120px;">Acciones</th>
             </tr>
           </thead>
 
           <tbody>
             <tr v-for="fac in facturas" :key="fac.fac_codigo">
-              <td>{{ fac.fac_codigo }}</td>
+              <td>
+                <span class="codigo">{{ fac.fac_codigo }}</span>
+              </td>
               <td>{{ fac.cli_nombre?.trim() }}</td>
               <td>{{ formatter.format(new Date(fac.fac_fecha)) }}</td>
               <td>${{ fac.fac_total }}</td>
               <td>
-                  <span class="badge" :class="badgeClass(fac.fac_estado)">
+                <span class="badge" :class="badgeClass(fac.fac_estado)">
                   {{ fac.fac_estado }}
-                  </span>
+                </span>
               </td>
               <td>
-                  <button class="btn btn-sm btn-primary" @click="verFactura(fac.fac_codigo)">
-                  Ver
+                <div class="action-buttons">
+                  <button 
+                    class="btn-action btn-edit" 
+                    @click="verFactura(fac.fac_codigo)"
+                    title="Ver detalle"
+                  >
+                    Ver
                   </button>
-              </td>
-            </tr>
-
-            <tr v-if="facturas.length === 0">
-              <td colspan="6" class="empty">
-                No se encontraron facturas
+                </div>
               </td>
             </tr>
           </tbody>
@@ -70,47 +86,49 @@
     </div>
 
     <!-- PAGINACIÓN -->
-    <div class="pagination-container mt-4 d-flex justify-content-between align-items-center">
-      <div class="text-muted small">
-        Mostrando {{ facturas.length }} de {{ totalRows }} facturas
-      </div>
-      <div class="pagination-controls d-flex gap-2">
-        <button 
-          class="btn btn-outline-secondary btn-sm" 
-          :disabled="page === 1"
-          @click="changePage(1)"
-        >
-          <Icon icon="mdi:chevron-double-left" />
-        </button>
-        <button 
-          class="btn btn-outline-secondary btn-sm" 
-          :disabled="page === 1"
-          @click="changePage(page - 1)"
-        >
-          <Icon icon="mdi:chevron-left" />
-        </button>
-        
-        <span class="align-self-center px-2 small fw-bold">
-          Página {{ page }} de {{ totalPages }}
-        </span>
+    <div class="pagination">
+      <button 
+        class="btn-pagination" 
+        :disabled="page === 1"
+        @click="changePage(1)"
+        title="Primera página"
+      >
+        <Icon icon="mdi:chevron-double-left" />
+      </button>
+      <button 
+        class="btn-pagination" 
+        :disabled="page === 1"
+        @click="changePage(page - 1)"
+        title="Anterior"
+      >
+        <Icon icon="mdi:chevron-left" />
+      </button>
+      
+      <span class="page-info">
+        Página {{ page }} de {{ totalPages }}
+      </span>
 
-        <button 
-          class="btn btn-outline-secondary btn-sm" 
-          :disabled="page === totalPages"
-          @click="changePage(page + 1)"
-        >
-          <Icon icon="mdi:chevron-right" />
-        </button>
-        <button 
-          class="btn btn-outline-secondary btn-sm" 
-          :disabled="page === totalPages"
-          @click="changePage(totalPages)"
-        >
-          <Icon icon="mdi:chevron-double-right" />
-        </button>
-      </div>
+      <button 
+        class="btn-pagination" 
+        :disabled="page === totalPages"
+        @click="changePage(page + 1)"
+        title="Siguiente"
+      >
+        <Icon icon="mdi:chevron-right" />
+      </button>
+      <button 
+        class="btn-pagination" 
+        :disabled="page === totalPages"
+        @click="changePage(totalPages)"
+        title="Última página"
+      >
+        <Icon icon="mdi:chevron-double-right" />
+      </button>
     </div>
 
+    <div class="text-center text-muted small mt-2">
+      Mostrando {{ facturas.length }} de {{ totalRows }} facturas
+    </div>
   </div>
 </template>
 
@@ -129,6 +147,7 @@ import { formatter } from '@/utils/timestamp-formatter'
 const router = useRouter()
 const facturas = ref([])
 const search = ref('')
+const loading = ref(false)
 
 // Paginación
 const page = ref(1)
@@ -143,6 +162,7 @@ const totalPages = ref(0)
 // -----------------------------
 
 const loadFacturas = async () => {
+  loading.value = true
   try {
     const params = {
       page: page.value,
@@ -158,6 +178,8 @@ const loadFacturas = async () => {
     toast.error('Error al cargar facturas')
     console.error('loadFacturas:', error)
     facturas.value = []
+  } finally {
+    loading.value = false
   }
 }
 
@@ -227,10 +249,10 @@ const anularFactura = async (codigo) => {
 
 const badgeClass = (estado) => {
   return {
-    PEN: 'bg-warning',
-    APR: 'bg-success',
-    ANU: 'bg-danger'
-  }[estado] || 'bg-secondary'
+    PEN: 'badge-warn', // Ajustado para crud-view si existe o personalizado abajo
+    APR: 'badge-success',
+    ANU: 'badge-danger'
+  }[estado] || 'badge-secondary'
 }
 
 // -----------------------------
@@ -246,120 +268,33 @@ const estadoClass = (estado) => {
 }
 </script>
 
+<style scoped src="../../../assets/css/admin/crud-view.css"></style>
+
 <style scoped>
-.admin-container {
-  padding: 20px;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.filters {
-  margin: 15px 0;
-}
-
-.input-search {
-  width: 300px;
-  padding: 8px;
-}
-
-.table-outer-container {
-  background: white;
-  margin-top: 10px;
-}
-
-.table-responsive {
-  max-height: 60vh;
-  overflow-y: auto;
-  overflow-x: auto;
-}
-
-/* Scrollbar personalizada Profesional */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #cbd5e0;
-  border-radius: 10px;
-  border: 2px solid #f1f1f1;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #a0aec0;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 0;
-}
-
-.table thead th {
-  position: sticky;
-  top: 0;
-  background: #f8f9fa;
-  z-index: 10;
-  box-shadow: inset 0 -1px 0 #ddd;
-}
-
-.table th,
-.table td {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-.actions {
-  display: flex;
-  gap: 6px;
-}
-
-.btn-icon {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-icon.success {
-  color: green;
-}
-
-.btn-icon.danger {
-  color: red;
-}
-
-.badge {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-.badge.pen {
-  background: #fff3cd;
+/* Ajustes específicos para Factura que no están en crud-view.css */
+.badge-warn {
+  background-color: #fff3cd;
   color: #856404;
 }
 
-.badge.apr {
-  background: #d4edda;
+.badge-success {
+  background-color: #d4edda;
   color: #155724;
 }
 
-.badge.anu {
-  background: #f8d7da;
+.badge-danger {
+  background-color: #f8d7da;
   color: #721c24;
 }
 
-.empty {
-  text-align: center;
-  padding: 20px;
+.badge-secondary {
+  background-color: #e2e8f0;
+  color: #4a5568;
+}
+
+.codigo {
+  font-family: inherit;
+  font-weight: 600;
+  color: #944000;
 }
 </style>
