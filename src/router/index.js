@@ -254,19 +254,26 @@ const router = createRouter({
 import { obtainToken } from '@/utils/obtain-token';
 
 router.beforeEach((to, from, next) => {
-  const token = obtainToken();
+  const adminToken = obtainToken();
+  const clientToken = localStorage.getItem('client');
 
   const isAdminRoute = to.path.startsWith('/admin');
   const isLoginRoute = to.path === '/admin';
+  const isEcomCheckout = to.path === '/ecom/checkout';
 
   // 1. Rutas admin requieren token
-  if (isAdminRoute && !isLoginRoute && !token) {
+  if (isAdminRoute && !isLoginRoute && !adminToken) {
     return next('/admin');
   }
 
-  // 2. Si ya está logueado, no mostrar login
-  if (isLoginRoute && token) {
+  // 2. Si ya está logueado como admin, no mostrar login
+  if (isLoginRoute && adminToken) {
     return next('/admin/dashboard');
+  }
+
+  // 3. Rutas de checkout requieren login de cliente
+  if (isEcomCheckout && !clientToken) {
+    return next('/login');
   }
 
   next();

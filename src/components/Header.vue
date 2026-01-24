@@ -9,6 +9,7 @@
   const cartStore = useCartStore();
 
   const isMenuOpen = ref(false);
+  const showProfileMenu = ref(false);
   const isAuthenticated = ref(false);
 
   const isAdmin = computed(() => route.path.startsWith('/admin'));
@@ -20,11 +21,19 @@
       // Cargamos el carrito si está logueado
       await cartStore.fetchCart();
     }
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (event) => {
+      const dropdown = document.querySelector('.dropdown');
+      if (dropdown && !dropdown.contains(event.target)) {
+        showProfileMenu.value = false;
+      }
+    });
   });
 
   const logout = () => {
     localStorage.removeItem("client");
     isAuthenticated.value = false;
+    showProfileMenu.value = false;
     router.push('/');
   };
 
@@ -34,6 +43,10 @@
 
   const closeMenu = () => {
     isMenuOpen.value = false;
+  };
+  
+  const toggleProfileMenu = () => {
+    showProfileMenu.value = !showProfileMenu.value;
   };
 </script>
 
@@ -96,30 +109,31 @@
       </div>
 
       <div class="dropdown">
-        <a class="cart-btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-         <!-- <Icon icon="mingcute:user-1-line" width="32px" height="32px" /> -->
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <button 
+          class="cart-btn dropdown-toggle" 
+          type="button" 
+          id="dropdownMenuLink" 
+          @click="toggleProfileMenu"
+          aria-expanded="false" 
+          aria-label="Menú de usuario"
+          style="background-color: #fff5e6; border-radius: 50%; width: 40px; height: 40px; padding: 0;"
+        >
+         <Icon icon="mingcute:user-1-line" width="32px" height="32px" />
+        </button>
+        <ul class="dropdown-menu" :class="{ 'show': showProfileMenu }" aria-labelledby="dropdownMenuLink" style="right: 0; left: auto;">
           <li v-if="!isAuthenticated">
-            <router-link class="dropdown-item" to="/login">
-              Registrarse
+            <router-link class="dropdown-item" to="/login" @click="showProfileMenu = false">
+              Iniciar Sesión
             </router-link>
           </li>
 
           <!-- Usuario Registrado -->
           <template v-else>
             <li>
-              <router-link class="dropdown-item" to="/profile">
+              <router-link class="dropdown-item" to="/profile" @click="showProfileMenu = false">
                 Mi Perfil
               </router-link>
             </li>
-
-            <!-- <li v-if="!isAdmin">
-              <router-link class="dropdown-item" to="/carrito">
-                Mi Carrito
-              </router-link>
-            </li> -->
-
             <li>
               <a class="dropdown-item text-danger" href="#" @click.prevent="logout">
                 Cerrar Sesión

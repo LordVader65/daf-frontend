@@ -141,7 +141,7 @@
             <select v-model="nuevoDetalle.prd_codigo" class="form-select">
               <option value="">Seleccione producto</option>
               <option v-for="p in productos" :key="p.prd_codigo" :value="p.prd_codigo">
-                {{ p.prd_descripcion }}
+                {{ p.prd_nombre }}
               </option>
             </select>
           </div>
@@ -465,14 +465,14 @@ const exportToPDF = () => {
 const getProductoNombre = (prdCodigo) => {
   const codigo = clean(prdCodigo)
   const p = productos.value.find(x => clean(x.prd_codigo) === codigo)
-  return p?.prd_descripcion || codigo
+  return p?.prd_nombre || codigo
 }
 
  const getProductoLabel = (prdCodigo) => {
   const code = clean(prdCodigo)
   const p = productos.value?.find(x => clean(x.prd_codigo) === code)
   // En tu BD el texto es prd_descripcion (no prd_nombre)
-  return p ? clean(p.prd_descripcion) : code
+  return p ? clean(p.prd_nombre) : code
 }
 
 
@@ -493,7 +493,7 @@ const loadClientes = async () => {
 const loadProductos = async () => {
   try {
     const res = await ProductoService.getAll()
-    productos.value = res.data.data   // ✅ AQUÍ está el array real
+    productos.value = res.data?.data ?? []  // ✅ AQUÍ está el array real
   } catch (e) {
     toast.error('Error al cargar productos')
     productos.value = []
