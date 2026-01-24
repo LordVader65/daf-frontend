@@ -148,6 +148,22 @@
         </button>
       </div>
 
+      <!-- Auth Logic Modal -->
+      <div v-if="showAuthModal" class="modal-overlay">
+        <div class="modal-content-custom">
+           <div class="text-center mb-4">
+              <i class="bi bi-exclamation-circle text-warning display-1"></i>
+           </div>
+           <h3 class="fw-bold text-center mb-3">¡Atención!</h3>
+           <p class="text-center text-muted mb-4 fs-5">
+             No estás registrado. Para agregar este producto necesito estar registrado al sistema.
+           </p>
+           <div class="d-grid gap-2">
+              <button class="btn btn-primary" @click="goToRegister">Registrarme</button>
+              <button class="btn btn-outline-secondary" @click="showAuthModal = false">Cancelar / Seguir viendo</button>
+           </div>
+        </div>
+      </div>
     </main>
   </div>
 </template>
@@ -158,8 +174,11 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import AccessibilityMenu from '../components/AccessibilityMenu.vue'
 import productoService from '../api/ecom/producto.service'
-import axios from 'axios';
+import { useCartStore } from '../stores/cart.store'
+import { useClientStore } from '../stores/client.store'
+// import axios from 'axios'; // Ya no se usa directamente
 import { toast } from '../utils/toast.js'
+
 
 const router = useRouter()
 const loading = ref(true)
@@ -197,38 +216,40 @@ const filteredProducts = computed(() =>
   })
 )
 
+const cartStore = useCartStore()
+const clientStore = useClientStore()
+
+const showAuthModal = ref(false)
+
 const addToCart = async id => {
+  // Verificar sesión
+  clientStore.loadFromStorage()
+  if (!clientStore.token) {
+    showAuthModal.value = true
+    return
+  }
+
   try {
-    const product = products.value.find(p => p.id === id)
-    if (!product) return
-
-    const token = JSON.parse(localStorage.getItem('client')).token;
-    if (!token) {
-      toast.info('Es necesario iniciar sesión');
-      router.push('/login')
-      return
-    }
-
-    await axios.post(
-      import.meta.env.VITE_BACKEND + 'ecom/carrito/',
-      { prd_codigo: product.id },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }
-    )
-
-    toast.success('Carrito modificado');
+    await cartStore.addItem(id, 1)
+    toast.success('Producto agregado al carrito')
+    cartStore.openCart()
   } catch (err) {
     if (err.response?.status === 401) {
-      toast.info('Es necesario iniciar sesión');
-      router.push('/login')
+       // Si el token expiró, también mostrar modal o redirigir
+       // En este caso, redirigimos al login directo o usamos el modal
+       toast.info('Tu sesión ha expirado')
+       router.push('/login')
     } else {
-      toast.error('Error al ingresar producto al carrito');
+      toast.error('No se pudo agregar al carrito')
     }
   }
 }
+
+const goToRegister = () => {
+  showAuthModal.value = false
+  router.push('/login?mode=register')
+}
+
 
 const navigateToDetail = id => {
   router.push(`/products/${id}`)
@@ -492,5 +513,35 @@ onMounted(() => {
 
 .page-btn:hover {
   border: 3px solid white;
+}
+
+/* Modal Custom Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-content-custom {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 </style>

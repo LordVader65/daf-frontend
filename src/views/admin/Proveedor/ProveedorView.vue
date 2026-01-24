@@ -3,12 +3,10 @@ import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { Icon } from "@iconify/vue";
 import { ProveedorService } from '@/api/proveedor.service';
-import { CiudadService } from '@/api/ciudad.service';
 import { toast } from '@/utils/toast';
 
 const router = useRouter();
 const proveedores = ref([]);
-const ciudades = ref([]);
 const search = ref('');
 const loading = ref(false);
 const error = ref(null);
@@ -30,22 +28,13 @@ const goEdit = (id) => router.push(`/admin/proveedor/form/${id}`);
 const load = async () => {
   loading.value = true;
   error.value = null;
+
   try {
-    const [provResponse, ciuResponse] = await Promise.all([
-      ProveedorService.getAll(),
-      CiudadService.getAll()
-    ]);
-    
-    proveedores.value = provResponse.data;
-    ciudades.value = ciuResponse.data;
+    const response = await ProveedorService.getAll();
+    proveedores.value = response.data;
   } catch (err) {
-    if (err.response?.status === 401) {
-      localStorage.removeItem('user');
-      router.push('/admin/login');
-    } else {
-      error.value = 'Error al cargar datos';
-      toast.error('Error al cargar datos');
-    }
+    error.value = 'Error al cargar proveedores';
+    toast.error('Error al cargar proveedores');
   } finally {
     loading.value = false;
   }
@@ -53,15 +42,6 @@ const load = async () => {
 
 onMounted(load);
 
-/* ===============================
-   HELPER
-   =============================== */
-const getNombreCiudad = (ct_codigo) => {
-  if (!ct_codigo) return 'Sin ciudad';
-  const codeToFind = String(ct_codigo).trim();
-  const ciudad = ciudades.value.find(c => String(c.ct_codigo).trim() === codeToFind);
-  return ciudad ? ciudad.ct_descripcion : 'Sin ciudad';
-};
 
 /* ===============================
    FILTRO
@@ -175,9 +155,7 @@ const remove = async () => {
                 <span class="codigo">{{ p.prv_ruc }}</span>
               </td>
               <td>{{ p.prv_celular }}</td>
-              <td>
-                {{ getNombreCiudad(p.ct_codigo) }}
-              </td>
+             <td>{{ p.ciudad_nombre || 'Sin ciudad' }}</td>
               <td>
                 <div class="action-buttons">
                   <button

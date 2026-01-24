@@ -2,13 +2,37 @@
   import { ref, onMounted } from 'vue';
   import { Icon } from "@iconify/vue";
   import { useRouter } from "vue-router";
+  import { useCartStore } from '../stores/cart.store';
+
   const router = useRouter();
+  const cartStore = useCartStore();
   const isMenuOpen = ref(false);
   const isAuthenticated = ref(false);
 
-  onMounted(() => {
+  onMounted(async () => {
     const token = localStorage.getItem("client");
+
+import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
+
+const isAdmin = computed(() => route.path.startsWith('/admin'))
+
+onMounted(() => {
+  // no hacer nada aquí si no es necesario
+})
+  
+  const isMenuOpen = ref(false); 
+  const isAuthenticated = ref(false);
+
+  onMounted(() => {
+    const token = localStorage.getItem("client"); 
     isAuthenticated.value = !!token;
+    if (isAuthenticated.value) {
+      await cartStore.fetchCart();
+    }
   });
 
   const logout = () => {
@@ -35,19 +59,20 @@ const closeMenu = () => {
     </div>
 
     <!-- Botón menú móvil -->
-    <button
+    <!-- <button
       class="menu-toggle"
       @click="toggleMenu"
       aria-label="Abrir menú"
       aria-controls="main-navigation"
       :aria-expanded="isMenuOpen.toString()"
     >
+      
       <Icon
         :icon="isMenuOpen ? 'mingcute:close-line' : 'mingcute:menu-line'"
         width="32"
         height="32"
       />
-    </button>
+    </button> --> 
 
     <!-- Navegación -->
     <nav 
@@ -59,9 +84,33 @@ const closeMenu = () => {
       <router-link to="/products" @click="closeMenu">Productos</router-link>
       <router-link to="/contacto" @click="closeMenu">Contáctanos</router-link>
       
+      <!-- Cart Icon -->
+      <div 
+        v-if="isAuthenticated" 
+        class="cart-btn position-relative me-3 pointer" 
+        @click="cartStore.toggleCart()" 
+        role="button"
+        aria-label="Abrir mi carrito"
+        style="cursor: pointer;"
+      >
+        <span class="text-white d-flex align-items-center">
+            <Icon icon="mingcute:shopping-cart-2-line" width="32px" height="32px" />
+            <span class="fw-bold ms-1">Carrito</span>
+        </span>
+        
+        <span 
+          v-if="cartStore.totalItems > 0"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+          style="font-size: 0.7rem;"
+        >
+          {{ cartStore.totalItems || 0 }}
+          <span class="visually-hidden">ítems en el carrito</span>
+        </span>
+      </div>
+
       <div class="dropdown">
         <a class="cart-btn" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-          <Icon icon="mingcute:user-1-line" width="32px" height="32px" />
+         <!-- <Icon icon="mingcute:user-1-line" width="32px" height="32px" /> -->
         </a>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <li v-if="!isAuthenticated">
@@ -78,11 +127,11 @@ const closeMenu = () => {
               </router-link>
             </li>
 
-            <li>
+            <!-- <li v-if="!isAdmin">
               <router-link class="dropdown-item" to="/carrito">
                 Mi Carrito
               </router-link>
-            </li>
+            </li> -->
 
             <li>
               <a class="dropdown-item text-danger" href="#" @click.prevent="logout">

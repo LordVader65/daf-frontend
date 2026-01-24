@@ -1,11 +1,13 @@
 <script setup lang="js">
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import CartDrawer from './components/cart/CartDrawer.vue'
 </script>
 
 <template>
   <div id="app">
     <Header />
+    <CartDrawer />
     <main id="main-content">
       <router-view />
     </main>
