@@ -28,7 +28,7 @@ export const getCart = (page = 1) => {
 }
 
 export const addToCart = (prd_codigo, cantidad) => {
-    return api.post('/carrito/detalle', { prd_codigo, cantidad }) // POST /api/ecom/carrito/detalle
+    return api.post('/carrito', { prd_codigo, cantidad }) // POST /api/ecom/carrito
 }
 
 export const updateItemQuantity = (prd_codigo, cantidad) => {

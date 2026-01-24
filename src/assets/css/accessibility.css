@@ -17,7 +17,7 @@ textarea:focus-visible {
 }
 
 /* ===============================
-   ALTO CONTRASTE BASE
+   ALTO CONTRASTE BASE (Estricto Blanco y Negro)
    =============================== */
 .high-contrast,
 .high-contrast body {
@@ -25,13 +25,45 @@ textarea:focus-visible {
     color: #fff !important;
 }
 
-/* ===============================
-   LINKS Y TEXTO
-   =============================== */
+/* Override all accents to white */
+.high-contrast a,
+.high-contrast h1, 
+.high-contrast h2, 
+.high-contrast h3, 
+.high-contrast h4, 
+.high-contrast h5, 
+.high-contrast h6,
+.high-contrast p,
+.high-contrast span,
+.high-contrast label,
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea,
+.high-contrast button,
+.high-contrast .btn,
+.high-contrast .card,
+.high-contrast .alert,
+.high-contrast .badge,
+.high-contrast .table,
+.high-contrast .dropdown-item {
+    color: #fff !important;
+    border-color: #fff !important;
+}
+
 .high-contrast a {
-    color: #ffff00 !important;
-    background-color: #000 !important;
-    text-decoration: underline;
+    text-decoration: underline !important;
+}
+
+.high-contrast .btn:hover,
+.high-contrast button:hover,
+.high-contrast a:hover {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+
+.high-contrast .form-control:focus,
+.high-contrast .btn:focus {
+    outline: 2px solid #fff !important;
 }
 
 .high-contrast p,
@@ -84,6 +116,165 @@ textarea:focus-visible {
     box-shadow: none;
 }
 
+
+/* Strict B&W Overrides for remaining elements */
+
+.high-contrast header,
+.high-contrast footer,
+.high-contrast nav,
+.high-contrast section,
+.high-contrast article,
+.high-contrast div {
+    background-color: #000 !important;
+    color: #fff !important;
+    border-color: #fff !important;
+}
+
+.high-contrast nav a {
+    color: #fff !important;
+    text-decoration: underline !important;
+}
+
+.high-contrast nav a:focus,
+.high-contrast nav a:hover {
+    border: 1px solid #fff !important;
+    background-color: #333 !important;
+}
+
+.high-contrast button {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast .btn:focus {
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast .btn:hover {
+    color: #000 !important;
+    background-color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+/* Specific buttons B&W */
+.high-contrast .btn-submit:hover,
+.high-contrast .btn-cancel:hover,
+.high-contrast .btn-primary:hover,
+.high-contrast .btn-success:hover,
+.high-contrast .btn-warning:hover,
+.high-contrast .btn-danger:hover,
+.high-contrast .btn-outline-primary:hover,
+.high-contrast .btn-outline-secondary:hover {
+    background-color: #fff !important;
+    color: #000 !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast .btn-primary,
+.high-contrast .btn-success,
+.high-contrast .btn-warning,
+.high-contrast .btn-danger,
+.high-contrast .btn-outline-primary,
+.high-contrast .btn-outline-secondary {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+/* Inputs & Forms B&W */
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+.high-contrast input:focus,
+.high-contrast select:focus,
+.high-contrast textarea:focus {
+    border: 2px solid #fff !important;
+    outline: 2px solid #fff !important;
+}
+
+.high-contrast input::placeholder,
+.high-contrast textarea::placeholder {
+    color: #aaa !important;
+}
+
+/* Badges B&W */
+.high-contrast .badge {
+    background-color: #000 !important;
+    border: 1px solid #fff !important;
+    color: #fff !important;
+}
+
+.high-contrast .badge-count {
+    background-color: #fff !important;
+    color: #000 !important;
+}
+
+/* Tables B&W */
+.high-contrast .table th,
+.high-contrast .table td {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 1px solid #fff !important;
+}
+
+.high-contrast .table-striped > tbody > tr:nth-of-type(odd) > * {
+    color: #fff !important;
+}
+
+/* Forms specific fixes */
+.high-contrast .input-group-text {
+    background-color: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+    border-right: none !important; /* Merge with input */
+}
+
+/* Modal B&W */
+.high-contrast .modal-content,
+.high-contrast .modal-header,
+.high-contrast .modal-body, 
+.high-contrast .modal-footer {
+    background-color: #000 !important;
+    color: #fff !important;
+    border-color: #fff !important;
+}
+
+.high-contrast .modal-header h3,
+.high-contrast .modal-header h5 {
+    color: #fff !important;
+}
+
+.high-contrast hr {
+    border-color: #fff !important;
+    background-color: #fff !important;
+}
+
+/* Admin Dashboard Cards B&W */
+.high-contrast .dashboard-card {
+    background-color: #000;
+    color: #fff;
+    border: 2px solid #fff;
+}
+
+.high-contrast .dashboard-card:hover {
+    background-color: #fff !important;
+    color: #000 !important;
+    border: 2px solid #fff !important;
+}
+
+/* Alerts B&W */
+.high-contrast .alert {
+    background-color: #000 !important;
+    border: 2px solid #fff !important;
+    color: #fff !important;
+}
 .high-contrast header,
 .high-contrast footer {
     background-color: #000 !important;
@@ -91,8 +282,8 @@ textarea:focus-visible {
 }
 
 .high-contrast nav a {
-    color: #ffff00;
-    text-decoration: underline;
+    color: #fff !important;
+    text-decoration: underline !important;
 }
 
 .high-contrast nav a:focus {
