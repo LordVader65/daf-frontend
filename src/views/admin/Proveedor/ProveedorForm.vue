@@ -24,6 +24,24 @@ const form = ref({
 })
 
 const errors = ref({})
+const initialFormString = ref('')
+
+// Detectar cambios
+const hasChanges = computed(() => {
+  return JSON.stringify(form.value) !== initialFormString.value
+})
+
+// Validación reactiva para el botón
+const isFormValid = computed(() => {
+  const f = form.value
+  return (
+    f.prv_razonsocial?.trim().length >= 3 &&
+    /^\d{13}$/.test(f.prv_ruc) &&
+    f.ct_codigo &&
+    /^\d{1,10}$/.test(f.prv_telefono) &&
+    /^\d{1,9}$/.test(f.prv_celular)
+  )
+})
 
 // ===============================
 // CIUDADES
@@ -71,13 +89,13 @@ const validateForm = () => {
     valid = false
   }
 
-  if (form.value.prv_celular && !/^\d+$/.test(form.value.prv_celular)) {
-    errors.value.prv_celular = 'El celular solo debe contener números'
+  if (form.value.prv_celular && !/^\d{1,9}$/.test(form.value.prv_celular)) {
+    errors.value.prv_celular = 'El celular debe tener máximo 9 dígitos'
     valid = false
   }
 
-  if (form.value.prv_telefono && !/^\d+$/.test(form.value.prv_telefono)) {
-    errors.value.prv_telefono = 'El teléfono solo debe contener números'
+  if (form.value.prv_telefono && !/^\d{1,10}$/.test(form.value.prv_telefono)) {
+    errors.value.prv_telefono = 'El teléfono debe tener máximo 10 dígitos'
     valid = false
   }
 
@@ -141,10 +159,18 @@ const submit = async () => {
 // ACCIONES
 // ===============================
 const goBack = () => {
+  if (hasChanges.value) {
+    const confirm = window.confirm('Tiene cambios sin guardar. ¿Está seguro de que desea salir?')
+    if (!confirm) return
+  }
   router.push('/admin/proveedor')
 }
 
 const cancel = () => {
+  if (hasChanges.value) {
+    const confirm = window.confirm('Tiene cambios sin guardar. ¿Está seguro de que desea salir?')
+    if (!confirm) return
+  }
   router.push('/admin/proveedor')
 }
 
@@ -173,6 +199,9 @@ onMounted(async () => {
 
       };
     }
+    
+    // Guardar estado inicial para detección de cambios
+    initialFormString.value = JSON.stringify(form.value)
   } catch (error) {
     console.error('ERROR CARGANDO DATOS:', error);
     toast.error('No se pudo cargar la información necesaria');
@@ -229,7 +258,7 @@ onMounted(async () => {
                   v-model="form.prv_razonsocial" 
                   class="form-control" 
                   :class="{ 'is-invalid': errors.prv_razonsocial }"
-                  placeholder="Ingrese el nombre o razón social"
+                  placeholder="Ingrese el nombre o razón social (Min. 3 caracteres)"
                   required 
                 />
                 <div v-if="errors.prv_razonsocial" class="invalid-feedback d-block">
@@ -263,7 +292,11 @@ onMounted(async () => {
                     Ciudad <span class="text-danger">*</span>
                   </label>
                   
-                  <select v-model="form.ct_codigo">
+                  <select 
+                    v-model="form.ct_codigo"
+                    class="form-select"
+                    :class="{ 'is-invalid': errors.ct_codigo }"
+                  >
                     <option disabled value="">Seleccione una ciudad</option>
 
                     <option
@@ -291,7 +324,7 @@ onMounted(async () => {
                     v-model="form.prv_telefono" 
                     class="form-control" 
                     :class="{ 'is-invalid': errors.prv_telefono }"
-                    placeholder="Ej: 022..."
+                    placeholder="Máx. 10 dígitos"
                   />
                   <div v-if="errors.prv_telefono" class="invalid-feedback d-block">
                     {{ errors.prv_telefono }}
@@ -304,7 +337,7 @@ onMounted(async () => {
                     v-model="form.prv_celular" 
                     class="form-control" 
                     :class="{ 'is-invalid': errors.prv_celular }"
-                    placeholder="Ej: 099..."
+                  placeholder="Máx. 9 dígitos"
                   />
                   <div v-if="errors.prv_celular" class="invalid-feedback d-block">
                     {{ errors.prv_celular }}
@@ -340,7 +373,7 @@ onMounted(async () => {
                   v-model="form.prv_direccion" 
                   class="form-control" 
                   rows="2"
-                  placeholder="Dirección completa"
+                  placeholder="Dirección completa (Máx. 60 caracteres)"
                 ></textarea>
               </div>
 
@@ -361,7 +394,7 @@ onMounted(async () => {
                 <button 
                   class="btn btn-primary" 
                   type="submit" 
-                  :disabled="loading"
+                  :disabled="loading || !isFormValid"
                 >
                   <Icon
                     v-if="loading"

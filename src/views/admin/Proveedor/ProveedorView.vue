@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Icon } from "@iconify/vue";
 import { ProveedorService } from '@/api/proveedor.service';
@@ -10,6 +10,12 @@ const proveedores = ref([]);
 const search = ref('');
 const loading = ref(false);
 const error = ref(null);
+
+// Paginación
+const page = ref(1);
+const limit = ref(10);
+const totalRows = ref(0);
+const totalPages = ref(0);
 
 // Modal state
 const showDeleteModal = ref(false);
@@ -30,30 +36,38 @@ const load = async () => {
   error.value = null;
 
   try {
-    const response = await ProveedorService.getAll();
-    proveedores.value = response.data;
+    const params = {
+      page: page.value,
+      limit: limit.value,
+      search: search.value
+    };
+    const { data: res } = await ProveedorService.getAll(params);
+    
+    proveedores.value = res.data ?? [];
+    totalRows.value = res.total ?? 0;
+    totalPages.value = res.totalPages ?? 0;
   } catch (err) {
     error.value = 'Error al cargar proveedores';
     toast.error('Error al cargar proveedores');
+    proveedores.value = [];
   } finally {
     loading.value = false;
   }
 };
 
+const changePage = (p) => {
+  page.value = p;
+  load();
+};
+
 onMounted(load);
 
-
 /* ===============================
-   FILTRO
+   WATCHERS
    =============================== */
-const filtered = computed(() => {
-  if (!search.value) return proveedores.value;
-  const s = search.value.toLowerCase();
-  return proveedores.value.filter(
-    (p) =>
-      p.prv_razonsocial.toLowerCase().includes(s) ||
-      p.prv_ruc.includes(s)
-  );
+watch(search, () => {
+  page.value = 1;
+  load();
 });
 
 /* ============================
@@ -114,7 +128,7 @@ const remove = async () => {
           aria-label="Buscar proveedor"
         />
       </div>
-      <button @click="goCreate" class="btn-create">
+      <button @click="goCreate" class="btn-create" :disabled="loading">
         <Icon icon="mdi:plus" width="20" />
         Crear Proveedor
       </button>
@@ -132,7 +146,7 @@ const remove = async () => {
         <button @click="load" class="btn-retry">Reintentar</button>
       </div>
 
-      <div v-else-if="filtered.length === 0" class="empty-state">
+      <div v-else-if="proveedores.length === 0" class="empty-state">
         <Icon icon="mdi:account-group-outline" width="64" />
         <p>No se encontraron proveedores</p>
       </div>
@@ -149,7 +163,7 @@ const remove = async () => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="p in filtered" :key="p.prv_codigo">
+            <tr v-for="p in proveedores" :key="p.prv_codigo">
               <td>{{ p.prv_razonsocial }}</td>
               <td>
                 <span class="codigo">{{ p.prv_ruc }}</span>
@@ -180,6 +194,51 @@ const remove = async () => {
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- PAGINACIÓN -->
+    <div class="pagination">
+      <button 
+        class="btn-pagination" 
+        :disabled="page === 1"
+        @click="changePage(1)"
+        title="Primera página"
+      >
+        <Icon icon="mdi:chevron-double-left" />
+      </button>
+      <button 
+        class="btn-pagination" 
+        :disabled="page === 1"
+        @click="changePage(page - 1)"
+        title="Anterior"
+      >
+        <Icon icon="mdi:chevron-left" />
+      </button>
+      
+      <span class="page-info">
+        Página {{ page }} de {{ totalPages }}
+      </span>
+
+      <button 
+        class="btn-pagination" 
+        :disabled="page === totalPages"
+        @click="changePage(page + 1)"
+        title="Siguiente"
+      >
+        <Icon icon="mdi:chevron-right" />
+      </button>
+      <button 
+        class="btn-pagination" 
+        :disabled="page === totalPages"
+        @click="changePage(totalPages)"
+        title="Última página"
+      >
+        <Icon icon="mdi:chevron-double-right" />
+      </button>
+    </div>
+
+    <div class="text-center text-muted small mt-2">
+      Mostrando {{ proveedores.length }} de {{ totalRows }} proveedores
     </div>
 
     <!-- Modal de confirmación -->

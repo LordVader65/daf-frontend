@@ -1,79 +1,139 @@
 <template>
-  <div class="admin-container">
-
-    <!-- HEADER -->
-    <div class="header">
-      <h2>Facturación</h2>
-
-      <div>
-        <button class="btn btn-secondary me-2" @click="router.push('/admin/dashboard')">
-          Regresar
-        </button>
-        <button class="btn btn-primary" @click="goNuevaFactura">
-          <Icon icon="mdi:plus" />
-          Nueva factura
-        </button>
-      </div>
+  <div class="crud-container">
+    <!-- TOP BAR -->
+    <div class="top-bar">
+      <button @click="router.push('/admin/dashboard')" class="btn-back" aria-label="Regresar">
+        <Icon icon="mdi:arrow-left" width="24" />
+        Regresar
+      </button>
     </div>
 
-    <!-- BUSCADOR -->
-    <div class="filters">
-      <input
-        v-model="search"
-        type="text"
-        placeholder="Buscar por código o cliente"
-        class="input-search"
-      />
+    <!-- HEADER -->
+    <div class="page-header">
+      <h1>Gestión de Facturación</h1>
+      <p class="text-muted">Administre el registro de sus facturas emitidas</p>
+    </div>
+
+    <!-- BUSCADOR Y ACCIONES -->
+    <div class="search-section">
+      <div class="search-bar">
+        <input
+          v-model="search"
+          type="text"
+          class="search-input"
+          placeholder="Buscar por código o cliente..."
+        />
+      </div>
+      <button @click="goNuevaFactura" class="btn-create">
+        <Icon icon="mdi:plus" width="20" />
+        Nueva factura
+      </button>
     </div>
 
     <!-- TABLA -->
     <div class="table-container">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Código</th>
-            <th>Cliente</th>
-            <th>Fecha</th>
-            <th>Total</th>
-            <th>Estado</th>
-            <th style="width: 160px;">Acciones</th>
-          </tr>
-        </thead>
+      <div v-if="loading" class="loading-state">
+        <Icon icon="mdi:loading" class="spinner" width="48" />
+        <p>Cargando datos...</p>
+      </div>
 
-        <tbody>
-          <tr v-for="fac in facturasFiltradas" :key="fac.fac_codigo">
-            <td>{{ fac.fac_codigo }}</td>
-            <td>{{ fac.cli_nombre?.trim() }}</td>
-            <td>{{ formatter.format(new Date(fac.fac_fecha)) }}</td>
-            <td>${{ fac.fac_total }}</td>
-            <td>
-                <span class="badge" :class="badgeClass(fac.fac_estado)">
-                {{ fac.fac_estado }}
-                </span>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-primary" @click="verFactura(fac.fac_codigo)">
-                Ver
-                </button>
+      <div v-else-if="facturas.length === 0" class="empty-state">
+        <Icon icon="mdi:invoice-list-outline" width="64" />
+        <p>No se encontraron facturas</p>
+      </div>
 
-            </td>
+      <div v-else class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Cliente</th>
+              <th>Fecha</th>
+              <th>Total</th>
+              <th>Estado</th>
+              <th style="width: 120px;">Acciones</th>
             </tr>
+          </thead>
 
-
-          <tr v-if="facturasFiltradas.length === 0">
-            <td colspan="6" class="empty">
-              No se encontraron facturas
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          <tbody>
+            <tr v-for="fac in facturas" :key="fac.fac_codigo">
+              <td>
+                <span class="codigo">{{ fac.fac_codigo }}</span>
+              </td>
+              <td>{{ fac.cli_nombre?.trim() }}</td>
+              <td>{{ formatter.format(new Date(fac.fac_fecha)) }}</td>
+              <td>${{ fac.fac_total }}</td>
+              <td>
+                <span class="badge" :class="badgeClass(fac.fac_estado)">
+                  {{ fac.fac_estado }}
+                </span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button 
+                    class="btn-action btn-edit" 
+                    @click="verFactura(fac.fac_codigo)"
+                    title="Ver detalle"
+                  >
+                    Ver
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
+    <!-- PAGINACIÓN -->
+    <div class="pagination">
+      <button 
+        class="btn-pagination" 
+        :disabled="page === 1"
+        @click="changePage(1)"
+        title="Primera página"
+      >
+        <Icon icon="mdi:chevron-double-left" />
+      </button>
+      <button 
+        class="btn-pagination" 
+        :disabled="page === 1"
+        @click="changePage(page - 1)"
+        title="Anterior"
+      >
+        <Icon icon="mdi:chevron-left" />
+      </button>
+      
+      <span class="page-info">
+        Página {{ page }} de {{ totalPages }}
+      </span>
+
+      <button 
+        class="btn-pagination" 
+        :disabled="page === totalPages"
+        @click="changePage(page + 1)"
+        title="Siguiente"
+      >
+        <Icon icon="mdi:chevron-right" />
+      </button>
+      <button 
+        class="btn-pagination" 
+        :disabled="page === totalPages"
+        @click="changePage(totalPages)"
+        title="Última página"
+      >
+        <Icon icon="mdi:chevron-double-right" />
+      </button>
+    </div>
+
+    <div class="text-center text-muted small mt-2">
+      Mostrando {{ facturas.length }} de {{ totalRows }} facturas
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { FacturaService } from '@/api/admin/factura.service'
@@ -87,6 +147,13 @@ import { formatter } from '@/utils/timestamp-formatter'
 const router = useRouter()
 const facturas = ref([])
 const search = ref('')
+const loading = ref(false)
+
+// Paginación
+const page = ref(1)
+const limit = ref(10)
+const totalRows = ref(0)
+const totalPages = ref(0)
 
 
 
@@ -95,18 +162,30 @@ const search = ref('')
 // -----------------------------
 
 const loadFacturas = async () => {
+  loading.value = true
   try {
-    const { data } = await FacturaService.getAll()
-    console.log('FACTURAS DESDE API:', data)
-    facturas.value = data
-
-    console.log('FACTURAS EN STATE:', facturas.value)
-    //facturas.value = data.facturas ?? []
+    const params = {
+      page: page.value,
+      limit: limit.value,
+      search: search.value // Opcional por ahora si decides filtrar en server
+    }
+    const { data: res } = await FacturaService.getAll(params)
+    
+    facturas.value = res.data ?? []
+    totalRows.value = res.total ?? 0
+    totalPages.value = res.totalPages ?? 0
   } catch (error) {
     toast.error('Error al cargar facturas')
     console.error('loadFacturas:', error)
     facturas.value = []
+  } finally {
+    loading.value = false
   }
+}
+
+const changePage = (p) => {
+  page.value = p
+  loadFacturas()
 }
 
 const verFactura = (codigo) => {
@@ -119,12 +198,12 @@ onMounted(loadFacturas)
 // -----------------------------
 // COMPUTED
 // -----------------------------
-const facturasFiltradas = computed(() => {
-  const q = search.value.toLowerCase()
-  return facturas.value.filter(f =>
-    String(f.fac_codigo || '').toLowerCase().includes(q) ||
-    String(f.cli_nombre || '').toLowerCase().includes(q)
-  )
+// -----------------------------
+// WATCHERS (OPCIONAL)
+// -----------------------------
+watch(search, () => {
+  page.value = 1
+  loadFacturas()
 })
 
 // -----------------------------
@@ -170,10 +249,10 @@ const anularFactura = async (codigo) => {
 
 const badgeClass = (estado) => {
   return {
-    PEN: 'bg-warning',
-    APR: 'bg-success',
-    ANU: 'bg-danger'
-  }[estado] || 'bg-secondary'
+    PEN: 'badge-warn', // Ajustado para crud-view si existe o personalizado abajo
+    APR: 'badge-success',
+    ANU: 'badge-danger'
+  }[estado] || 'badge-secondary'
 }
 
 // -----------------------------
@@ -189,83 +268,33 @@ const estadoClass = (estado) => {
 }
 </script>
 
+<style scoped src="../../../assets/css/admin/crud-view.css"></style>
+
 <style scoped>
-.admin-container {
-  padding: 20px;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.filters {
-  margin: 15px 0;
-}
-
-.input-search {
-  width: 300px;
-  padding: 8px;
-}
-
-.table-container {
-  overflow-x: auto;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.table th,
-.table td {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-.actions {
-  display: flex;
-  gap: 6px;
-}
-
-.btn-icon {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-icon.success {
-  color: green;
-}
-
-.btn-icon.danger {
-  color: red;
-}
-
-.badge {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-.badge.pen {
-  background: #fff3cd;
+/* Ajustes específicos para Factura que no están en crud-view.css */
+.badge-warn {
+  background-color: #fff3cd;
   color: #856404;
 }
 
-.badge.apr {
-  background: #d4edda;
+.badge-success {
+  background-color: #d4edda;
   color: #155724;
 }
 
-.badge.anu {
-  background: #f8d7da;
+.badge-danger {
+  background-color: #f8d7da;
   color: #721c24;
 }
 
-.empty {
-  text-align: center;
-  padding: 20px;
+.badge-secondary {
+  background-color: #e2e8f0;
+  color: #4a5568;
+}
+
+.codigo {
+  font-family: inherit;
+  font-weight: 600;
+  color: #944000;
 }
 </style>

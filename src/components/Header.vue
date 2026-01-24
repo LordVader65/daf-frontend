@@ -1,36 +1,23 @@
 <script setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import { Icon } from "@iconify/vue";
-  import { useRouter } from "vue-router";
+  import { useRouter, useRoute } from "vue-router";
   import { useCartStore } from '../stores/cart.store';
 
   const router = useRouter();
+  const route = useRoute();
   const cartStore = useCartStore();
+
   const isMenuOpen = ref(false);
   const isAuthenticated = ref(false);
 
+  const isAdmin = computed(() => route.path.startsWith('/admin'));
+
   onMounted(async () => {
     const token = localStorage.getItem("client");
-
-import { ref, computed, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-
-const route = useRoute()
-const router = useRouter()
-
-const isAdmin = computed(() => route.path.startsWith('/admin'))
-
-onMounted(() => {
-  // no hacer nada aquí si no es necesario
-})
-  
-  const isMenuOpen = ref(false); 
-  const isAuthenticated = ref(false);
-
-  onMounted(() => {
-    const token = localStorage.getItem("client"); 
     isAuthenticated.value = !!token;
     if (isAuthenticated.value) {
+      // Cargamos el carrito si está logueado
       await cartStore.fetchCart();
     }
   });
@@ -41,13 +28,13 @@ onMounted(() => {
     router.push('/');
   };
 
-const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value
-}
+  const toggleMenu = () => {
+    isMenuOpen.value = !isMenuOpen.value;
+  };
 
-const closeMenu = () => {
-  isMenuOpen.value = false
-}
+  const closeMenu = () => {
+    isMenuOpen.value = false;
+  };
 </script>
 
 <template>

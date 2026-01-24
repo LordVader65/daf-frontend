@@ -1,16 +1,16 @@
 <script setup>
     import { ref, onMounted } from 'vue'
     import axios from 'axios'
+    import { Icon } from '@iconify/vue'
     import DashboardButton from '@/components/DashboardButton.vue'
     import { obtainToken } from '../../utils/obtain-token.js'
     import { useRouter } from 'vue-router'
-
     import '@/assets/css/admin/admin-body.css'
 
+    const router = useRouter()
     const loading = ref(true)
     const error = ref(null)
     const enabledModules = ref([])
-    const router = useRouter()
 
     const modulesMap = {
     PRODUCTO: [
@@ -87,6 +87,16 @@
 
       <div v-if="error" class="alert alert-danger text-center">
         {{ error }}
+      </div>
+
+      <div v-if="!loading && !error && enabledModules.length === 0" class="no-access-message text-center py-5">
+        <Icon icon="mdi:shield-lock-outline" width="64" class="text-muted mb-3" />
+        <h3>Acceso Restringido</h3>
+        <p class="text-muted">
+          Su usuario no tiene módulos asignados en este momento. 
+          <br>
+          Por favor, contacte al administrador para verificar sus permisos de base de datos.
+        </p>
       </div>
 
       <div class="row g-4 justify-content-center d-flex mb-5">

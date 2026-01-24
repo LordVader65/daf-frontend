@@ -14,8 +14,8 @@ api.interceptors.request.use(config => {
 })
 
 export const FacturaService = {
-    getAll() {
-        return api.get('/pos/factura')
+    getAll(params) {
+        return api.get('/pos/factura', { params })
     },
 
     getByCodigo(codigo) {
@@ -41,6 +41,9 @@ export const FacturaService = {
     },
     updateDetalle(pxfaCodigo, data) {
         return api.put(`/pos/factura/detalle/${pxfaCodigo}`, data)
+    },
+    delete(codigo) {
+        return api.delete(`/pos/factura/${codigo}`)
     },
 }
 
