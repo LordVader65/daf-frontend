@@ -201,9 +201,14 @@ onMounted(loadFacturas)
 // -----------------------------
 // WATCHERS (OPCIONAL)
 // -----------------------------
+const searchTimeout = ref(null)
+
 watch(search, () => {
-  page.value = 1
-  loadFacturas()
+    page.value = 1
+    if (searchTimeout.value) clearTimeout(searchTimeout.value)
+    searchTimeout.value = setTimeout(() => {
+        loadFacturas()
+    }, 500)
 })
 
 // -----------------------------
