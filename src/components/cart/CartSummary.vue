@@ -24,10 +24,16 @@
         class="btn btn-primary w-100 mt-4 py-2 fw-bold shadow-sm btn-checkout"
         @click="$emit('checkout')"
         :disabled="loading || total <= 0"
+        title="Ir a la pasarela de pago para completar tu compra"
+        aria-label="Proceder al pago"
       >
         <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
         {{ loading ? 'Procesando...' : 'Proceder al pago' }}
       </button>
+      <small class="d-block text-center text-muted mt-2">
+        <i class="bi bi-info-circle me-1"></i>
+        Serás redirigido a la pasarela de pago segura
+      </small>
 
       <div class="mt-3 text-center">
         <router-link to="/products" class="text-decoration-none small text-muted">

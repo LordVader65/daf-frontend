@@ -29,6 +29,7 @@
                     @click="decrement"
                     :disabled="isUpdating || localQuantity <= 1"
                     aria-label="Disminuir cantidad"
+                    title="Disminuir cantidad en 1 unidad"
                   >
                     -
                   </button>
@@ -45,6 +46,7 @@
                     @click="increment"
                     :disabled="isUpdating"
                     aria-label="Aumentar cantidad"
+                    title="Aumentar cantidad en 1 unidad"
                   >
                     +
                   </button>
@@ -59,7 +61,7 @@
             <button 
               class="btn btn-link text-danger p-0 ms-2 align-self-end mb-1" 
               @click="removeItem"
-              title="Eliminar producto"
+              title="Eliminar producto del carrito (esta acción no se puede deshacer)"
               aria-label="Eliminar producto del carrito"
             >
               <i class="bi bi-trash fs-5" aria-hidden="true"></i>
@@ -113,7 +115,7 @@ const decrement = () => {
 }
 
 const removeItem = () => {
-  if (confirm('¿Estás seguro de eliminar este producto del carrito?')) {
+  if (confirm(`¿Está seguro de eliminar "${props.item.prd_nombre}" del carrito? Esta acción no se puede deshacer.`)) {
     cartStore.removeItem(props.item.prd_codigo)
   }
 }
