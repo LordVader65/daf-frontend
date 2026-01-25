@@ -106,20 +106,22 @@
               Imprimir
             </button>
 
+            <!-- BOTONES DE ACCIÓN (ESTADO PEN / APR) -->
             <template v-if="!isNueva && !isANU">
           
               <button 
                 v-if="isPEN"
                 class="btn btn-success" 
-                :disabled="!puedeAprobar" 
+                :disabled="!puedeAprobar || loading" 
                 @click="aprobarFactura"
               > 
                 Aprobar
               </button>
 
               <button 
+                v-if="isPEN || isAPR"
                 class="btn btn-danger ms-2" 
-                :disabled="!puedeAnular"
+                :disabled="!puedeAnular || loading"
                 @click="anularFactura"
               >
                 Anular
@@ -141,7 +143,7 @@
             <select v-model="nuevoDetalle.prd_codigo" class="form-select">
               <option value="">Seleccione producto</option>
               <option v-for="p in productos" :key="p.prd_codigo" :value="p.prd_codigo">
-                {{ p.prd_nombre }}
+                {{ p.prd_nombre || p.prd_descripcion || p.prd_desc_corta || p.prd_codigo }}
               </option>
             </select>
           </div>
@@ -468,11 +470,12 @@ const getProductoNombre = (prdCodigo) => {
   return p?.prd_nombre || codigo
 }
 
- const getProductoLabel = (prdCodigo) => {
+const getProductoLabel = (prdCodigo) => {
   const code = clean(prdCodigo)
   const p = productos.value?.find(x => clean(x.prd_codigo) === code)
-  // En tu BD el texto es prd_descripcion (no prd_nombre)
-  return p ? clean(p.prd_nombre) : code
+  if (!p) return code;
+  // Intentar varios campos por la discrepancia en el esquema (prd_nombre vs prd_descripcion)
+  return clean(p.prd_nombre || p.prd_descripcion || p.prd_desc_corta || code)
 }
 
 
@@ -493,13 +496,16 @@ const loadClientes = async () => {
 const loadProductos = async () => {
   try {
     const res = await ProductoService.getAll()
-    productos.value = res.data?.data ?? []  // ✅ AQUÍ está el array real
+    console.log('📦 Respuesta de productos:', res.data)
+    // Manejar tanto respuesta paginada { data: [...] } como array directo [...]
+    productos.value = res.data?.data || res.data || []
+    console.log('✅ Productos cargados:', productos.value.length)
   } catch (e) {
+    console.error('❌ Error al cargar productos:', e)
     toast.error('Error al cargar productos')
     productos.value = []
   }
-
- } 
+}
 
 onMounted(async () => {
   await loadProductos()
@@ -522,7 +528,7 @@ const nuevoDetalle = ref({
 
 const esPendiente = computed(() => isPEN.value)
 const puedeGuardar = computed(() => isPEN.value && hasChanges.value)
-const puedeAprobar = computed(() => isPEN.value && !hasChanges.value)
+const puedeAprobar = computed(() => isPEN.value && !hasChanges.value && detalle.value.length > 0)
 const puedeAnular  = computed(() => isPEN.value || isAPR.value)
 const isEditable = computed(() => isPEN.value)   
 const puedeEditarDetalle = computed(() => isPEN.value)

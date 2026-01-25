@@ -208,7 +208,7 @@ export default {
               <td>{{ item.prd_nombre }}</td>
               <td :class="getTransactionClass(item.trn_descripcion)">{{ item.trn_descripcion }}</td>
               <td>{{ item.fac_codigo || 'NA' }}</td>
-              <td class="text-end fw-bold">{{ item.krd_cantidad }}</td>
+              <td class="text-end fw-bold">{{ item.krd_prd_cantidad }}</td>
               <td>{{ item.krd_razon }}</td>
               <td>{{ item.usr_id }}</td>
               <td>{{ formatter.format(new Date(item.krd_fechahora)) }}</td>

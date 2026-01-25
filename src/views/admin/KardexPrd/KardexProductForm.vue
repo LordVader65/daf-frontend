@@ -342,7 +342,7 @@ export default {
         const payload = {
             prd_codigo: this.formData.producto,
             trn_cod: this.formData.transaccion,
-            krd_cantidad: this.formData.cantidad,
+            krd_prd_cantidad: this.formData.cantidad,
             krd_razon: this.formData.razon,
             est_cod: this.formData.estandar || null
         };
