@@ -125,6 +125,7 @@
                     class="password-toggle"
                     @click="showPassword = !showPassword"
                     :aria-label="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                    :title="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
                   >
                     <Icon :icon="showPassword ? 'mdi:eye-off' : 'mdi:eye'" />
                   </button>
@@ -132,12 +133,16 @@
                 <span v-if="passwordError" id="password-error" class="error-message" role="alert">
                   {{ passwordError }}
                 </span>
+                <small v-else class="form-text text-muted">
+                  <i class="bi bi-info-circle me-1"></i>La contraseña debe tener al menos 6 caracteres
+                </small>
               </div>
               <button
                 type="submit"
                 class="btn btn-primary"
                 :disabled="loadingPassword"
                 :aria-busy="loadingPassword"
+                title="Guardar la nueva contraseña"
               >
                 <Icon v-if="!loadingPassword" icon="mdi:content-save" />
                 <Icon v-else icon="mdi:loading" class="spin" />
@@ -162,6 +167,7 @@
                 class="btn btn-danger"
                 @click="confirmarEliminarCuenta"
                 :disabled="loadingDelete"
+                title="Eliminar permanentemente tu cuenta y todos tus datos"
               >
                 <Icon v-if="!loadingDelete" icon="mdi:delete-forever" />
                 <Icon v-else icon="mdi:loading" class="spin" />

@@ -54,7 +54,8 @@
                                         v-if="(Number(item.pxca_cantidad) || 1) === 1" 
                                         class="btn-icon text-danger" 
                                         @click="removeItem(item)"
-                                        title="Eliminar"
+                                        title="Eliminar producto del carrito (esta acción no se puede deshacer)"
+                                        aria-label="Eliminar producto del carrito"
                                     >
                                         <!-- SVG Trash -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
@@ -65,7 +66,8 @@
                                         v-else 
                                         class="btn-icon text-dark" 
                                         @click="updateQty(item, -1)"
-                                        title="Disminuir"
+                                        title="Disminuir cantidad en 1 unidad"
+                                        aria-label="Disminuir cantidad del producto"
                                     >
                                         <!-- SVG Dash -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
@@ -77,7 +79,12 @@
                                     <span class="fw-bold mx-2 user-select-none">{{ item.pxca_cantidad || 1 }}</span>
 
                                     <!-- Plus -->
-                                    <button class="btn-icon text-dark" @click="updateQty(item, 1)" title="Aumentar">
+                                    <button 
+                                        class="btn-icon text-dark" 
+                                        @click="updateQty(item, 1)" 
+                                        title="Aumentar cantidad en 1 unidad"
+                                        aria-label="Aumentar cantidad del producto"
+                                    >
                                         <!-- SVG Plus -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
@@ -143,7 +150,7 @@ const updateQty = (item, change) => {
 }
 
 const removeItem = (item) => {
-    if(confirm('¿Eliminar?')) {
+    if(confirm(`¿Está seguro de eliminar "${item.prd_nombre}" del carrito? Esta acción no se puede deshacer.`)) {
         cartStore.removeItem(item.prd_codigo)
     }
 }

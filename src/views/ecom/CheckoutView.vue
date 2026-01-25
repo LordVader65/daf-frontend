@@ -20,11 +20,19 @@
                 <p class="text-muted mb-4">Su compra ha sido procesada correctamente.</p>
                 
                 <div class="d-grid gap-2">
-                  <button class="btn btn-dark btn-lg" @click="openInvoiceModal">
+                  <button 
+                    class="btn btn-dark btn-lg" 
+                    @click="openInvoiceModal"
+                    title="Generar e imprimir el comprobante de su compra"
+                  >
                     <Icon icon="mingcute:print-line" class="me-2" />
                     Imprimir Factura
                   </button>
-                  <button class="btn btn-outline-primary" @click="router.push('/')">
+                  <button 
+                    class="btn btn-outline-primary" 
+                    @click="router.push('/')"
+                    title="Regresar a la página principal"
+                  >
                     Continuar al Inicio
                   </button>
                 </div>
@@ -72,6 +80,7 @@
                       type="submit" 
                       class="btn btn-primary btn-lg fw-bold" 
                       :disabled="loading"
+                      title="Procesar el pago con los datos ingresados"
                     >
                       <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                       {{ loading ? 'Procesando...' : 'Pagar Ahora' }}
@@ -81,6 +90,7 @@
                       class="btn btn-outline-secondary" 
                       @click="router.push('/carrito')" 
                       :disabled="loading"
+                      title="Cancelar el pago y volver al carrito de compras"
                     >
                       Cancelar
                     </button>

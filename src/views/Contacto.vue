@@ -17,6 +17,7 @@
           id="nombre"
           v-model="form.nombre"
           autocomplete="name"
+          placeholder="Ej: Juan Pérez García"
           required
         />
 
@@ -27,6 +28,7 @@
           type="email"
           v-model="form.email"
           autocomplete="email"
+          placeholder="Ej: juan@correo.com"
           required
         />
 
@@ -46,6 +48,7 @@
           id="mensaje"
           v-model="form.mensaje"
           rows="4"
+          placeholder="Describa su consulta con el mayor detalle posible..."
           required
         ></textarea>
 
