@@ -171,7 +171,7 @@
 <script setup>
 import { Icon } from '@iconify/vue';
 import { ref, computed, onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import AccessibilityMenu from '../components/AccessibilityMenu.vue'
 import productoService from '../api/ecom/producto.service'
 import { useCartStore } from '../stores/cart.store'
@@ -181,6 +181,7 @@ import { toast } from '../utils/toast.js'
 
 
 const router = useRouter()
+const route = useRoute()
 const loading = ref(true)
 const error = ref(null)
 
@@ -317,26 +318,44 @@ const goToLast = () => {
   }
 }
 
-watch(
-  () => [filters.value.query, filters.value.minPrice, filters.value.maxPrice],
-  () => {
-    pagination.value.page = 1
-    loadProducts()
-  }
-)
-
 // Debounce para búsqueda
 let searchTimeout = null
+
+const updateURL = () => {
+  router.replace({
+    query: {
+      ...route.query, // Mantener otros params si existen
+      q: filters.value.query || undefined,
+      min: filters.value.minPrice || undefined,
+      max: filters.value.maxPrice || undefined,
+      page: pagination.value.page > 1 ? pagination.value.page : undefined
+    }
+  })
+}
+
 watch(
   () => [filters.value.query, filters.value.minPrice, filters.value.maxPrice],
   () => {
     pagination.value.page = 1
-    loadProducts()
+    
+    // Debounce
+    if (searchTimeout) clearTimeout(searchTimeout)
+    searchTimeout = setTimeout(() => {
+      loadProducts()
+      updateURL()
+    }, 500) // 500ms debounce
   }
 )
 
-// Cargar productos al montar
+// Cargar productos al montar y leer URL
 onMounted(() => {
+  // Inicializar desde URL
+  const { q, min, max, page } = route.query
+  if (q) filters.value.query = q
+  if (min) filters.value.minPrice = Number(min)
+  if (max) filters.value.maxPrice = Number(max)
+  if (page) pagination.value.page = Number(page)
+
   loadProducts()
 })
 </script>

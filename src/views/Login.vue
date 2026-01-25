@@ -333,7 +333,13 @@ const cargarCiudades = async () => {
 
 const toggleMode = () => {
   isLogin.value = !isLogin.value;
-  resetForm();
+  // H3: No resetear el formulario completo para no perder datos si el usuario se equivoca
+  clearErrors(); 
+  // Solo limpiar RUC/Cliente info si se pasa a Login, pero mantener email/pass
+  if (isLogin.value) {
+     formData.cli_ruc_ced = '';
+     mostrarDatosCliente.value = false;
+  }
 };
 
 const resetForm = () => {
@@ -493,10 +499,9 @@ const handleLogin = async () => {
       token: data.token,
     }));
     toast.success(data.message || 'Inicio de sesión exitoso');
-      
-    setTimeout(() => {
-      window.location.href = '/';
-    }, 10);
+    
+    // H4: Navegación SPA fluida
+    router.push('/');
   } catch (error) {
     const message = error.response?.data?.message || 'Error al iniciar sesión';
     toast.error(message);
