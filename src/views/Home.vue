@@ -30,6 +30,7 @@
               <router-link
                 to="/contacto"
                 class="btn btn-custom-dark"
+                title="Ir al formulario de contacto para enviarnos un mensaje"
               >
                 Contáctanos
               </router-link>
@@ -46,7 +47,11 @@
               style="max-width: 320px;"
             />
 
-            <a href="#productos" class="btn btn-custom-dark">
+            <a 
+              href="#productos" 
+              class="btn btn-custom-dark"
+              title="Ir a la sección de productos destacados"
+            >
               Ver Productos Destacados
             </a>
           </div>
@@ -90,6 +95,7 @@
                   <router-link
                     to="/products"
                     class="btn btn-custom-dark mt-auto"
+                    title="Ver detalles de este producto"
                   >
                     Ver más
                   </router-link>
@@ -102,6 +108,7 @@
             <router-link
               to="/products"
               class="btn btn-custom-dark btn-lg"
+              title="Explorar el catálogo completo de productos"
             >
               Ver todos los productos
             </router-link>
@@ -144,7 +151,7 @@ const featuredProducts = ref([
 
 <style scoped>
 .text-primary-custom {
-  color: #d26e4b;
+  color: #8f3e00;
 }
 
 .btn-custom-dark {

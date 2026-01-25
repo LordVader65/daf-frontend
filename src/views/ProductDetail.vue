@@ -25,7 +25,11 @@
       <section v-else class="container my-5">
         <!-- Back Button -->
         <div class="mb-4">
-          <button @click="goBack" class="btn btn-custom-dark">
+          <button 
+            @click="goBack" 
+            class="btn btn-custom-dark"
+            title="Volver a la lista de productos"
+          >
             <Icon icon="mdi:arrow-left" width="20" />
             Volver al catálogo
           </button>
@@ -93,6 +97,7 @@
                   class="btn-add-cart"
                   :disabled="product.stock <= 0"
                   @click="addToCart()"
+                  :title="product.stock > 0 ? 'Añadir este producto a tu carrito de compras' : 'Producto no disponible actualmente'"
                 >
                   <Icon icon="mdi:cart-plus" width="20" />
                   {{ product.stock > 0 ? 'Agregar al carrito' : 'No disponible' }}
@@ -103,18 +108,30 @@
         </div>
       </section>
       <!-- Auth Logic Modal -->
-      <div v-if="showAuthModal" class="modal-overlay">
+      <div v-if="showAuthModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
         <div class="modal-content-custom">
            <div class="text-center mb-4">
-              <i class="bi bi-exclamation-circle text-warning display-1"></i>
+              <i class="bi bi-exclamation-circle text-warning display-1" aria-hidden="true"></i>
            </div>
-           <h3 class="fw-bold text-center mb-3">¡Atención!</h3>
+           <h3 id="auth-modal-title" class="fw-bold text-center mb-3">¡Atención!</h3>
            <p class="text-center text-muted mb-4 fs-5">
-             No estás registrado. Para agregar este producto necesito estar registrado al sistema.
+             Para agregar productos al carrito necesitas iniciar sesión o registrarte en el sistema.
            </p>
            <div class="d-grid gap-2">
-              <button class="btn btn-primary" @click="goToRegister">Registrarme</button>
-              <button class="btn btn-outline-secondary" @click="showAuthModal = false">Cancelar / Seguir viendo</button>
+              <button 
+                class="btn btn-primary" 
+                @click="goToRegister"
+                title="Ir a la página de registro para crear una cuenta"
+              >
+                Registrarme
+              </button>
+              <button 
+                class="btn btn-outline-secondary" 
+                @click="showAuthModal = false"
+                title="Cerrar este mensaje y continuar viendo productos"
+              >
+                Cancelar / Seguir viendo
+              </button>
            </div>
         </div>
       </div>

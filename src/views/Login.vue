@@ -57,6 +57,7 @@
                 class="password-toggle"
                 @click="showPassword = !showPassword"
                 :aria-label="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                :title="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
               >
                 <Icon :icon="showPassword ? 'mdi:eye-off' : 'mdi:eye'" />
               </button>
@@ -64,6 +65,9 @@
             <span v-if="errors.password" id="password-error" class="error-message" role="alert">
               {{ errors.password }}
             </span>
+            <small v-else class="form-text text-muted">
+              <i class="bi bi-info-circle me-1"></i>Mínimo 6 caracteres
+            </small>
           </div>
 
           <!-- Registro: RUC/Cédula -->
@@ -91,6 +95,7 @@
                 @click="buscarCliente"
                 :disabled="loading || !formData.cli_ruc_ced"
                 :aria-label="'Buscar cliente por ' + (formData.cli_ruc_ced || 'RUC o cédula')"
+                title="Verificar si el cliente ya existe en el sistema"
               >
                 <Icon icon="mdi:magnify" />
                 Buscar
@@ -99,6 +104,9 @@
             <span v-if="errors.cli_ruc_ced" id="ruc-error" class="error-message" role="alert">
               {{ errors.cli_ruc_ced }}
             </span>
+            <small v-else class="form-text text-muted">
+              <i class="bi bi-info-circle me-1"></i>Cédula: 10 dígitos / RUC: 13 dígitos
+            </small>
           </div>
 
           <!-- Datos de Cliente (solo si no existe) -->
@@ -165,6 +173,9 @@
                 <span v-if="errors.cli_telefono" class="error-message" role="alert">
                   {{ errors.cli_telefono }}
                 </span>
+                <small v-else class="form-text text-muted">
+                  <i class="bi bi-info-circle me-1"></i>Formato: 10 dígitos (ej: 0412345678)
+                </small>
               </div>
 
               <div class="form-group">
@@ -187,6 +198,9 @@
                 <span v-if="errors.cli_celular" class="error-message" role="alert">
                   {{ errors.cli_celular }}
                 </span>
+                <small v-else class="form-text text-muted">
+                  <i class="bi bi-info-circle me-1"></i>Formato: 9 dígitos (ej: 099999999)
+                </small>
               </div>
             </div>
 

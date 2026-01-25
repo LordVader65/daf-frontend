@@ -12,7 +12,13 @@
 
     <div v-else-if="cartStore.error" class="alert alert-danger" role="alert">
       {{ cartStore.error }}
-      <button class="btn btn-outline-danger btn-sm ms-3" @click="cartStore.fetchCart">Reintentar</button>
+      <button 
+        class="btn btn-outline-danger btn-sm ms-3" 
+        @click="cartStore.fetchCart"
+        title="Volver a cargar el contenido del carrito"
+      >
+        Reintentar
+      </button>
     </div>
 
     <div v-else-if="cartStore.isEmpty" class="text-center py-5 bg-white rounded shadow-sm">
@@ -46,6 +52,7 @@
                 @click="changePage(cartStore.pagination.page - 1)" 
                 :disabled="cartStore.pagination.page === 1"
                 aria-label="Página anterior"
+                title="Ir a la página anterior de productos"
               >
                 <i class="bi bi-chevron-left" aria-hidden="true"></i>
               </button>
@@ -63,6 +70,7 @@
                 @click="changePage(cartStore.pagination.page + 1)" 
                 :disabled="cartStore.pagination.page === cartStore.pagination.totalPages"
                 aria-label="Siguiente página"
+                title="Ir a la siguiente página de productos"
               >
                 <i class="bi bi-chevron-right" aria-hidden="true"></i>
               </button>
